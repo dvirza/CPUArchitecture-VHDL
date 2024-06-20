@@ -8,7 +8,7 @@ generic( Dwidth: integer:=16;
 		 AMwidth: integer:=6;
 		 ARwidth: integer:=4
 		);
-port(	clk: in std_logic;
+port(	clk,rst: in std_logic;
 
 		Mem_wr, Mem_out,Mem_in, Cout,Cin,Ain,RFin,RFout,IRin,PCin,Imm1_in,Imm2_in : IN std_logic;
 		OPC : in std_logic_vector(ARwidth-1 downto 0);
@@ -124,11 +124,44 @@ dataMEMBidirPin_inst : BidirPin
 IMM1_sign_inst : BidirPin
 					generic map( width => Dwidth)
 					port map (
-						Dout => ,
+						Dout => imm1SignExt,
 						en => Imm1_in,
 						Din => open,
-						IOpin => dataBUS
+						IOpin => 
 					);
+
+IMM2_sign_inst : BidirPin
+					generic map( width => Dwidth)
+					port map (
+						Dout => imm2SignExt,
+						en => Imm2_in,
+						Din => open,
+						IOpin => 
+					);
+
+modRF_inst : mod_RF
+				generic map (Dwidth => Dwidth,
+					Awidth => ARwidth)
+				port map(
+						clk => clk,
+						rst => rst,
+						IRin => IRin,
+						RFin => RFin,
+						dataInIR => ,
+						dataInBUS => ,
+						RFaddr => ,
+						opcOut => ,
+						outData => 
+				);
+
+modRF_BidirIn_inst : BidirPin
+				generic map( width => Dwidth)
+				port map (
+					Dout => ,
+					en => ,
+					Din => ,
+					IOpin => 
+				);
 /*
 port(	clk, tbWren, pcin, tbActive:        in std_logic;
         pcsel : in std_logic_vector(1 downto 0);

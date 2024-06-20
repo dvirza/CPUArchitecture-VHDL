@@ -5,7 +5,7 @@ use ieee.std_logic_unsigned.all;
 
 entity opcDecode is
 generic( opwidth: integer:=4 );
-port(	clk,rst,ena: 	 in std_logic;	
+port(	clk,rst: 	 in std_logic;	
 		opDataIn:	     in std_logic_vector(opwidth-1 downto 0); --connect the IR
 		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --output every bit
 );

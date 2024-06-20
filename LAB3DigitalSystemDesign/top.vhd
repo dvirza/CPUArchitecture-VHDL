@@ -20,3 +20,12 @@ port(	clk,rst,enb: in std_logic;
 		done : out std_logic
 );
 end top;
+
+
+architecture behav of top is
+	signal a (Dwidth-1 downto 0);
+
+begin
+
+	
+end behav;
