@@ -39,10 +39,9 @@ rf_inst : RF
         internalAddr <= dataInIR(11 downto 8) when "10", --takes ra
         internalAddr <= (others => '0') when others;
 
-process(clk,rst, IRin)
+process(clk,rst,IRin)
 begin
-    if (rst='1') then
-	elsif (clk'event and clk='1') then
+	if (clk'event and clk='1') then
 	    if (IRin ='1') then
             opcOut <= dataInIR(Dwidth-1 downto Dwidth-4);
             end if;

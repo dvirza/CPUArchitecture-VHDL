@@ -6,7 +6,7 @@ use work.aux_package.all;
 
 entity aluCore is
 GENERIC (
-		n: integer:=8;
+		n: integer:=16;
 		Dwidth: integer:=16;
 		opwidth: integer:=4
 		);

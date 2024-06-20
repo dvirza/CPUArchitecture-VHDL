@@ -104,10 +104,6 @@ BEGIN
 			PCin <= '1';
 			RFaddr <= "10" --takes ra
 			nx_state <= fetch;
-		WHEN rType0 =>
-			IRin <= '0'; Ain <= '1'; RFout <= '1'; 
-			RFaddr <= "00" --takes rc
-			nx_state <= rType1;
 		WHEN iType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; RFin <= '0'; PCin <= '1';
 			PCsel = "10"; -- +1

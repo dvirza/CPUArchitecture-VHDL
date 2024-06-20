@@ -12,7 +12,7 @@ GENERIC (
 		);
 port(	reg_srcA,wire_srcB: 	 			in std_logic_vector(Dwidth-1 downto 0);
 		opc_wire: in std_logic_vector (opwidth-1 downto 0);
-		clk, rst, regAin, regCin: in std_logic;
+		clk, regAin, regCin: in std_logic;
 		reg_cOut: 							out std_logic_vector(Dwidth-1 downto 0);
 		wire_cFlag, wire_zFlag, wire_nFlag: out std_logic
 	);
@@ -42,7 +42,7 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 						  opwidth=>opwidth
 						)
 			port map	(
-						internalSrcA => srcA,--srcA => internalSrcA,
+						srcA => internalSrcA,
 						srcB => wire_srcB,
 						opc => opc_wire,
 						aluOut => internalCreg,

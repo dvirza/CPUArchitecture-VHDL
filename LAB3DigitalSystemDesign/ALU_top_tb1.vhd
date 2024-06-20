@@ -5,18 +5,19 @@ use ieee.std_logic_unsigned.all;
 use work.aux_package.all;
 
 entity aluTop_tb is
+    GENERIC (
+		n: integer:=16;
+		Dwidth: integer:=16;
+		opwidth: integer:=4
+		);
 end aluTop_tb;
 
 architecture testbench of aluTop_tb is
-    -- Constants
-    constant n : integer := 8;
-    constant Dwidth : integer := 16;
-    constant opwidth : integer := 4;
 
     -- Signals for the DUT (Device Under Test)
     signal reg_srcA, wire_srcB : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
     signal opc_wire : std_logic_vector(opwidth-1 downto 0) := (others => '0');
-    signal clk, rst, regAin, regCin : std_logic := '0';
+    signal clk, regAin, regCin : std_logic := '0';
     signal reg_cOut : std_logic_vector(Dwidth-1 downto 0);
     signal wire_cFlag, wire_zFlag, wire_nFlag : std_logic;
 
@@ -26,14 +27,13 @@ begin
         generic map (
             n => n,
             Dwidth => Dwidth,
-            opwidth--opwidth => opwidth
+            opwidth => opwidth
         )
         port map (
             reg_srcA => reg_srcA,
             wire_srcB => wire_srcB,
             opc_wire => opc_wire,
             clk => clk,
-            rst => rst,
             regAin => regAin,
             regCin => regCin,
             reg_cOut => reg_cOut,
@@ -54,11 +54,7 @@ begin
     -- Stimulus process
     stim_proc: process
     begin
-        -- Reset the design
-        rst <= '1';
-        wait for 20 ns;
-        rst <= '0';
-        wait for 20 ns;
+ 
 
         -- Test case 1: A + B
         reg_srcA <= "0000000000000010"; -- 2

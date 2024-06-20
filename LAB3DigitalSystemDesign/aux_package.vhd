@@ -15,7 +15,7 @@ package aux_package is
 	end component;
 -----------------------------------------------------------------
 	component Adder IS
-		GENERIC (n : integer := 8);
+		GENERIC (n : integer := 16);
 		PORT ( a, b: IN STD_LOGIC_VECTOR (n-1 DOWNTO 0);
 		       cin: IN STD_LOGIC;
                s: OUT STD_LOGIC_VECTOR (n-1 DOWNTO 0);
@@ -23,29 +23,28 @@ package aux_package is
 	END component;
 -----------------------------------------------------------------
 	component aluCore is
-		GENERIC (
-		n: integer:=8;
-		Dwidth: integer:=16;
-		opwidth: integer:=4
-		);
-		port(	reg_srcA,wire_srcB: 	 			in std_logic_vector(Dwidth-1 downto 0);
-				opc_wire: in std_logic_vector (opwidth-1 downto 0);
-				clk, rst, regAin, regCin: in std_logic;
-				reg_cOut: 							out std_logic_vector(Dwidth-1 downto 0);
-				wire_cFlag, wire_zFlag, wire_nFlag: out std_logic
+			GENERIC (
+				n: integer:=8;
+				Dwidth: integer:=16;
+				opwidth: integer:=4
+				);
+			port(	srcA,srcB: 	 	   in std_logic_vector(Dwidth-1 downto 0);
+				opc: 		 	   in std_logic_vector(opwidth-1 downto 0);
+				aluOut:	     	   out std_logic_vector(Dwidth-1 downto 0);
+				cFlag,nFlag,zFlag: out std_logic
 			);
 
 	end component;
 -----------------------------------------------------------------
 	component aluTop is
-	GENERIC (
+		GENERIC (
 			n: integer:=8;
 			Dwidth: integer:=16;
-			Awidth: integer:=4
+			opwidth: integer:=4
 			);
-	port(	reg_srcA,wire_srcB: 	 			in std_logic_vector(Dwidth-1 downto 0);
-			wire_opc: 							in std_logic_vector(Awidth-1 downto 0);
-			clk, rst, regAin, regCin, wireCout: in std_logic;
+		port(	reg_srcA,wire_srcB: 	 			in std_logic_vector(Dwidth-1 downto 0);
+			opc_wire: in std_logic_vector (opwidth-1 downto 0);
+			clk, rst, regAin, regCin: in std_logic;
 			reg_cOut: 							out std_logic_vector(Dwidth-1 downto 0);
 			wire_cFlag, wire_zFlag, wire_nFlag: out std_logic
 		);
