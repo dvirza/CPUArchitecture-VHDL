@@ -14,6 +14,8 @@ port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
         tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
         tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
 
+        RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
+
         RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
         op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic
 );
@@ -26,7 +28,7 @@ architecture behav of progToRF is
     signal internalOPC : std_logic_vector(opwidth-1 downto 0);
 
 begin
-    dataMEM_inst : mod_ProgMem
+    progMEM_inst : mod_ProgMem
         generic map ( dept => 64,
                  Dwidth => Dwidth,
                  Awidth => Awidth)
@@ -51,6 +53,7 @@ begin
                         IRin => IRin,
                         RFin => RFin,
                         dataInIR => internalDataIR,
+                        dataInBUS => RFinFromBus,
                         RFaddr => RFaddr,
                         opcOut => internalOPC,
                         outData => RFoutToBus

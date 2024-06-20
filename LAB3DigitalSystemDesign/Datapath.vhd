@@ -36,6 +36,7 @@ signal dataBUS : std_logic_vector(Dwidth-1 downto 0);
 signal internalALUout, internalALUin : std_logic_vector(Dwidth-1 downto 0);
 signal internalMEMdata : std_logic_vector (Dwidth-1 downto 0);
 signal imm1SignExt, imm2SignExt : std_logic_vector(Dwidth downto 0);
+signal internalRFdata : std_logic_vector(Dwidth-1 downto 0);
 
 begin
 --/*			ALU connection			*/
@@ -95,29 +96,45 @@ begin
 --/*			***************			*/
 
 --/*			progMEM connection			*/
-dataMEM_inst : mod_ProgMem
-generic map ( dept => 64,
-			 Dwidth => Dwidth,
-			 opwidth => AMwidth)
-			port map (
-				clk => clk,
-				tbWren => tbWrenProg,
-				pcin => PCin,
-				tbActive => tbActive,
-				pcsel => PCsel,
-				irinreg => ,
-				tbAddrIn => tbAddrInWProg,
-				tbDataIn => tbDataInProg,
-				dataInOut => dataOut
-			);
+porgToRF_inst : progToRF
+					generic map( Dwidth => Dwidth,
+							Awidth=> AMwidth,
+							opwidth=> ARwidth)
+					port map (	
+						clk => clk,
+						rst => rst,
+						tbWren => tbWrenProg,
+						pcin => PCin,
+						tbActive => tbActive,
+						IRin => IRin,
+						RFin => RFin,
+						pcsel => PCsel,
+						RFaddr => RFaddr,
+						tbAddrIn => tbAddrInWProg,
+						tbDataIn => tbDataInProg,
+						RFinFromBus => internalRFdata,
+						RFoutToBus => internalRFdata,
+						op_st => op_st,
+                        op_ld => op_ld,
+                        op_mov => op_mov,
+                        op_done => op_done,
+                        op_add => op_add,
+                        op_sub => op_sub,
+                        op_jmp => op_jmp,
+                        op_jc => op_jc,
+                        op_jnc => op_jnc,
+                        op_and => op_and,
+                        op_or => op_or,
+                        op_xor => op_xor
+					);
 
-dataMEMBidirPin_inst : BidirPin 
-					generic map( width => Dwidth)
+porgToRF_Bidir_inst : BidirPin
+						generic map( width => Dwidth)
 					port map (
-						Dout => ,
-						en => ,
-						Din => ,
-						IOpin => 
+						Dout => internalRFdata,
+						en => RFout,
+						Din => internalRFdata,
+						IOpin => dataBUS
 					);
 --/*			***************			*/
 
@@ -127,7 +144,7 @@ IMM1_sign_inst : BidirPin
 						Dout => imm1SignExt,
 						en => Imm1_in,
 						Din => open,
-						IOpin => 
+						IOpin => dataBUS
 					);
 
 IMM2_sign_inst : BidirPin
@@ -136,53 +153,9 @@ IMM2_sign_inst : BidirPin
 						Dout => imm2SignExt,
 						en => Imm2_in,
 						Din => open,
-						IOpin => 
+						IOpin => dataBUS
 					);
 
-modRF_inst : mod_RF
-				generic map (Dwidth => Dwidth,
-					Awidth => ARwidth)
-				port map(
-						clk => clk,
-						rst => rst,
-						IRin => IRin,
-						RFin => RFin,
-						dataInIR => ,
-						dataInBUS => ,
-						RFaddr => ,
-						opcOut => ,
-						outData => 
-				);
-
-modRF_BidirIn_inst : BidirPin
-				generic map( width => Dwidth)
-				port map (
-					Dout => ,
-					en => ,
-					Din => ,
-					IOpin => 
-				);
-/*
-port(	clk, tbWren, pcin, tbActive:        in std_logic;
-        pcsel : in std_logic_vector(1 downto 0);
-        irinreg : in std_logic_vector(7 downto 0);
-        tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
-        tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
-        dataOut: 	out std_logic_vector(Dwidth-1 downto 0)
-);
-
-
-MOD_RF
-generic( Dwidth: integer:=16;
-		 Awidth: integer:=4);
-port(	clk,rst,IRin, RFin: in std_logic;	
-		dataInIR:	in std_logic_vector(Dwidth-1 downto 0);
-        dataInBUS:	in std_logic_vector(Dwidth-1 downto 0);
-		RFaddr: in std_logic_vector(1 downto 0);
-        opcOut : out std_logic_vector(Awidth-1 downto 0);
-		outData: 	out std_logic_vector(Dwidth-1 downto 0)
-);
-*/
 
  MEMdataOut <= internalMEMdata; -- connect the output signal into internal signal
 end behav;
