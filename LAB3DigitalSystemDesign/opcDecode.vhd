@@ -16,6 +16,10 @@ architecture behav of opcDecode is
 signal internalOPdata: std_logic_vector(opwidth-1 downto 0);
 
 begin
+
+	process(clk,rst)
+		
+	begin
 		op_st <= '0';
 		op_ld <= '0';
 		op_mov <= '0';
@@ -28,8 +32,6 @@ begin
 		op_and <= '0';
 		op_or <= '0';
 		op_xor <= '0';
-	process(clk,rst)
-	begin
 	if (clk'event and clk='1') then
 		internalOPdata <= opDataIn;	
 	end if;

@@ -22,7 +22,7 @@ package aux_package is
 	end component;
 -----------------------------------------------------------------
 	component Adder IS
-		GENERIC (n : INTEGER := 16)
+		GENERIC (n : INTEGER := 16);
   		PORT ( a, b: IN STD_LOGIC_VECTOR (n-1 DOWNTO 0);
           cin: IN STD_LOGIC;
             s: OUT STD_LOGIC_VECTOR (n-1 DOWNTO 0);
@@ -34,7 +34,7 @@ package aux_package is
 			n: integer:=16;
 			Dwidth: integer:=16;
 			opwidth: integer:=4
-			)
+			);
 	port(	srcA,srcB: 	 	   in std_logic_vector(Dwidth-1 downto 0);
 			opc: 		 	   in std_logic_vector(opwidth-1 downto 0);
 			aluOut:	     	   out std_logic_vector(Dwidth-1 downto 0);
@@ -48,7 +48,7 @@ package aux_package is
 		n: integer:=8;
 		Dwidth: integer:=16;
 		opwidth: integer:=4
-		)
+		);
 	port(	reg_srcA,wire_srcB: 	 			in std_logic_vector(Dwidth-1 downto 0);
 		opc_wire: in std_logic_vector (opwidth-1 downto 0);
 		clk, regAin, regCin: in std_logic;
@@ -63,12 +63,12 @@ package aux_package is
 				en:		in 		std_logic;
 				Din:	out		std_logic_vector(width-1 downto 0);
 				IOpin: 	inout 	std_logic_vector(width-1 downto 0)
-		)
+		);
 	end component;
 -----------------------------------------------------------------
 	component Control is
 		generic( Dwidth: integer:=16;
-				Awidth: integer:=4)
+				Awidth: integer:=4);
 				
 		port( 
 			clk,rst,ena: in std_logic;
@@ -95,7 +95,7 @@ package aux_package is
 	component dataMem is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 dept:   integer:=64)
+			 dept:   integer:=64);
 	port(	clk,memEn: in std_logic;	
 			WmemData:	in std_logic_vector(Dwidth-1 downto 0);
 			WmemAddr,RmemAddr:	
@@ -108,7 +108,7 @@ component Datapath is
 	generic( Dwidth: integer:=16;
 			 AMwidth: integer:=6;
 			 ARwidth: integer:=4
-			)
+			);
 	port(	clk,rst: in std_logic;
 	
 			Mem_wr, Mem_out,Mem_in, Cout,Cin,Ain,RFin,RFout,IRin,PCin,Imm1_in,Imm2_in : IN std_logic;
@@ -126,15 +126,14 @@ component Datapath is
 			op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic; --UUSEDDDDDD
 			  cFlag,nFlag,zFlag: out std_logic;
 	
-			MEMdataOut : out std_logic_vector(Dwidth-1 downto 0);
-	
-	);
+			MEMdataOut : out std_logic_vector(Dwidth-1 downto 0)
+			);
 	end component;
 --------------------------------------------------------------
 component mod_dataMem is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 dept:   integer:=64)
+			 dept:   integer:=64);
 	port(	clk,Mem_in, Mem_wr, tbActive, tbMem_wr: in std_logic;
 			tbDataIn : in std_logic_vector(Dwidth-1 downto 0);
 			tbAddrR, tbAddrW: in std_logic_vector(Awidth-1 downto 0);
@@ -145,7 +144,7 @@ component mod_dataMem is
 component mod_ProgMem is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 dept:   integer:=64)
+			 dept:   integer:=64);
 	port(	clk, tbWren, pcin, tbActive:        in std_logic;
 			pcsel : in std_logic_vector(1 downto 0);
 			irinreg : in std_logic_vector(7 downto 0);
@@ -158,7 +157,7 @@ component mod_ProgMem is
 component progToRF is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 opwidth:   integer:=4)
+			 opwidth:   integer:=4);
 	port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
 			pcsel : in std_logic_vector(1 downto 0);
 			RFaddr: in std_logic_vector(1 downto 0);
@@ -174,7 +173,7 @@ component progToRF is
 --------------------------------------------------------------
 component mod_RF is
 	generic( Dwidth: integer:=16;
-			 Awidth: integer:=4)
+			 Awidth: integer:=4);
 	port(	clk,rst,IRin, RFin: in std_logic;	
 			dataInIR:	in std_logic_vector(Dwidth-1 downto 0);
 			dataInBUS:	in std_logic_vector(Dwidth-1 downto 0);
@@ -185,7 +184,7 @@ component mod_RF is
 	end component;
 --------------------------------------------------------------
 component opcDecode is
-		generic( opwidth: integer:=4 )
+		generic( opwidth: integer:=4 );
 		port(	clk,rst: 	 in std_logic;	
 				opDataIn:	     in std_logic_vector(opwidth-1 downto 0); --connect the IR
 				op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --output every bit
@@ -195,10 +194,10 @@ component opcDecode is
 component pcWork is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 dept:   integer:=64)
+			 dept:   integer:=64);
 	port(	clk,rst,PCin: 		in std_logic;	
 			PCsel : 			in std_logic_vector(1 downto 0);
-			IRinReg: 			in std_logic_vector(7 downto 0),
+			IRinReg: 			in std_logic_vector(7 downto 0);
 			PCdata: 			out std_logic_vector(Awidth-1 downto 0)
 	);
 	end component;
@@ -206,7 +205,7 @@ component pcWork is
 component ProgMem is
 	generic( Dwidth: integer:=16;
 			 Awidth: integer:=6;
-			 dept:   integer:=64)
+			 dept:   integer:=64);
 	port(	clk,memEn: in std_logic;	
 			WmemData:	in std_logic_vector(Dwidth-1 downto 0);
 			WmemAddr,RmemAddr:	
@@ -217,7 +216,7 @@ component ProgMem is
 --------------------------------------------------------------
 component RF is
 	generic( Dwidth: integer:=16;
-			opwidth: integer:=4)
+			opwidth: integer:=4);
 	port(	clk,rst,WregEn: in std_logic;	
 			WregData:	in std_logic_vector(Dwidth-1 downto 0);
 			WregAddr,RregAddr:	
