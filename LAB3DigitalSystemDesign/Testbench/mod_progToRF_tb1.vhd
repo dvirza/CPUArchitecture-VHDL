@@ -10,7 +10,7 @@ architecture behavior of tb_progToRF is
 
     -- Component Declaration for the Unit Under Test (UUT)
     component progToRF
-    generic( Dwidth: integer := 16;
+    generic( Dwidth: integer := 16;ro
              Awidth: integer := 6;
              opwidth: integer := 4);
     port(
