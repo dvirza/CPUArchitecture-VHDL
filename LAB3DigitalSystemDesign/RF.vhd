@@ -16,7 +16,7 @@ end RF;
 --------------------------------------------------------------
 architecture behav of RF is
 
-type RegFile is array (0 to 2**Awidth-1) of 
+type RegFile is array (0 to 2**opwidth-1) of 
 	std_logic_vector(Dwidth-1 downto 0);
 signal sysRF: RegFile;
 

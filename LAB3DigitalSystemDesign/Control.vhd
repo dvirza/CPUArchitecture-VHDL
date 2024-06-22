@@ -74,8 +74,11 @@ BEGIN
 			elsif (op_mov = '1') THEN
 				nx_state <= iTypeMov0;
 			else
-				nx_state <= done;
+				nx_state <= fetch;
 			end if;
+		WHEN done =>
+			done <= '1';
+			nx_state <= fetch;
 		WHEN jType0 =>
 			if (cFlag = '1' and op_jc ='1') then
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
@@ -103,7 +106,10 @@ BEGIN
 			Cin <= '0'; Ain <= '0'; RFout <= '0'; RFin <= '1'; Cout <= '1';
 			PCin <= '1';
 			RFaddr <= "10" --takes ra
-			nx_state <= fetch;
+			nx_state <= done;
+		WHEN iTypeMov0 =>
+			RFin <= '1'; Imm1_in <= '1'; RFaddr <= "10"; PCsel <= "10"; PCin <= '1'; IRin <= '0';
+			nx_state <= done;
 		WHEN iType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; RFin <= '0'; PCin <= '1';
 			PCsel = "10"; -- +1
@@ -128,13 +134,13 @@ BEGIN
 			nx_state <= ld1;
 		WHEN ld0 =>
 			Cout <= '0'; RFin <= '1'; RFout <= '0'; Mem_out <= '1';
-			nx_state <= fetch;
+			nx_state <= done;
 		WHEN st0 =>
 			Cout <= '1'; Imm2_in <= '0'; Mem_in <= '1'; Cin <= '0';
 			nx_state <= st1;
 		WHEN st1 =>
 			Cout <= '0'; RFout <= '1'; RFin <= '0'; Mem_in <= '0'; Mem_wr <= '1';
-			nx_state <= fetch;
+			nx_state <= done;
 	END CASE;
   END PROCESS;
 END state_machine;

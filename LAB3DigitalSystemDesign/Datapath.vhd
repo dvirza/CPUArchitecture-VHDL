@@ -25,7 +25,7 @@ port(	clk,rst: in std_logic;
 		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic; --UUSEDDDDDD
 	  	cFlag,nFlag,zFlag: out std_logic;
 
-		MEMdataOut : out std_logic_vector(Dwidth-1 downto 0);
+		MEMdataOut : out std_logic_vector(Dwidth-1 downto 0)
 
 );
 end Datapath;

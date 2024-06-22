@@ -25,20 +25,16 @@ begin
 rf_inst : RF 
             generic map( Dwidth=> Dwidth,
                         opwidth=> Awidth)
-            port(	clk => clk,
+            port map(	clk => clk,
                     rst => rst,
                     WregEn => RFin,	
                     WregData => dataInBUS,
                     WregAddr => internalAddr ,
                     RregAddr => internalAddr ,
-                    RregData => internalData,
+                    RregData => internalData
                 );
 
-    with RFaddr select
-        internalAddr <= dataInIR(3 downto 0) when "00", --takes rc
-        internalAddr <= dataInIR(7 downto 4) when "01", --takes rb
-        internalAddr <= dataInIR(11 downto 8) when "10", --takes ra
-        internalAddr <= (others => '0') when others;
+    
 
 process(clk,rst,IRin)
 begin
@@ -49,6 +45,12 @@ begin
         end if;
 	end if;
 end process;
+
+with RFaddr select
+        internalAddr <= dataInIR(3 downto 0) when "00", --takes rc
+        internalAddr <= dataInIR(7 downto 4) when "01", --takes rb
+        internalAddr <= dataInIR(11 downto 8) when "10", --takes ra
+        internalAddr <= (others => '0') when others;
 
     outData <= internalData; --output the data
 
