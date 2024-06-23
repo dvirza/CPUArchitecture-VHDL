@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use work.aux_package.all;
 
 entity Datapath is
 generic( Dwidth: integer:=16;
@@ -48,7 +49,6 @@ begin
 				reg_srcA => internalALUin,
 				wire_srcB => internalALUin,
 				clk => clk,
-				rst => rst,
 				wire_cFlag => cFlag,
 				wire_nFlag => nFlag,
 				wire_zFlag => zFlag,
@@ -72,7 +72,7 @@ begin
  dataMEM_inst : mod_dataMem
 			   generic map ( dept => 64,
 							Dwidth => Dwidth,
-							opwidth => AMwidth)
+							Awidth => AMwidth)
 			   port map (
 					clk => clk,
 					Mem_in => Mem_in,

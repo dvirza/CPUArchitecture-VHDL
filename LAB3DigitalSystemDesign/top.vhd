@@ -49,7 +49,7 @@ Control_inst : Control
 					op_jnc => op_jnc,
 					op_and => op_and,
 					op_or => op_or,
-					op_xor => op_xor 
+					op_xor => op_xor, 
 					cFlag => cFlag,
 					nFlag => nFlag,
 					zFlag => zFlag,
@@ -64,7 +64,7 @@ Control_inst : Control
 					RFaddr => RFaddr,
 					IRin => IRin,
 					PCin => PCin,
-					PCsel => PCsel
+					PCsel => PCsel,
 					Imm1_in => Imm1_in,
 					Imm2_in => Imm2_in,
 					OPC => OPC				  
@@ -89,7 +89,7 @@ Datapath_inst : Datapath
 						op_jnc => op_jnc,
 						op_and => op_and,
 						op_or => op_or,
-						op_xor => op_xor 
+						op_xor => op_xor, 
 						cFlag => cFlag,
 						nFlag => nFlag,
 						zFlag => zFlag,
@@ -104,7 +104,7 @@ Datapath_inst : Datapath
 						RFaddr => RFaddr,
 						IRin => IRin,
 						PCin => PCin,
-						PCsel => PCsel
+						PCsel => PCsel,
 						Imm1_in => Imm1_in,
 						Imm2_in => Imm2_in,
 						OPC => OPC,
@@ -116,7 +116,7 @@ Datapath_inst : Datapath
 						tbWrenProg => wEnaProg,
 						tbAddrInWProg => wAddrProg,
 						tbDataInProg => dataProg,
-						MEMdataOut => dataMem,
+						MEMdataOut => dataMem
 					);
 
 end behav;

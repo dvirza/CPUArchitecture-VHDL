@@ -41,16 +41,23 @@ begin
 	if (clk'event and clk='1') then
 	    if (IRin ='1') then
             opcOut <= dataInIR(Dwidth-1 downto Dwidth-4);
-            end if;
         end if;
 	end if;
 end process;
 
-with RFaddr select
-        internalAddr <= dataInIR(3 downto 0) when "00", --takes rc
-        internalAddr <= dataInIR(7 downto 4) when "01", --takes rb
-        internalAddr <= dataInIR(11 downto 8) when "10", --takes ra
-        internalAddr <= (others => '0') when others;
+process(RFaddr, dataInIR)
+begin
+    case RFaddr is
+        when "00" =>
+            internalAddr <= dataInIR(3 downto 0); -- takes rc
+        when "01" =>
+            internalAddr <= dataInIR(7 downto 4); -- takes rb
+        when "10" =>
+            internalAddr <= dataInIR(11 downto 8); -- takes ra
+        when others =>
+            internalAddr <= (others => '0');
+    end case;
+end process;
 
     outData <= internalData; --output the data
 

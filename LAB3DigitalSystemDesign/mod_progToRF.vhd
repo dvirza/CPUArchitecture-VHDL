@@ -34,6 +34,7 @@ begin
                  Awidth => Awidth)
         port map (
                     clk => clk,
+                    rst => rst,
                     tbWren => tbWren,
                     pcin => pcin,
                     tbActive => tbActive,
@@ -41,7 +42,7 @@ begin
                     irinreg => internalDataIR8bit,
                     tbAddrIn => tbAddrIn,
                     tbDataIn => tbDataIn,
-                    dataInOut => internalDataIR
+                    dataOut => internalDataIR
                 );
 
     modRF_inst : mod_RF

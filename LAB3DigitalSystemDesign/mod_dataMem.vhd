@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use work.aux_package.all;
 --------------------------------------------------------------
 entity mod_dataMem is
 generic( Dwidth: integer:=16;
@@ -37,7 +38,7 @@ dataMem_inst : dataMem
 
     wren <= tbMem_wr when tbActive = '1' else Mem_wr;
     readAddr <= tbAddrR when tbActive = '1' else dataInOut(Awidth-1 downto 0);
-    writeAddrToSize <= writeAddrFromBus(Adwitdh-1 downto 0); --takes the Awitdh lsb for address
+    writeAddrToSize <= writeAddrFromBus(Awidth-1 downto 0); --takes the Awitdh lsb for address
     writeAddr <= tbAddrW when tbActive = '1' else writeAddrToSize; --size Adwitdh
     internalData <=  tbDataIn when tbActive = '1' else dataInOut;
 
