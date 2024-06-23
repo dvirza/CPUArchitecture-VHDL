@@ -1,34 +1,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use work.aux_package.all;
 
 entity tb_Control is
+    generic( Dwidth: integer:=16;
+				Awidth: integer:=4);
 end tb_Control;
 
 architecture behavior of tb_Control is
-
-    -- Component Declaration for the Unit Under Test (UUT)
-    component Control
-    generic( Dwidth: integer := 16;
-             Awidth: integer := 4);
-    port(
-        clk, rst, ena: in std_logic;
-        done: out std_logic;
-
-        op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: in std_logic;
-        cFlag, nFlag, zFlag: in std_logic;
-
-        Mem_wr, Mem_out, Mem_in: out std_logic;
-        Cin, Cout: out std_logic;
-        Ain: out std_logic;
-        RFin, RFout: out std_logic;
-        RFaddr: out std_logic_vector(1 downto 0);
-        IRin: out std_logic;
-        PCin: out std_logic;
-        PCsel: out std_logic_vector(1 downto 0);
-        Imm1_in, Imm2_in: out std_logic;
-        OPC: out std_logic_vector(Awidth-1 downto 0)
-    );
-    end component;
 
     -- Testbench signals
     signal clk_tb, rst_tb, ena_tb: std_logic := '0';
@@ -49,7 +28,7 @@ architecture behavior of tb_Control is
     signal OPC_tb: std_logic_vector(Awidth-1 downto 0);
 
     -- Clock generation
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 100 ns;
 
 begin
 
@@ -125,19 +104,19 @@ begin
         op_add_tb <= '1';
         wait for clk_period*2;
         op_add_tb <= '0';
-
+        wait for clk_period*5;
         -- Test I-type instruction (e.g., op_ld)
         op_ld_tb <= '1';
         wait for clk_period*2;
         op_ld_tb <= '0';
-
-        -- Test jump instruction (e.g., op_jmp)
+        wait for clk_period*5;
+                -- Test jump instruction (e.g., op_jmp)
         op_jmp_tb <= '1';
         wait for clk_period*2;
         op_jmp_tb <= '0';
-
+        wait for clk_period*5;
         -- Add more test cases as needed
-        wait for clk_period*10;
+        
 
         -- Finish simulation
         wait;

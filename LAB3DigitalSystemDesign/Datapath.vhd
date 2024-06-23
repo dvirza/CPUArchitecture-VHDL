@@ -36,13 +36,13 @@ ARCHITECTURE behav OF Datapath IS
 signal dataBUS : std_logic_vector(Dwidth-1 downto 0);
 signal internalALUout, internalALUin : std_logic_vector(Dwidth-1 downto 0);
 signal internalMEMdata : std_logic_vector (Dwidth-1 downto 0);
-signal imm1SignExt, imm2SignExt : std_logic_vector(Dwidth downto 0);
+signal imm1SignExt, imm2SignExt : std_logic_vector(Dwidth-1 downto 0);
 signal internalRFdata : std_logic_vector(Dwidth-1 downto 0);
 
 begin
 --/*			ALU connection			*/
  ALU_inst : aluTop 
-			generic map (n => 8,
+			generic map (n => 16,
 						Dwidth => Dwidth,
 						opwidth => ARwidth)
 			port map(

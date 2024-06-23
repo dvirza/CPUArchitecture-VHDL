@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use work.aux_package.all;
 
 entity tb_top is
 end tb_top;
@@ -29,7 +30,7 @@ architecture behav of tb_top is
 
 begin
     -- Instantiate the Unit Under Test (UUT)
-    uut: entity work.top
+    uut: top
         generic map (
             Dwidth => Dwidth,
             AregWidth => AregWidth,
@@ -38,7 +39,7 @@ begin
         port map (
             clk => clk,
             rst => rst,
-            enb => enb,
+            ena => enb,
             TBactive => TBactive,
             wEnaProg => wEnaProg,
             wEnaMem => wEnaMem,

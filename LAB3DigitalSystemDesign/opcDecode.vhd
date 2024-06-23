@@ -65,4 +65,5 @@ begin
 			op_done<= '0';
 	end case;
 end process;
+
 end behav;
