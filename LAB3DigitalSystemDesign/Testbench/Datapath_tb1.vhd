@@ -46,7 +46,7 @@ architecture behav of tb_Datapath is
     signal MEMdataOut : std_logic_vector(Dwidth-1 downto 0);
 
     -- Clock period definitions
-    constant clk_period : time := 50 ns;
+    constant clk_period : time := 100 ns;
 
     --checking
     signal opc_start : std_logic_vector(ARwidth-1 downto 0) := (others => '0');
@@ -114,64 +114,69 @@ begin
         wait for clk_period/2;
     end process;
 
-    -- Stimulus process
-    stim_proc: process
+    -- rst process
+    rst_proc: process
     begin
         -- Hold reset state for 10 ns.
-        wait for 10 ns;  
+        wait for clk_period/2; 
         rst <= '1';
-        wait for 50 ns;
+        wait for clk_period/2;
         rst <= '0';
+    end process;
 
-    gen_pc : process
+    stim_proc : process
+        variable WriteDataState : integer := 0;
+        variable progAddr : STD_LOGIC_Vector(AMwidth-1 DOWNTO 0) := (others => '0');
+        variable progOPCODE : STD_LOGIC_Vector(3 DOWNTO 0) := (others => '0');
     begin
-        PCsel <= "10";
-        PCin <= '1';
-        wait for 50 ns;
-        PCin <= '0';
-    end process;
+        if (rst = '1') then
+            Mem_wr <= '0';
+            Mem_out <= '0';
+            Mem_in <= '0';
+            Cout <= '0';
+            Cin <= '0';
+            Ain <= '0';
+            RFin <= '0';
+            RFout <= '0';
+            IRin <= '0';
+            PCin <= '1';
+            Imm1_in <= '0';
+            Imm2_in <= '0';
+            OPC <= "0000";
+            RFaddr <= "00";
+            PCsel <= "00";
+            tbDataInProg <= (others => '0');
+            tbWrenProg <= '0';
+            tbAddrInWProg <= (others => '0');
+            tbDataIn <= (others => '0');
+            tbWren <= '0';
+            tbActive <= '0';
+            tbAddrInW <= (others => '0');
+            tbAddrInR <= (others => '0');
+        elsif (clk'event and clk = '1') then
+            if (WriteDataState < 15) then --write to program phase
+                PCin <= '0';
+                WrenProgIn <= '1';
+                WAddrProgIn <= progAddr;
+                progAddr := progAddr + 1;
+                MemProgIn(Dwidth-1 DOWNTO Dwidth-4) <= progOPCODE;
+                progOPCODE := progOPCODE + 1;
+                MemProgIn(Dwidth-5 DOWNTO 0) <= (others => '0');
+                WriteDataState := WriteDataState + 1;
+            elsif (WriteDataState = 15) then --see decoded opcodes phase
+                WriteDataState := WriteDataState + 1;
+                WrenProgIn <= '0';
+                IRin <= '1';
+                PCin <= '1';
+                PCsel <= "10";
+            else
+                null;
+            end if;
+        end if;
+       
         
-    load_opc : process
-        opc_start <= opc_start + 1;
-        tbDataInProg <= opc_start;
-        tbActive <= '1';
-        tbAddrInWProg <= addrProg_start;
-        tbWrenProg <= '1';
-        wait for 45 ns;
-        tbDataInProg <= opc_start + 1;
-        tbAddrInWProg <= addrProg_start + 1;
-        tbWrenProg <= '1';
-        tbActive <= '1';
-    end process;
-        -- Insert stimulus here
-        Mem_wr <= '0';
-        Mem_out <= '0';
-        Mem_in <= '0';
-        Cout <= '0';
-        Cin <= '0';
-        Ain <= '0';
-        RFin <= '0';
-        RFout <= '0';
-        IRin <= '0';
-        PCin <= '0';
-        Imm1_in <= '0';
-        Imm2_in <= '0';
-        OPC <= "0001";
-        RFaddr <= "10";
-        PCsel <= "10";
-        tbWren <= '0';
-        tbActive <= '1';
-        tbDataIn <= x"FFFF";
-        tbAddrInW <= "001000";
-        tbAddrInR <= "001100";
-        tbWrenProg <= '0';
-        tbAddrInWProg <= "010000";
-        tbDataInProg <= x"AAAA";
         
-        wait for clk_period;
-        
-        -- finish simulation
-        wait;
     end process;
+    
 
 end behav;

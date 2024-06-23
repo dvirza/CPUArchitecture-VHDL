@@ -19,7 +19,7 @@ architecture behav of mod_dataMem is
 
 signal wren : std_logic;
 signal readAddr, writeAddr, writeAddrToSize : std_logic_vector(Awidth-1 downto 0);
-signal internalData, writeAddrFromBus : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+signal internalDataIn, writeAddrFromBus,internalDataOut : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 
 begin
 
@@ -29,10 +29,10 @@ dataMem_inst : dataMem
                             dept => dept)
                 port map (clk => clk,
                          memEn => wren,	
-                         WmemData => internalData,
+                         WmemData => internalDataIn,
                          WmemAddr => writeAddr,
                          RmemAddr => readAddr,
-                         RmemData => internalData
+                         RmemData => internalDataOut
                          );
 
 
@@ -40,7 +40,8 @@ dataMem_inst : dataMem
     readAddr <= tbAddrR when tbActive = '1' else dataInOut(Awidth-1 downto 0);
     writeAddrToSize <= writeAddrFromBus(Awidth-1 downto 0); --takes the Awitdh lsb for address
     writeAddr <= tbAddrW when tbActive = '1' else writeAddrToSize; --size Adwitdh
-    internalData <=  tbDataIn when tbActive = '1' else dataInOut;
+    internalDataIn <=  tbDataIn when tbActive = '1' else dataInOut;
+    dataInOut <= internalDataOut when tbActive = '0' else (others => '0');
 
     process(clk)
     begin
