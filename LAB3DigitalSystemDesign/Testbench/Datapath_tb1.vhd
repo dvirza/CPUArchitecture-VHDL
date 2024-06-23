@@ -132,6 +132,7 @@ begin
     end process;
         
     load_opc : process
+        opc_start <= opc_start + 1;
         tbDataInProg <= opc_start;
         tbActive <= '1';
         tbAddrInWProg <= addrProg_start;

@@ -8,17 +8,19 @@ package aux_package is
 	component top is
 		generic( Dwidth: integer:=16;
 		 AregWidth: integer:=4;
-		 AmemWidth: integer:=6);
-	port(	clk,rst,ena: in std_logic;
-		TBactive : in std_logic;
-
-		wEnaProg, wEnaMem : in std_logic;
-		wAddrProg, wAddrMem, rAddrMem : in std_logic_vector(AmemWidth-1 downto 0);
-		
-		dataProg : in std_logic_vector(Dwidth-1 downto 0);
-		dataMem : inout std_logic_vector(Dwidth-1 downto 0);
-		done : out std_logic
-	);
+		 AmemWidth: integer:=6;
+		 dept : integer := 64);
+		 port(	clk,rst,ena: in std_logic;
+		 TBactive : in std_logic;
+ 
+		 wEnaProg, wEnaMem : in std_logic;
+		 wAddrProg , wAddrMem, rAddrMem : in std_logic_vector(AmemWidth-1 downto 0);
+		 
+		 dataProg : in std_logic_vector(Dwidth-1 downto 0);
+		 dataMemIn : in std_logic_vector(Dwidth-1 downto 0);
+		 dataMemOut : out std_logic_vector(Dwidth-1 downto 0);
+		 done : out std_logic
+ );
 	end component;
 -----------------------------------------------------------------
 	component Adder IS

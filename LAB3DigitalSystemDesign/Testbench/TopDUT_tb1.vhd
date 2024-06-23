@@ -4,42 +4,27 @@ use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use STD.textio.all;
 use ieee.std_logic_textio.all;
+use work.aux_package.all;
  
-entity TOP_TB is
-    constant Dwidth : integer := 16;
-    constant ARegWidth : integer := 6;
-    constant AmemWidth : integer := 4;
-    constant dept : integer := 64; ------------------------------------------------------------
-end TOP_TB;
+entity tb_topDUT is
+	generic( Dwidth: integer:=16;
+	AregWidth: integer:=4;
+	AmemWidth: integer:=6;
+	dept : integer := 64);
+end tb_topDUT;
  
  
-architecture TOP_TB of TOP_TB is
+architecture behav of tb_topDUT is
 
-    component top IS
-    GENERIC (Dwidth: integer;
-             ARegWidth: integer;
-             AmemWidth: integer;
-             dept:   integer);
-	PORT ( 	clk, rst, ena: IN STD_LOGIC;
-			done: OUT STD_LOGIC; ------------------------------------------------------------
-            
-            TBactive : IN STD_LOGIC;
-            wEnaProg , WrenData : IN STD_LOGIC; -----WrenData replace
-            WAddrProg , wAddrProg , rAddrMem : IN STD_LOGIC_Vector(AMwidth-1 DOWNTO 0);
-            dataMem , dataProg : IN STD_LOGIC_Vector(Dwidth-1 DOWNTO 0);
 
-            dataMem : OUT STD_LOGIC_Vector(Dwidth-1 DOWNTO 0)
-			);
-    END component;
-------------------------------------------------------------
-
-    SIGNAL clk, rst, ena: STD_LOGIC := '0';
+    SIGNAL clk, rst, enb: STD_LOGIC := '0';
     SIGNAL done: STD_LOGIC := '0';
     SIGNAL TBactive : STD_LOGIC := '0';
-    SIGNAL wEnaProg , WrenData : STD_LOGIC := '0';
-    SIGNAL WAddrProg , wAddrProg , rAddrMem : STD_LOGIC_Vector(AMwidth-1 DOWNTO 0) := (others => '0');
-    SIGNAL dataMem , dataProg : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
-    SIGNAL dataMem : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
+    SIGNAL WrenProg , WrenData : STD_LOGIC := '0';
+    SIGNAL WAddrProg_1 : std_logic_vector (AmemWidth-1 downto 0);
+	SIGNAL WAddrData , RAddrData : STD_LOGIC_Vector(AmemWidth-1 DOWNTO 0) := (others => '0');
+    SIGNAL MemDataIn , MemProgIn : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
+    SIGNAL MemDataOut : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
 
     
     file ProgMemToLoad , DataMemToLoad , DataMemRead : text;
@@ -49,15 +34,21 @@ architecture TOP_TB of TOP_TB is
 
 begin
 
-
-	top_unit : top generic map (Dwidth,AMwidth,ARwidth,dept)
-               port map(clk , rst ,ena,
-                        done ,
-                        TBactive ,
-                        wEnaProg , WrenData ,
-                        WAddrProg , wAddrProg , rAddrMem ,
-                        dataMem , dataProg ,
-                        dataMem);
+    
+	top_unit : top generic map (Dwidth,AregWidth,AmemWidth,dept)
+               port map(clk => clk, 
+						rst => rst,
+						ena => enb,
+                        done => done,
+                        TBactive => TBactive,
+                        wEnaProg => WrenProg,
+						wEnaMem => WrenData,
+                        wAddrProg => WAddrProg_1 ,
+						wAddrMem => WAddrData ,
+						rAddrMem => RAddrData ,
+                        dataMemIn => MemDataIn ,
+						dataProg => MemProgIn ,
+                        dataMemOut => MemDataOut);
 
 
 	control_tb : process 
@@ -79,13 +70,13 @@ begin
 
 		wait until falling_edge(clk);
 		rst <= '1';
-		ena <= '1';
+		enb <= '1';
         wait until falling_edge(clk);
 		rst <= '0';
 
 		-- wait for done
 		wait until (done'event and done='1');
-		ena <= '0';
+		enb <= '0';
 		wait until falling_edge(clk);
 
 		-- read from data mem
@@ -110,7 +101,7 @@ begin
 		variable good : boolean;
 		variable L : line;
 	begin
-		file_open(ProgMemToLoad, "C:\Yoni\ModelSim\HW_ACCELERATORS_PROJ\Lab3\LAB3-20240613T154943Z-001\LAB3\InOutFiles\ITCMinit.txt", read_mode);
+		file_open(ProgMemToLoad, "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\LAB3DigitalSystemDesign\Testbench\txt\ITCMinit.txt", read_mode);
 		wait until (writeProgMem_phase_start'event and writeProgMem_phase_start=true);
 		wait until falling_edge(clk);
 
@@ -118,13 +109,13 @@ begin
 			readline(ProgMemToLoad, L);
 			hread(L,line_entry,good);
 			next when not good; 
-			dataProg <= line_entry;
-			wEnaProg <= '1';
+			MemProgIn <= line_entry;
+			WrenProg <= '1';
 			wait until rising_edge(clk);
 			wait until falling_edge(clk);
-			WAddrProg <= WAddrProg + 1;
+			WAddrProg_1 <= WAddrProg_1 + 1;
 		end loop;
-		wEnaProg <= '0';
+		WrenProg <= '0';
 		writeProgMem_phase_finish <= true;
 		file_close(ProgMemToLoad);
 		wait;
@@ -132,12 +123,12 @@ begin
 
 
 	write_data : process
-		variable data_addr : std_logic_vector(AMwidth-1 downto 0) := (others => '0');
+		variable data_addr : std_logic_vector(AmemWidth-1 downto 0) := (others => '0');
 		variable line_entry : std_logic_vector(Dwidth-1 downto 0);
 		variable good : boolean;
 		variable L : line;
 	begin
-		file_open(DataMemToLoad, "C:\Yoni\ModelSim\HW_ACCELERATORS_PROJ\Lab3\LAB3-20240613T154943Z-001\LAB3\InOutFiles\DTCMinit.txt", read_mode);
+		file_open(DataMemToLoad, "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\LAB3DigitalSystemDesign\Testbench\txt\DTCMinit.txt", read_mode);
 		wait until (writeDataMem_phase_start'event and writeDataMem_phase_start=true); 
 		wait until falling_edge(clk);
 
@@ -145,8 +136,8 @@ begin
 			readline(DataMemToLoad, L);
 			hread(L,line_entry,good);
 			next when not good; 
-			wAddrProg <= data_addr;
-			dataMem <= line_entry;
+			WAddrData <= data_addr;
+			MemDataIn <= line_entry;
 			WrenData <= '1';
 			wait until rising_edge(clk);
 			wait until falling_edge(clk);
@@ -161,18 +152,18 @@ begin
 
 	read_data_from_memory : process
 		variable data : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
-		variable address_data : std_logic_vector(AMwidth-1 downto 0) := (others => '0');
+		variable address_data : std_logic_vector(AmemWidth-1 downto 0) := (others => '0');
 		variable L : line;
 	begin
-		file_open(DataMemRead, "C:\Yoni\ModelSim\HW_ACCELERATORS_PROJ\Lab3\LAB3-20240613T154943Z-001\LAB3\InOutFiles\DTCMcontent.txt", write_mode);
+		file_open(DataMemRead, "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\LAB3DigitalSystemDesign\Testbench\txt\DTCMcontent.txt", write_mode);
 		wait until (readDataMem_phase_start'event and readDataMem_phase_start=true); 
 		wait until falling_edge(clk);
 		while address_data < 63 loop
-			rAddrMem <= address_data;
+			RAddrData <= address_data;
 			wait until rising_edge(clk);
 			wait until falling_edge(clk);
 			address_data := address_data + 1;
-			data := dataMem;
+			data := MemDataOut;
 			hwrite(L, data, right, Dwidth/4);
 			writeline(DataMemRead, L);
 		end loop;
@@ -180,4 +171,4 @@ begin
 		file_close(DataMemRead);
 		wait;
 	end process;
-end duttb;
+end behav;
