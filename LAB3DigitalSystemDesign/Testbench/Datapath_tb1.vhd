@@ -48,10 +48,6 @@ architecture behav of tb_Datapath is
     -- Clock period definitions
     constant clk_period : time := 100 ns;
 
-    --checking
-    signal opc_start : std_logic_vector(ARwidth-1 downto 0) := (others => '0');
-    signal addrProg_start : std_logic_vector(ARwidth-1 downto 0) := (others => '0');
-
 begin
 
     -- Instantiate the Unit Under Test (UUT)
@@ -117,14 +113,13 @@ begin
     -- rst process
     rst_proc: process
     begin
-        -- Hold reset state for 10 ns.
-        wait for clk_period/2; 
         rst <= '1';
-        wait for clk_period/2;
+        wait for clk_period; 
         rst <= '0';
+        wait for 9900 ns;
     end process;
 
-    stim_proc : process
+    stim_proc : process(clk,rst)
         variable WriteDataState : integer := 0;
         variable progAddr : STD_LOGIC_Vector(AMwidth-1 DOWNTO 0) := (others => '0');
         variable progOPCODE : STD_LOGIC_Vector(3 DOWNTO 0) := (others => '0');
@@ -156,26 +151,24 @@ begin
         elsif (clk'event and clk = '1') then
             if (WriteDataState < 15) then --write to program phase
                 PCin <= '0';
-                WrenProgIn <= '1';
-                WAddrProgIn <= progAddr;
+                tbWrenProg <= '1';
+                tbAddrInWProg <= progAddr;
                 progAddr := progAddr + 1;
-                MemProgIn(Dwidth-1 DOWNTO Dwidth-4) <= progOPCODE;
+                tbDataInProg(Dwidth-1 DOWNTO Dwidth-4) <= progOPCODE;
                 progOPCODE := progOPCODE + 1;
-                MemProgIn(Dwidth-5 DOWNTO 0) <= (others => '0');
+                tbDataInProg(Dwidth-5 DOWNTO 0) <= (others => '0');
                 WriteDataState := WriteDataState + 1;
-            elsif (WriteDataState = 15) then --see decoded opcodes phase
-                WriteDataState := WriteDataState + 1;
-                WrenProgIn <= '0';
-                IRin <= '1';
-                PCin <= '1';
-                PCsel <= "10";
+            elsif (WriteDataState < 30) then --see decoded opcodes phase
+                    WriteDataState := WriteDataState + 1;
+                    assert false report "IM IN IR = 1" severity Error;
+                    tbWrenProg <= '0';
+                    IRin <= '1';
+                    PCin <= '1';
+                    PCsel <= "10";
             else
                 null;
             end if;
         end if;
-       
-        
-        
     end process;
     
 
