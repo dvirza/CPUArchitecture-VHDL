@@ -7,63 +7,30 @@ entity opcDecode is
 generic( opwidth: integer:=4 );
 port(	clk,rst: 	 in std_logic;	
 		opDataIn:	     in std_logic_vector(opwidth-1 downto 0); --connect the IR
-		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --output every bit
+		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --NEW
 );
 end opcDecode;
 
 architecture behav of opcDecode is
 
-signal internalOPdata: std_logic_vector(opwidth-1 downto 0);
 
 begin
-	process(clk,rst)
-		
-	begin
-		op_st <= '0';
-		op_ld <= '0';
-		op_mov <= '0';
-		op_done <= '0';
-		op_add <= '0';
-		op_sub <= '0';
-		op_jmp <= '0';
-		op_jc <= '0';
-		op_jnc <= '0';
-		op_and <= '0';
-		op_or <= '0';
-		op_xor <= '0';
-	if (clk'event and clk='1') then
-		internalOPdata <= opDataIn;	
-	end if;
-	
+	op_add <= '1' when opDataIn = "0000" else '0';
+	op_sub <= '1' when opDataIn = "0001" else '0';
+	op_and <= '1' when opDataIn = "0010" else '0';
+	op_or <= '1' when opDataIn = "0011" else '0';
+	op_xor <= '1' when opDataIn = "0100" else '0';
+	-- unused <= '1' when opDataIn = "0000" else '0'; --NEW
+	-- unused <= '1' when opDataIn = "0000" else '0'; --NEW
+	op_jmp <= '1' when opDataIn = "0111" else '0';
+	op_jc <= '1' when opDataIn = "1000" else '0';
+	op_jnc <= '1' when opDataIn = "1001" else '0';
+	-- unused <= '1' when opDataIn = "0000" else '0'; --NEW
+	-- unused <= '1' when opDataIn = "0000" else '0'; --NEW
+	op_mov <= '1' when opDataIn = "1100" else '0';
+	op_ld <= '1' when opDataIn = "1101" else '0';
+	op_st <= '1' when opDataIn = "1110" else '0';
+	op_done <= '1' when opDataIn = "1111" else '0';
 
-	case internalOPdata is
-		when "0000" => op_add <= '1';
-		when "0001" => op_sub <= '1';
-		when "0010" => op_and <= '1';
-		when "0011" => op_or  <= '1';
-		when "0100" => op_xor <= '1';
-		--when "0101" => op_new1 <= '1';
-		when "0111" => op_jmp <= '1';
-		when "1000" => op_jc  <= '1';
-		when "1001" => op_jnc <= '1';
-		when "1100" => op_mov <= '1';
-		when "1101" => op_ld  <= '1';
-		when "1110" => op_st  <= '1';
-		when "1111" => op_done<= '1';
-		when others => 
-			op_add <= '0';
-			op_sub <= '0';
-			op_and <= '0';
-			op_or  <= '0';
-			op_xor <= '0';
-			op_jmp <= '0';
-			op_jc  <= '0';
-			op_jnc <= '0';
-			op_mov <= '0';
-			op_ld  <= '0';
-			op_st  <= '0';
-			op_done<= '0';
-	end case;
-end process;
 
 end behav;

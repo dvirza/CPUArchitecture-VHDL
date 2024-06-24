@@ -23,7 +23,7 @@ port(	clk,rst: in std_logic;
 		tbAddrInWProg : in std_logic_vector(AMwidth-1 downto 0);
 		tbDataInProg : in std_logic_vector(Dwidth-1 downto 0);
 
-		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic; --UUSEDDDDDD
+		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic; --UUSEDDDDDD --NEW
 	  	cFlag,nFlag,zFlag: out std_logic;
 
 		MEMdataOut : out std_logic_vector(Dwidth-1 downto 0)
@@ -125,7 +125,7 @@ porgToRF_inst : progToRF
                         op_jnc => op_jnc,
                         op_and => op_and,
                         op_or => op_or,
-                        op_xor => op_xor
+                        op_xor => op_xor --NEW
 					);
 
 -- porgToRF_Bidir_inst : BidirPin

@@ -17,7 +17,7 @@ port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
         RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
 
         RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
-        op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic
+        op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --NEW
 );
 end progToRF;
 
@@ -77,7 +77,7 @@ begin
                         op_jnc => op_jnc,
                         op_and => op_and,
                         op_or => op_or,
-                        op_xor => op_xor
+                        op_xor => op_xor --NEW
                     );
 
 

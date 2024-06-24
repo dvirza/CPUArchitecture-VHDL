@@ -163,10 +163,6 @@ begin
 			wait until rising_edge(clk);
 			wait until falling_edge(clk);
 			address_data := address_data + 1;
-
-
-
-			
 			data := MemDataOut;
 			hwrite(L, data, right, Dwidth/4);
 			writeline(DataMemRead, L);

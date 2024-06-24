@@ -11,7 +11,7 @@ port(
 	  clk,rst,ena: in std_logic;
 	  done : out std_logic;
 	
-	  op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: in std_logic; --UUSEDDDDDD
+	  op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: in std_logic; --NEW
 	  cFlag,nFlag,zFlag: in std_logic;
 
 	  Mem_wr,Mem_out,Mem_in :out std_logic;
@@ -30,7 +30,7 @@ port(
 end Control;
 
 ARCHITECTURE state_machine OF Control IS
-	TYPE state IS (fetch, st_decode, st_done, rType0, rType1, rType2, jType0, iType0, iType1, iTypeMov0, ld0, ld1, st0, st1);
+	TYPE state IS (fetch, st_decode, st_done, rType0, rType1, rType2, jType0, iType0, iType1, iTypeMov0, ld0, ld1, st0, st1); --NEW
 	SIGNAL pr_state, nx_state: state;
 BEGIN
 ---------- Lower section: ------------------------
@@ -70,7 +70,7 @@ BEGIN
 			nx_state <= st_decode;
 		WHEN st_decode =>
 			IRin <= '0';
-			if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--UNUSED!!!!!!!
+			if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--NEW!!!!!!!
 				nx_state <= rType0;
 			elsif (op_jmp = '1' or op_jc = '1' or op_jnc = '1') THEN
 			assert false report " Im in J TYPE ~!!~ " severity Error;

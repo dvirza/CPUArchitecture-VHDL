@@ -13,7 +13,7 @@ architecture behavior of tb_Control is
     signal clk_tb, rst_tb, ena_tb: std_logic := '0';
     signal done_tb: std_logic;
 
-    signal op_st_tb, op_ld_tb, op_mov_tb, op_done_tb, op_add_tb, op_sub_tb, op_jmp_tb, op_jc_tb, op_jnc_tb, op_and_tb, op_or_tb, op_xor_tb: std_logic := '0';
+    signal op_st_tb, op_ld_tb, op_mov_tb, op_done_tb, op_add_tb, op_sub_tb, op_jmp_tb, op_jc_tb, op_jnc_tb, op_and_tb, op_or_tb, op_xor_tb: std_logic := '0'; --NEW
     signal cFlag_tb, nFlag_tb, zFlag_tb: std_logic := '0';
 
     signal Mem_wr_tb, Mem_out_tb, Mem_in_tb: std_logic;
@@ -53,7 +53,7 @@ begin
             op_jnc => op_jnc_tb,
             op_and => op_and_tb,
             op_or => op_or_tb,
-            op_xor => op_xor_tb,
+            op_xor => op_xor_tb, --NEW
             cFlag => cFlag_tb,
             nFlag => nFlag_tb,
             zFlag => zFlag_tb,
