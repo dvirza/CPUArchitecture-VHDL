@@ -31,9 +31,7 @@ architecture behavior of tb_Control is
     constant clk_period : time := 100 ns;
 
 begin
-
-    -- Instantiate the Unit Under Test (UUT)
-    uut: Control
+    Control_inst : Control
         generic map (
             Dwidth => 16,
             Awidth => 4
@@ -77,6 +75,7 @@ begin
             OPC => OPC_tb
         );
 
+
     -- Clock process
     clk_process :process
     begin
@@ -87,7 +86,7 @@ begin
     end process;
 
     -- Stimulus process
-    stim_proc: process
+    rst_ena_proc: process
     begin
         -- Reset and enable
         rst_tb <= '1';
@@ -95,31 +94,123 @@ begin
         wait for clk_period*2;
         rst_tb <= '0';
         ena_tb <= '1';
+        wait for 9900 ns;
+    end process;
 
-        -- Test sequence
-        -- Test fetch state
-        wait for clk_period*2;
-
-        -- Test R-type instruction (e.g., op_add)
-        op_add_tb <= '1';
-        wait for clk_period*2;
-        op_add_tb <= '0';
-        wait for clk_period*5;
-        -- Test I-type instruction (e.g., op_ld)
-        op_ld_tb <= '1';
-        wait for clk_period*2;
-        op_ld_tb <= '0';
-        wait for clk_period*5;
-                -- Test jump instruction (e.g., op_jmp)
-        op_jmp_tb <= '1';
-        wait for clk_period*2;
-        op_jmp_tb <= '0';
-        wait for clk_period*5;
-        -- Add more test cases as needed
-        
-
-        -- Finish simulation
-        wait;
+    Stimulus_proc: process(clk_tb,rst_tb,ena_tb)
+        variable state : integer := 0;
+    begin
+        if (rst_tb = '1') then -- state_rst
+            nFlag_tb <= '0';
+            zFlag_tb <= '0';
+            cFlag_tb <= '0';
+            op_st_tb <= '0';
+            op_ld_tb <= '0';
+            op_mov_tb <= '0';
+            op_done_tb <= '0';
+            op_add_tb <= '0';
+            op_sub_tb <= '0';
+            op_jmp_tb <= '0';
+            op_jc_tb <= '0';
+            op_and_tb <= '0';
+            op_or_tb <= '0';
+            op_xor_tb <= '0';
+            op_jnc_tb <= '0';  
+            state := 0; 
+        elsif (clk_tb'event and clk_tb = '1') then
+            case state is
+                when 0 => -- state_fetch
+                    state := 1; 
+                    op_add_tb <= '1'; -- goto add - is 3 cycles 
+                when 1 to 3 => -- add_op
+                    state := state + 1; 
+                when 4 => -- state_fetch
+                    state := 5; 
+                    op_add_tb <= '0';
+                    op_sub_tb <= '1'; -- goto sub - is 3 cycles
+                when 5 to 7 => -- sub_op
+                    state := state + 1; 
+                when 8 => -- state_fetch
+                    state := 9; 
+                    op_sub_tb <= '0';
+                    op_and_tb <= '1'; -- goto and - is 3 cycles
+                when 9 to 11 => -- and_op
+                    state := state + 1; 
+                when 12 => -- state_fetch
+                    state := 13; 
+                    op_and_tb <= '0';
+                    op_or_tb <= '1'; -- goto or - is 3 cycles
+                when 13 to 15 => -- or_op
+                    state := state + 1;
+                when 16 => -- state_fetch
+                    state := 17; 
+                    op_or_tb <= '0';
+                    op_xor_tb <= '1'; -- goto xor - is 3 cycles
+                when 17 to 19 => -- xor_op
+                    state := state + 1;
+                when 20 => -- state_fetch
+                    state := 21; 
+                    op_xor_tb <= '0';
+                    op_jmp_tb <= '1'; -- goto jmp - is 1 cycle
+                when 21 =>
+                    state := state + 1;
+                when 22 => -- state_fetch
+                    state := 23; 
+                    op_jmp_tb <= '0';
+                    op_jc_tb <= '1'; -- goto jc - is 1 cycle
+                when 23 =>
+                    state := state + 1;
+                when 24 => -- state_fetch
+                    state := 25; 
+                    op_jc_tb <= '0';
+                    op_jnc_tb <= '1'; -- goto jnc - is 1 cycle
+                when 25 =>
+                    state := state + 1;
+                when 26 => -- state_fetch
+                    state := 27; 
+                    op_jnc_tb <= '0';
+                    op_jc_tb <= '1'; -- goto jc - is 1 cycle
+                    cFlag_tb <= '1';
+                when 27 =>
+                    state := state + 1;
+                    cFlag_tb <= '0'; 
+                when 28 => -- state_fetch
+                    state := 29; 
+                    op_jc_tb <= '0';
+                    op_jnc_tb <= '1'; -- goto jnc - is 1 cycle
+                when 29 =>
+                    state := state + 1; 
+                when 30 => -- state_fetch
+                    state := 31; 
+                    op_jnc_tb <= '0';
+                    op_mov_tb <= '1'; -- goto mov - is 1 cycle
+                    cFlag_tb <= '1';
+                when 31 =>
+                    state := state + 1;
+                    cFlag_tb <= '0'; 
+                when 32 => -- state_fetch
+                    state := 33; 
+                    op_mov_tb <= '0';
+                    op_ld_tb <= '1'; -- goto ld - is 4 cycles
+                when 33 to 36 => -- ld_op
+                    state := state + 1;
+                when 37 => -- state_fetch
+                    state := 38; 
+                    op_ld_tb <= '0';
+                    op_st_tb <= '1'; -- goto st - is 4 cycles
+                when 38 to 41 => -- st_op
+                    state := state + 1;
+                when 42 => -- state_fetch
+                    state := 43; 
+                    op_st_tb <= '0';
+                    op_done_tb <= '1'; -- goto done - is 1 cycle
+                when 43 => -- state_fetch
+                    state := 0; 
+                    op_done_tb <= '0';
+                when others =>
+                    state := 0;
+            end case;
+        end if;
     end process;
 
 end behavior;

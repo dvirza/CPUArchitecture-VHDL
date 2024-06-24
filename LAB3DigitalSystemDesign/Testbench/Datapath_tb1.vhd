@@ -158,15 +158,15 @@ begin
                 progOPCODE := progOPCODE + 1;
                 tbDataInProg(Dwidth-5 DOWNTO 0) <= (others => '0');
                 WriteDataState := WriteDataState + 1;
-            elsif (WriteDataState < 30) then --see decoded opcodes phase
+            elsif (WriteDataState < 35) then --see decoded opcodes phase
                     WriteDataState := WriteDataState + 1;
-                    assert false report "IM IN IR = 1" severity Error;
                     tbWrenProg <= '0';
                     IRin <= '1';
                     PCin <= '1';
                     PCsel <= "10";
             else
-                null;
+                PCin <= '0'; IRin <= '0'; PCsel <= "00";
+                --assert false report "Abort and STOP = you after 30" severity failure;
             end if;
         end if;
     end process;

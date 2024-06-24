@@ -49,14 +49,24 @@ begin
     end process;
 
     stim_proc : process(clk)
-        variable counter : integer := 0;    
+        variable counter : integer := 0; 
+          
     begin
+        if (counter = 1) then
+        PCsel <= "00";
+        assert false report "PC sel == 00 " severity Note;
+        end if;
         if (clk'event and clk = '1') then
             if (counter < 10) then
                 PCin <= '1';
                 PCsel <= "10";
                 counter := counter +1;
+            elsif (counter < 20) then
+                IRinReg <= "11110101";
+                PCsel <= "01";
+                counter := counter +1;
             end if;
+            
         end if;
     end process;
 
