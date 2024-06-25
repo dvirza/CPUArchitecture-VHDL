@@ -24,7 +24,6 @@ signal internalsrcA, internalsrcB : std_logic_vector(Dwidth-1 downto 0) := (othe
 signal internalOUT : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signal for computing the output
 signal internalCarryOut, internalCarryIn : std_logic; --internal carrys
 signal zeros_vector: std_logic_vector(Dwidth-1 downto 0) := (others => '0');
---signal internalOPC : std_logic_vector(opwidth-1 downto 0);
 
 begin
 Adder_inst : Adder ---Adder inner connect Add \ Substract

@@ -30,7 +30,8 @@ end aluTop;
 architecture behav of aluTop is
 
 signal internalCarryFlag, internalZeroFlag, internalNegFlag : std_logic;
-signal internalSrcA, internalCreg :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+signal internalSrcA :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+signal internalCreg :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 signal internalOPC : std_logic_vector(opwidth-1 downto 0);
 signal zeros_vector : std_logic_vector(Dwidth-1 downto 0);
 

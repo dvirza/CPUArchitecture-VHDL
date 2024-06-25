@@ -73,7 +73,8 @@ begin
                 if ((counter mod 3) = 0) then
                     regCin <='1';
                 end if;
-                opc_wire <= "0010";
+                opcREG := opcREG +1;
+                opc_wire <= opcREG;
                 reg_srcA <= startREG;
                 startREG := startREG + 1;
                 wire_srcB <= startREG;

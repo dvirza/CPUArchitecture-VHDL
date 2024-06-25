@@ -50,7 +50,6 @@ BEGIN
   BEGIN
 	CASE pr_state IS
 		WHEN fetch =>
-		-- Initial
 			IRin <= '1';
 			Mem_wr <= '0';
 			Mem_out <= '0';
@@ -104,11 +103,13 @@ BEGIN
 		WHEN rType1 =>
 			Cin <= '1'; Ain <= '0'; RFout <= '1'; Cout <= '0';
 			RFaddr <= "01"; --takes rb
-			OPC <= "0000" when op_add else
-				   "0001" when op_sub else
-				   "0010" when op_and else
-				   "0011" when op_or else
-				   "0100" when op_xor; --UNUSEDDDD
+			OPC <= "0000" when op_add = '1' else
+				"0001" when op_sub = '1' else
+				"0010" when op_and = '1' else
+				"0011" when op_or = '1' else
+				"0100" when op_xor = '1' else
+				(others => '0'); --UNUSEDDDD
+			assert false report "IM in R-TYPE1 and OPC := " &to_string(OPC) severity Error;
 			nx_state <= rType2;
 		WHEN rType2 =>
 			Cin <= '0'; Ain <= '0'; RFout <= '0'; RFin <= '1'; Cout <= '1';

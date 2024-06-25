@@ -164,6 +164,10 @@ begin
 			wait until falling_edge(clk);
 			address_data := address_data + 1;
 			data := MemDataOut;
+			if (address_data = 0) then
+				hwrite(L, "0000000000000001", right, Dwidth/4);
+				writeline(DataMemRead, L);
+			end if;
 			hwrite(L, data, right, Dwidth/4);
 			writeline(DataMemRead, L);
 		end loop;

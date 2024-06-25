@@ -94,7 +94,7 @@ begin
         wait for clk_period*2;
         rst_tb <= '0';
         ena_tb <= '1';
-        wait for 9900 ns;
+        wait for 99000 ns;
     end process;
 
     Stimulus_proc: process(clk_tb,rst_tb,ena_tb)
