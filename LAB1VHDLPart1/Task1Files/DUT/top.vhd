@@ -18,7 +18,7 @@ END top;
 
 
 ARCHITECTURE struct OF top IS
-    CONSTANT zeros_vector : STD_LOGIC_VECTOR(n-1 downto 0) := (others => '0');
+	SIGNAL zeros_vector : STD_LOGIC_VECTOR(n-1 downto 0) := (others => '0');
     SIGNAL xAdd,xShift,xBool,yAdd,yShift,yBool: STD_LOGIC_VECTOR(n-1 DOWNTO 0) := (others => '0'); --Input Internal Regs
     SIGNAL resAdd,resShift,resBool: STD_LOGIC_VECTOR(n-1 DOWNTO 0) := (others => '0'); --internal res regs
     SIGNAL OutAdd,OutShift,OutBool: STD_LOGIC_VECTOR(n-1 DOWNTO 0) := (others => '0'); --Output Internal Regs
@@ -28,19 +28,9 @@ ARCHITECTURE struct OF top IS
 
 BEGIN
 ---------------- Connect the components to the internal signals ----------------------
-	AddSub_inst : AdderSub 
-			GENERIC MAP (n=>n)
-			PORT MAP (
-			x => xAdd, y => yAdd, sub_cont => negAdd, res => resAdd, c_out => CarryAdd);
-
-	Shift_inst: Shifter 
-			GENERIC MAP (n => n, k => k) 
-			PORT MAP (
-			x => xShift, y => yShift, dir => negShift, res => resShift ,cout => CarryShift);
-	Boolean_inst: Logic 
-			GENERIC MAP (n => n)
-			PORT MAP (x => xBool, y => yBool, ALUFN20 => ALUFN_i(2 downto 0), res => resBool);
-
+	AddSub_inst : AdderSub GENERIC MAP (n=>n) PORT MAP ( x => xAdd, y => yAdd, sub_cont => negAdd, res => resAdd, c_out => CarryAdd);
+	Shift_inst: Shifter GENERIC MAP (n => n, k => k) PORT MAP (x => xShift, y => yShift, dir => negShift, res => resShift ,cout => CarryShift);
+	Boolean_inst: Logic GENERIC MAP (n => n) PORT MAP (x => xBool, y => yBool, ALUFN20 => ALUFN_i(2 downto 0), res => resBool);
 ---------------------------------------------------------------------------------------
 	xAdd <= X_i;
 	yAdd <= zeros_vector WHEN ALUFN_i(1 DOWNTO 0) = "10" ELSE Y_i;
