@@ -1,6 +1,5 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
-USE work.aux_package.all;
 --------------------------------------------------------
 ENTITY LOGIC IS
 	GENERIC (n : INTEGER);
@@ -11,6 +10,7 @@ ENTITY LOGIC IS
 END LOGIC;
 --------------------------------------------------------
 ARCHITECTURE dataflow OF LOGIC IS
+
 BEGIN
     with alufn20 select
         res <= (not y) when "000",
@@ -20,6 +20,6 @@ BEGIN
                (y nor x) when "100",
                (y nand x) when "101",
                (y xnor x) when others;
-               --- redefine case 110
+
 END dataflow;
 

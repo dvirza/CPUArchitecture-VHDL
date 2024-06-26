@@ -21,7 +21,7 @@ architecture rtb of tb is
 							"01000","01001","01010","01000","01001","01010","01000","01001","10000","10001",
 							"10010","10000","10001","10010","11001","11010","11101","11111","11011","00100");
 begin
-	L0 : top generic map (n,k,m) port map(Y,X,ALUFN,ALUout,Nflag,Cflag,Zflag,Vflag);
+	L0 : top generic map (n,k,m) port map(Y_i => Y, X_i => X, ALUFN_i => ALUFN,ALUout_o => ALUout,Nflag_o => Nflag,Cflag_o => Cflag,Zflag_o => Zflag,Vflag_o => Vflag);
     
 	--------- start of stimulus section ----------------------------------------		
         tb_x_y : process
