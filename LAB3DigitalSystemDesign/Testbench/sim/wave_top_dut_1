@@ -57,10 +57,26 @@ add wave -noupdate /tb_topdut/top_unit/Control_inst/pr_state
 add wave -noupdate /tb_topdut/top_unit/Control_inst/nx_state
 add wave -noupdate -radix hexadecimal /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/internalDataIR
 add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/internalPC
+add wave -noupdate -radix hexadecimal /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/dataOut
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/Raddr
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/clk
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/rst
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/PCin
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/PCsel
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/IRinReg
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/PCdata
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/internalPC
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/startAddr
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/internalIR
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/int_pc
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/int_pc_plus
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/int_pc_ir
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/one_vec
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/progmem_inst/sysRAM
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4182956 ps} 0}
+WaveRestoreCursors {{Cursor 1} {2162070 ps} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 362
+configure wave -namecolwidth 487
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
@@ -74,5 +90,5 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {3681927 ps} {4548412 ps}
+WaveRestoreZoom {1961658 ps} {2582541 ps}
 bookmark add wave bookmark0 {{0 ps} {4200 ns}} 0

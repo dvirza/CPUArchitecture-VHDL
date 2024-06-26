@@ -59,14 +59,14 @@ begin
 				reg_cOut => internalALUout
 			);
 
---  ALUBidirPin_inst : BidirPin 
---  					generic map( width => Dwidth)
--- 					port map (
--- 						Dout => internalALUout,
--- 						en => Cout,
--- 						Din => internalALUin,
--- 						IOpin => dataBUS
--- 					);
+ ALUBidirPin_inst : BidirPin 
+ 					generic map( width => Dwidth)
+					port map (
+						Dout => internalALUout,
+						en => Cout,
+						Din => internalALUin,
+						IOpin => dataBUS
+					);
 --/*			***************			*/
 
 --/*			dataMEM connection			*/
@@ -86,14 +86,14 @@ begin
 					dataInOut => internalMEMdata
 			   );
 
---  dataMEMBidirPin_inst : BidirPin 
--- 			   generic map( width => Dwidth)
--- 			   port map (
--- 				  Dout => internalMEMdata,
--- 				  en => Mem_out,
--- 				  Din => internalMEMdata,
--- 				  IOpin => dataBUS
--- 			  );
+ dataMEMBidirPin_inst : BidirPin 
+			   generic map( width => Dwidth)
+			   port map (
+				  Dout => internalMEMdata,
+				  en => Mem_out,
+				  Din => internalMEMdata,
+				  IOpin => dataBUS
+			  );
 --/*			***************			*/
 
 --/*			progMEM connection			*/
@@ -129,41 +129,34 @@ porgToRF_inst : progToRF
                         op_xor => op_xor --NEW
 					);
 
--- porgToRF_Bidir_inst : BidirPin
--- 						generic map( width => Dwidth)
--- 					port map (
--- 						Dout => internalRFdata,
--- 						en => RFout,
--- 						Din => internalRFdata,
--- 						IOpin => dataBUS
--- 					);
+porgToRF_Bidir_inst : BidirPin
+						generic map( width => Dwidth)
+					port map (
+						Dout => internalRFdata,
+						en => RFout,
+						Din => internalRFdata,
+						IOpin => dataBUS
+					);
 --/*			***************			*/
 
--- IMM1_sign_inst : BidirPin
--- 					generic map( width => Dwidth)
--- 					port map (
--- 						Dout => imm1SignExt,
--- 						en => Imm1_in,
--- 						Din => open,
--- 						IOpin => dataBUS
--- 					);
+IMM1_sign_inst : BidirPin
+					generic map( width => Dwidth)
+					port map (
+						Dout => imm1SignExt,
+						en => Imm1_in,
+						Din => open,
+						IOpin => dataBUS
+					);
 
--- IMM2_sign_inst : BidirPin
--- 					generic map( width => Dwidth)
--- 					port map (
--- 						Dout => imm2SignExt,
--- 						en => Imm2_in,
--- 						Din => open,
--- 						IOpin => dataBUS
--- 					);
+IMM2_sign_inst : BidirPin
+					generic map( width => Dwidth)
+					port map (
+						Dout => imm2SignExt,
+						en => Imm2_in,
+						Din => open,
+						IOpin => dataBUS
+					);
 
-
- dataBUS <= internalRFdata when RFout = '1' else
-			internalALUout when Cout = '1' else
-			imm1SignExt when Imm1_in = '1' else
-			imm2SignExt when Imm2_in = '1' else
-			internalMEMdata when Mem_out = '1' else
-			(others => 'Z');
 
  MEMdataOut <= internalMEMdata; -- connect the output signal into internal signal
 end behav;

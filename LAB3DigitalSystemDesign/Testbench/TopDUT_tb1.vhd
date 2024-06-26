@@ -21,7 +21,7 @@ architecture behav of tb_topDUT is
     SIGNAL done: STD_LOGIC := '0';
     SIGNAL TBactive : STD_LOGIC := '0';
     SIGNAL WrenProg , WrenData : STD_LOGIC := '0';
-    SIGNAL WAddrProg_1 : std_logic_vector (AmemWidth-1 downto 0);
+    SIGNAL WAddrProg_1 : std_logic_vector (AmemWidth-1 downto 0) := (others => '0');
 	SIGNAL WAddrData , RAddrData : STD_LOGIC_Vector(AmemWidth-1 DOWNTO 0) := (others => '0');
     SIGNAL MemDataIn , MemProgIn : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
     SIGNAL MemDataOut : STD_LOGIC_Vector(Dwidth-1 DOWNTO 0) := (others => '0');
@@ -97,6 +97,7 @@ begin
         end process;
 
 	write_instructions : process
+		--variable WAddrProg_1 : std_logic_vector(AregWidth-1 downto 0) := (others => '0');
 		variable line_entry : std_logic_vector(Dwidth-1 downto 0);
 		variable good : boolean;
 		variable L : line;
@@ -164,10 +165,6 @@ begin
 			wait until falling_edge(clk);
 			address_data := address_data + 1;
 			data := MemDataOut;
-			if (address_data = 0) then
-				hwrite(L, "0000000000000001", right, Dwidth/4);
-				writeline(DataMemRead, L);
-			end if;
 			hwrite(L, data, right, Dwidth/4);
 			writeline(DataMemRead, L);
 		end loop;

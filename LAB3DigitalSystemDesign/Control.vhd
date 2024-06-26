@@ -30,7 +30,7 @@ port(
 end Control;
 
 ARCHITECTURE state_machine OF Control IS
-	TYPE state IS (fetch, st_decode, st_done, rType0, rType1, rType2, jType0, iType0, iType1, iTypeMov0, ld0, ld1, st0, st1); --NEW
+	TYPE state IS (fetch, ena1, st_decode, st_done, rType0, rType1, rType2, jType0, iType0, iType1, iTypeMov0, ld0, ld1, st0, st1); --NEW
 	SIGNAL pr_state, nx_state: state;
 BEGIN
 ---------- Lower section: ------------------------
@@ -40,8 +40,9 @@ BEGIN
 		pr_state <= fetch;
 	ELSIF (clk'EVENT AND clk='1') THEN
 		IF (ena = '1') THEN
-		assert false report "Check Current State " & to_string(pr_state) & "" severity Note;
 			pr_state <= nx_state;
+		else
+			pr_state <= ena1;
 		END IF;
 	END IF;
   END PROCESS;
@@ -49,6 +50,24 @@ BEGIN
   PROCESS (pr_state)
   BEGIN
 	CASE pr_state IS
+		WHEN ena1 =>
+			IRin <= '0';
+			Mem_wr <= '0';
+			Mem_out <= '0';
+			Mem_in <= '0';
+			Cin <= '0';
+			Cout <= '0';
+			Ain <='0';
+			RFin <= '0';
+			RFout <= '0';
+			RFaddr <= "00";
+			PCin <= '1';
+			PCsel <= "00";
+			Imm1_in <= '0';
+			Imm2_in <= '0';
+			OPC <= "0000";
+			done <= '0';
+			nx_state <= fetch;
 		WHEN fetch =>
 			IRin <= '1';
 			Mem_wr <= '0';
@@ -72,7 +91,6 @@ BEGIN
 			if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--NEW!!!!!!!
 				nx_state <= rType0;
 			elsif (op_jmp = '1' or op_jc = '1' or op_jnc = '1') THEN
-			assert false report " Im in J TYPE ~!!~ " severity Error;
 				nx_state <= jType0;
 			elsif (op_ld = '1' or op_st = '1') THEN
 				nx_state <= iType0;
@@ -80,18 +98,20 @@ BEGIN
 				nx_state <= iTypeMov0;
 			elsif (op_done = '1') THEN
 				nx_state <= st_done;
-			else
-				nx_state <= fetch;
 			end if;
+
 		WHEN st_done =>
 			done <= '1';
 			nx_state <= fetch;
 		WHEN jType0 =>
 			if (cFlag = '1' and op_jc ='1') then
+				assert false report " Im in J TYPE  CARRY~!!~ " severity Error;
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
 			elsif(cFlag = '0' and op_jnc = '1') then
+				assert false report " Im in J TYPE  NOTT CARRY~!!~ " severity Error;
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
 			elsif (op_jmp = '1') then
+				assert false report " Im in J TYPE   Regular~!!~ " severity Error;
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
 			end if;
 			nx_state <= fetch;
@@ -109,7 +129,10 @@ BEGIN
 				"0011" when op_or = '1' else
 				"0100" when op_xor = '1' else
 				(others => '0'); --UNUSEDDDD
-			assert false report "IM in R-TYPE1 and OPC := " &to_string(OPC) severity Error;
+				assert false report "IM in R-TYPE1 and op_add := " & to_string(op_add) &
+				" op_sub := " & to_string(op_sub) &
+				" op_and := " & to_string(op_and) severity error;
+	   assert false report "IM in R-TYPE1 and OPC := " &to_string(OPC) severity Error;
 			nx_state <= rType2;
 		WHEN rType2 =>
 			Cin <= '0'; Ain <= '0'; RFout <= '0'; RFin <= '1'; Cout <= '1';
@@ -119,6 +142,8 @@ BEGIN
 		WHEN iTypeMov0 =>
 			RFin <= '1'; Imm1_in <= '1'; RFaddr <= "10"; PCsel <= "10"; PCin <= '1'; IRin <= '0';
 			nx_state <= fetch;
+			assert false report "IM in J-TYPE1 and OPC := " &to_string(OPC) severity Error;
+
 		WHEN iType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; RFin <= '0'; PCin <= '1';
 			PCsel <= "10"; -- +1

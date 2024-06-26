@@ -41,7 +41,7 @@ dataMem_inst : dataMem
     writeAddrToSize <= writeAddrFromBus(Awidth-1 downto 0); --takes the Awitdh lsb for address
     writeAddr <= tbAddrW when tbActive = '1' else writeAddrToSize; --size Adwitdh
     internalDataIn <=  tbDataIn when tbActive = '1' else dataInOut;
-    dataInOut <= internalDataOut when tbActive = '0' else (others => '0');
+    dataInOut <= internalDataOut;-- when tbActive = '0' else (others => '0');
 
     process(clk)
     begin

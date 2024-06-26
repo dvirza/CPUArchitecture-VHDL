@@ -33,7 +33,7 @@ pcwork_inst : pcWork
                     clk => clk,
                     rst => rst,
                     PCin => pcin,	
-		            PCsel => internalPCsel,
+		            PCsel => pcsel,--internalPCsel,
 		            IRinReg => irinreg,
                     PCdata => Raddr
                     );
@@ -53,18 +53,20 @@ progmem_inst : progMem
                         RmemAddr => Raddr
                         );
 
-  process(clk)
-  begin
-	if (clk'event and clk='1') then
-	    if (tbActive='1') then
-            internalPCsel <= "00";
-            dataOut <= (others => '0');
-        else
-            dataOut <= internalData;
-            internalPCsel <= pcsel;
-	    end if;
-	end if;
-  end process;
+
+    dataOut <= internalData;
+--   process(clk)
+--   begin
+-- 	if (clk'event and clk='1') then
+-- 	    if (tbActive='1') then
+--             internalPCsel <= "00";
+--             dataOut <= (others => '0');
+--         else
+--             dataOut <= internalData;
+--             internalPCsel <= pcsel;
+-- 	    end if;
+-- 	end if;
+--   end process;
 	
 
 end behav;
