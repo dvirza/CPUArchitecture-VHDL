@@ -123,6 +123,7 @@ begin
         variable WriteDataState : integer := 0;
         variable progAddr : STD_LOGIC_Vector(AMwidth-1 DOWNTO 0) := (others => '0');
         variable progOPCODE : STD_LOGIC_Vector(3 DOWNTO 0) := (others => '0');
+        
     begin
         if (rst = '1') then
             Mem_wr <= '0';

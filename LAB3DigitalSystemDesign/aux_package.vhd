@@ -161,16 +161,18 @@ component progToRF is
 			 Awidth: integer:=6;
 			 opwidth:   integer:=4);
 	port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
-			pcsel : in std_logic_vector(1 downto 0);
-			RFaddr: in std_logic_vector(1 downto 0);
-			tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
-			tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
-	
-			RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
-	
-			RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
-			op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic
-	);
+			 pcsel : in std_logic_vector(1 downto 0);
+			 RFaddr: in std_logic_vector(1 downto 0);
+			 tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
+			 tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
+	 
+			 RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
+	 
+			 Imm1 : out std_logic_vector(7 downto 0);
+			 Imm2 : out std_logic_vector(3 downto 0);
+			 RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
+			 op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --NEW
+	 );
 	end component;
 --------------------------------------------------------------
 component mod_RF is

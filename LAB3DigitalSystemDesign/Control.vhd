@@ -88,17 +88,23 @@ BEGIN
 			nx_state <= st_decode;
 		WHEN st_decode =>
 			IRin <= '0';
-			if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--NEW!!!!!!!
-				nx_state <= rType0;
-			elsif (op_jmp = '1' or op_jc = '1' or op_jnc = '1') THEN
-				nx_state <= jType0;
-			elsif (op_ld = '1' or op_st = '1') THEN
-				nx_state <= iType0;
-			elsif (op_mov = '1') THEN
-				nx_state <= iTypeMov0;
-			elsif (op_done = '1') THEN
-				nx_state <= st_done;
-			end if;
+			-- if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--NEW!!!!!!!
+			-- 	nx_state <= rType0;
+			-- elsif (op_jmp = '1' or op_jc = '1' or op_jnc = '1') THEN
+			-- 	nx_state <= jType0;
+			-- elsif (op_ld = '1' or op_st = '1') THEN
+			-- 	nx_state <= iType0;
+			-- elsif (op_mov = '1') THEN
+			-- 	nx_state <= iTypeMov0;
+			-- elsif (op_done = '1') THEN
+			-- 	nx_state <= st_done;
+			-- end if;
+			nx_state <= iTypeMov0 when (op_mov = '1') else
+						rType0 when (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') else
+						jType0 when (op_jmp = '1' or op_jc = '1' or op_jnc = '1') else
+						iType0 when (op_ld = '1' or op_st = '1') else
+						st_done when (op_done = '1') else 
+						fetch;
 
 		WHEN st_done =>
 			done <= '1';
@@ -143,34 +149,25 @@ BEGIN
 			RFin <= '1'; Imm1_in <= '1'; RFaddr <= "10"; PCsel <= "10"; PCin <= '1'; IRin <= '0';
 			nx_state <= fetch;
 			assert false report "IM in J-TYPE1 and OPC := " &to_string(OPC) severity Error;
-
 		WHEN iType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; RFin <= '0'; PCin <= '1';
 			PCsel <= "10"; -- +1
-			RFaddr <= "10"; --takes ra
+			RFaddr <= "01"; --takes rb
 			nx_state <= iType1;
 		WHEN iType1 =>
-			Cin <= '1'; Ain <= '0'; RFout <= '0'; Imm2_in <= '1';
+			Ain <= '0'; RFout <= '0'; Imm2_in <= '1';  Cin <= '1';
 			PCin <= '0';
 			PCsel <= "10"; -- +1
 			OPC <= "0000";
-			if (op_ld ='1') then
-				nx_state <= ld0;
-			end if;
-			if (op_st = '1') then
-				nx_state <= st0;
-			else
-				assert false report " Error: didnt get load or store during FSM work" severity Error;
-				nx_state <= fetch; --For robustness
-			end if;
+			nx_state <= ld0 when op_ld = '1' else st0 when op_st = '1' else fetch;
 		WHEN ld0 =>
-			Cout <= '1'; Imm2_in <= '0'; Cin <= '0'; Mem_out <= '0';
+			Cout <= '1'; Imm2_in <= '0'; Cin <= '0'; Mem_out <= '0';  RFaddr <= "10"; --takes ra
 			nx_state <= ld1;
 		WHEN ld1 =>
 			Cout <= '0'; RFin <= '1'; RFout <= '0'; Mem_out <= '1';
 			nx_state <= fetch;
 		WHEN st0 =>
-			Cout <= '1'; Imm2_in <= '0'; Mem_in <= '1'; Cin <= '0';
+			Cout <= '1'; Imm2_in <= '0'; Mem_in <= '1'; Cin <= '0'; RFaddr <= "10"; --takes ra
 			nx_state <= st1;
 		WHEN st1 =>
 			Cout <= '0'; RFout <= '1'; RFin <= '0'; Mem_in <= '0'; Mem_wr <= '1';

@@ -18,8 +18,9 @@ end mod_RF;
 --------------------------------------------------------------
 architecture behav of mod_RF is
 
-    signal internalAddr : std_logic_vector(Awidth-1 downto 0);
-    signal internalData : std_logic_vector(Dwidth-1 downto 0);
+    signal internalAddr : std_logic_vector(Awidth-1 downto 0):= (others => '0');
+    signal internalData : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+    signal internalBus : std_logic_vector(Dwidth-1 downto 0):= (others => '0');
 begin
     
 rf_inst : RF 
@@ -28,13 +29,12 @@ rf_inst : RF
             port map(	clk => clk,
                     rst => rst,
                     WregEn => RFin,	
-                    WregData => dataInBUS,
+                    WregData => dataInBUS,--internalBus,
                     WregAddr => internalAddr ,
                     RregAddr => internalAddr ,
                     RregData => internalData
                 );
 
-    
 
 process(clk,rst,IRin)
 begin
@@ -59,6 +59,6 @@ begin
     end case;
 end process;
 
-    outData <= internalData; --output the data
+outData <= internalData; --output the data
 
 end behav;

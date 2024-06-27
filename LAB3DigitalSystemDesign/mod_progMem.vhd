@@ -54,19 +54,13 @@ progmem_inst : progMem
                         );
 
 
+
+    --internalData <= internalData when IRin = '1' else (others => '0');
+
     dataOut <= internalData;
---   process(clk)
---   begin
--- 	if (clk'event and clk='1') then
--- 	    if (tbActive='1') then
---             internalPCsel <= "00";
---             dataOut <= (others => '0');
---         else
---             dataOut <= internalData;
---             internalPCsel <= pcsel;
--- 	    end if;
--- 	end if;
---   end process;
+
+    
+
 	
 
 end behav;

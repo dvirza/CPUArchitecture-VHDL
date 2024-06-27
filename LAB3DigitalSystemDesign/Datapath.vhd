@@ -38,7 +38,7 @@ signal dataBUS : std_logic_vector(Dwidth-1 downto 0);
 signal internalALUout, internalALUin : std_logic_vector(Dwidth-1 downto 0);
 signal internalMEMdata : std_logic_vector (Dwidth-1 downto 0);
 signal imm1SignExt, imm2SignExt : std_logic_vector(Dwidth-1 downto 0);
-signal internalRFdata : std_logic_vector(Dwidth-1 downto 0);
+signal internalRFdataIN,internalRFdataOUT : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 
 begin
 --/*			ALU connection			*/
@@ -113,8 +113,10 @@ porgToRF_inst : progToRF
 						RFaddr => RFaddr,
 						tbAddrIn => tbAddrInWProg,
 						tbDataIn => tbDataInProg,
-						RFinFromBus => internalRFdata,
-						RFoutToBus => internalRFdata,
+						RFinFromBus => internalRFdataIN,
+						RFoutToBus => internalRFdataOUT,
+						Imm1 => imm1SignExt,
+						Imm2 => imm2SignExt,
 						op_st => op_st,
                         op_ld => op_ld,
                         op_mov => op_mov,
@@ -132,9 +134,9 @@ porgToRF_inst : progToRF
 porgToRF_Bidir_inst : BidirPin
 						generic map( width => Dwidth)
 					port map (
-						Dout => internalRFdata,
+						Dout => internalRFdataOUT,
 						en => RFout,
-						Din => internalRFdata,
+						Din => internalRFdataIN,
 						IOpin => dataBUS
 					);
 --/*			***************			*/

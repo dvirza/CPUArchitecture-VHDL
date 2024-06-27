@@ -33,7 +33,7 @@ signal internalCarryFlag, internalZeroFlag, internalNegFlag : std_logic;
 signal internalSrcA :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 signal internalCreg :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 signal internalOPC : std_logic_vector(opwidth-1 downto 0);
-signal zeros_vector : std_logic_vector(Dwidth-1 downto 0);
+signal zeros_vector : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 
 begin
 
@@ -59,9 +59,19 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 	wire_nFlag <= internalNegFlag;
 --------------------------------------
 
-	internalSrcA <= reg_srcA when regAin = '1' else internalSrcA;
-	reg_cOut <= internalCreg when regCin ='1' else zeros_vector;
+	--internalSrcA <= reg_srcA when regAin = '1' else internalSrcA;
+	--reg_cOut <= internalCreg when regCin ='1' else zeros_vector;
 
-
+	process(clk,regCin,regAin)
+	begin
+		if (clk'event and clk='1') then
+			if (regCin ='1') then
+				reg_cOut <= internalCreg;
+			end if;
+			if (regAin ='1') then
+				internalSrcA <= reg_srcA;
+			end if;
+		end if;
+	end process;
 
 end behav;

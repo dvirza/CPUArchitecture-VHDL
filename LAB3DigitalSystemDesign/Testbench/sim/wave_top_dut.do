@@ -1,28 +1,14 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate /tb_topdut/clk
-add wave -noupdate /tb_topdut/rst
-add wave -noupdate /tb_topdut/enb
-add wave -noupdate /tb_topdut/done
-add wave -noupdate /tb_topdut/TBactive
 add wave -noupdate /tb_topdut/WrenProg
 add wave -noupdate /tb_topdut/WrenData
-add wave -noupdate /tb_topdut/WAddrProg_1
-add wave -noupdate /tb_topdut/WAddrData
-add wave -noupdate /tb_topdut/RAddrData
+add wave -noupdate -radix hexadecimal /tb_topdut/WAddrProg_1
+add wave -noupdate -radix hexadecimal /tb_topdut/WAddrData
+add wave -noupdate -radix hexadecimal /tb_topdut/RAddrData
 add wave -noupdate -radix hexadecimal /tb_topdut/MemDataIn
 add wave -noupdate -radix hexadecimal /tb_topdut/MemProgIn
 add wave -noupdate -radix hexadecimal /tb_topdut/MemDataOut
-add wave -noupdate /tb_topdut/writeProgMem_phase_start
-add wave -noupdate /tb_topdut/writeDataMem_phase_start
-add wave -noupdate /tb_topdut/readDataMem_phase_start
-add wave -noupdate /tb_topdut/writeProgMem_phase_finish
-add wave -noupdate /tb_topdut/writeDataMem_phase_finish
-add wave -noupdate /tb_topdut/readDataMem_phase_finish
-add wave -noupdate /tb_topdut/top_unit/Control_inst/clk
-add wave -noupdate /tb_topdut/top_unit/Control_inst/rst
-add wave -noupdate /tb_topdut/top_unit/Control_inst/ena
-add wave -noupdate /tb_topdut/top_unit/Control_inst/done
 add wave -noupdate /tb_topdut/top_unit/Control_inst/op_st
 add wave -noupdate /tb_topdut/top_unit/Control_inst/op_ld
 add wave -noupdate /tb_topdut/top_unit/Control_inst/op_mov
@@ -55,13 +41,30 @@ add wave -noupdate /tb_topdut/top_unit/Control_inst/Imm2_in
 add wave -noupdate /tb_topdut/top_unit/Control_inst/OPC
 add wave -noupdate /tb_topdut/top_unit/Control_inst/pr_state
 add wave -noupdate /tb_topdut/top_unit/Control_inst/nx_state
-add wave -noupdate -radix hexadecimal /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/internalDataIR
-add wave -noupdate /tb_topdut/top_unit/Datapath_inst/porgToRF_inst/progMEM_inst/pcwork_inst/internalPC
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/IMM1_sign_inst/Dout
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/IMM2_sign_inst/Dout
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/reg_srcA
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/wire_srcB
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/opc_wire
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/clk
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/regAin
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/regCin
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/reg_cOut
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/wire_cFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/wire_zFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/wire_nFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalCarryFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalZeroFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalNegFlag
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalSrcA
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalCreg
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/internalOPC
+add wave -noupdate /tb_topdut/top_unit/Datapath_inst/ALU_inst/zeros_vector
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4182956 ps} 0}
+WaveRestoreCursors {{Cursor 1} {2370997 ps} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 362
-configure wave -valuecolwidth 100
+configure wave -namecolwidth 484
+configure wave -valuecolwidth 158
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -74,5 +77,5 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {3681927 ps} {4548412 ps}
+WaveRestoreZoom {0 ps} {622052 ps}
 bookmark add wave bookmark0 {{0 ps} {4200 ns}} 0
