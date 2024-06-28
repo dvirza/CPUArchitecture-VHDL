@@ -13,7 +13,6 @@ end opcDecode;
 
 architecture behav of opcDecode is
 
-
 begin
 	op_add <= '1' when opDataIn = "0000" else '0';
 	op_sub <= '1' when opDataIn = "0001" else '0';

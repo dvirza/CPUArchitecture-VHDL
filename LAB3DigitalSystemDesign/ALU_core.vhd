@@ -27,7 +27,7 @@ signal zeros_vector: std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 
 begin
 Adder_inst : Adder ---Adder inner connect Add \ Substract
-		GENERIC MAP (n=>n)
+		GENERIC MAP (length=>n)
 		PORT MAP (
 				a => internalsrcA,
 				b => internalsrcB,
@@ -67,8 +67,8 @@ END PROCESS;
 	aluOut <= internalOUT; -- connecting wires for output
 	
 	--/*			FLAG statments			*/
-	cFlag <= '1' when internalCarryOut = '1' else '0';
-	nFlag <= '1' when internalOUT(Dwidth-1) = '1' else '0';
-	zFlag <= '1' when internalOUT = zeros_vector else '0';
+	cFlag <= '1' when (internalCarryOut = '1' and (opc = "0000" or opc = "0001"));
+	nFlag <= '1' when internalOUT(Dwidth-1) = '1';
+	zFlag <= '1' when internalOUT = zeros_vector;
 	
 end behav;

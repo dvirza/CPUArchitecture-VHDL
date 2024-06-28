@@ -13,9 +13,7 @@ end BidirPin;
 architecture comb of BidirPin is
 
 begin 
-
 	Din  <= IOpin;
 	IOpin <= Dout when(en='1') else (others => 'Z');
-	
 end comb;
 

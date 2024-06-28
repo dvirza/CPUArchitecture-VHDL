@@ -59,9 +59,6 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 	wire_nFlag <= internalNegFlag;
 --------------------------------------
 
-	--internalSrcA <= reg_srcA when regAin = '1' else internalSrcA;
-	--reg_cOut <= internalCreg when regCin ='1' else zeros_vector;
-
 	process(clk,regCin,regAin)
 	begin
 		if (clk'event and clk='1') then

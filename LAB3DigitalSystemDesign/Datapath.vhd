@@ -34,13 +34,17 @@ end Datapath;
 
 ARCHITECTURE behav OF Datapath IS
 
-signal dataBUS : std_logic_vector(Dwidth-1 downto 0);
-signal internalALUout, internalALUin : std_logic_vector(Dwidth-1 downto 0);
-signal internalMEMdata : std_logic_vector (Dwidth-1 downto 0);
+signal dataBUS : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+signal internalALUout, internalALUin : std_logic_vector(Dwidth-1 downto 0) := (others => '0') ;
+signal internalMEMdataIN, internalMEMdataOUT: std_logic_vector (Dwidth-1 downto 0) := (others => '0');
 signal imm1SignExt, imm2SignExt : std_logic_vector(Dwidth-1 downto 0);
 signal internalRFdataIN,internalRFdataOUT : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
+signal intC,intZ,intN : std_logic := '0' ;
 
 begin
+	cFlag <= intC;
+	zFlag <= intZ;
+	nFlag <= intN;
 --/*			ALU connection			*/
  ALU_inst : aluTop 
 			generic map (n => 16,
@@ -50,9 +54,9 @@ begin
 				reg_srcA => internalALUin,
 				wire_srcB => internalALUin,
 				clk => clk,
-				wire_cFlag => cFlag,
-				wire_nFlag => nFlag,
-				wire_zFlag => zFlag,
+				wire_cFlag => intC,
+				wire_nFlag => intN,
+				wire_zFlag => intZ,
 				regAin => Ain,
 				regCin => Cin,
 				opc_wire => OPC,
@@ -83,15 +87,16 @@ begin
 					tbDataIn => tbDataIn,
 					tbAddrR => tbAddrInR,
 					tbAddrW => tbAddrInW,
-					dataInOut => internalMEMdata
+					dataIn => internalMEMdataIN,
+					dataOut => internalMEMdataOUT
 			   );
 
  dataMEMBidirPin_inst : BidirPin 
 			   generic map( width => Dwidth)
 			   port map (
-				  Dout => internalMEMdata,
+				  Dout => internalMEMdataOUT,
 				  en => Mem_out,
-				  Din => internalMEMdata,
+				  Din => internalMEMdataIN,
 				  IOpin => dataBUS
 			  );
 --/*			***************			*/
@@ -159,6 +164,5 @@ IMM2_sign_inst : BidirPin
 						IOpin => dataBUS
 					);
 
-
- MEMdataOut <= internalMEMdata; -- connect the output signal into internal signal
+ MEMdataOut <= internalMEMdataOUT; -- connect the output signal into internal signal
 end behav;

@@ -33,7 +33,7 @@ signal one_vec : std_logic_vector(Awidth-1 downto 0);
 begin
 	one_vec <= (0 => '1' ,others => '0');
 	Adder_inst_one : Adder 
-					generic map (n=>Awidth)
+					generic map (length=>Awidth)
 					port map (
 						a=> one_vec,
 						b=>int_pc,
@@ -42,7 +42,7 @@ begin
 						cout => open 
 					);
 	Adder_inst_IR : Adder 
-				generic map (n=>Awidth)
+				generic map (length=>Awidth)
 				port map (
 					a=> internalIR,
 					b=>int_pc_plus,

@@ -21,6 +21,7 @@ architecture behav of mod_RF is
     signal internalAddr : std_logic_vector(Awidth-1 downto 0):= (others => '0');
     signal internalData : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
     signal internalBus : std_logic_vector(Dwidth-1 downto 0):= (others => '0');
+    signal internalinIR, internalinIRsave: std_logic_vector(Awidth-1 downto 0):= (others => '0');
 begin
     
 rf_inst : RF 
@@ -29,36 +30,20 @@ rf_inst : RF
             port map(	clk => clk,
                     rst => rst,
                     WregEn => RFin,	
-                    WregData => dataInBUS,--internalBus,
+                    WregData => dataInBUS,
                     WregAddr => internalAddr ,
                     RregAddr => internalAddr ,
                     RregData => internalData
                 );
 
+    internalinIR <= dataInIR(Dwidth-1 downto Dwidth-4);
+    opcOut <= internalinIR when IRin = '1';
 
-process(clk,rst,IRin)
-begin
-	if (clk'event and clk='1') then
-	    if (IRin ='1') then
-            opcOut <= dataInIR(Dwidth-1 downto Dwidth-4);
-        end if;
-	end if;
-end process;
+    internalAddr <= dataInIR(3 downto 0) when RFaddr = "00" else
+                    dataInIR(7 downto 4) when RFaddr = "01" else
+                    dataInIR(11 downto 8) when RFaddr = "10" else
+                    (others => '0'); 
 
-process(RFaddr, dataInIR)
-begin
-    case RFaddr is
-        when "00" =>
-            internalAddr <= dataInIR(3 downto 0); -- takes rc
-        when "01" =>
-            internalAddr <= dataInIR(7 downto 4); -- takes rb
-        when "10" =>
-            internalAddr <= dataInIR(11 downto 8); -- takes ra
-        when others =>
-            internalAddr <= (others => '0');
-    end case;
-end process;
-
-outData <= internalData; --output the data
+    outData <= internalData; --output the data
 
 end behav;

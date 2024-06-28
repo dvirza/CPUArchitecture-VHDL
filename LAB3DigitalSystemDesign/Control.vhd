@@ -88,17 +88,7 @@ BEGIN
 			nx_state <= st_decode;
 		WHEN st_decode =>
 			IRin <= '0';
-			-- if (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') THEN--NEW!!!!!!!
-			-- 	nx_state <= rType0;
-			-- elsif (op_jmp = '1' or op_jc = '1' or op_jnc = '1') THEN
-			-- 	nx_state <= jType0;
-			-- elsif (op_ld = '1' or op_st = '1') THEN
-			-- 	nx_state <= iType0;
-			-- elsif (op_mov = '1') THEN
-			-- 	nx_state <= iTypeMov0;
-			-- elsif (op_done = '1') THEN
-			-- 	nx_state <= st_done;
-			-- end if;
+			assert false report "IM in Decode and op_mov is := " &to_string(op_mov) severity Error;
 			nx_state <= iTypeMov0 when (op_mov = '1') else
 						rType0 when (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') else
 						jType0 when (op_jmp = '1' or op_jc = '1' or op_jnc = '1') else
@@ -119,6 +109,8 @@ BEGIN
 			elsif (op_jmp = '1') then
 				assert false report " Im in J TYPE   Regular~!!~ " severity Error;
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
+			else
+				IRin <= '0'; PCin <= '1'; PCsel <= "10";
 			end if;
 			nx_state <= fetch;
 		WHEN rType0 =>
@@ -135,10 +127,6 @@ BEGIN
 				"0011" when op_or = '1' else
 				"0100" when op_xor = '1' else
 				(others => '0'); --UNUSEDDDD
-				assert false report "IM in R-TYPE1 and op_add := " & to_string(op_add) &
-				" op_sub := " & to_string(op_sub) &
-				" op_and := " & to_string(op_and) severity error;
-	   assert false report "IM in R-TYPE1 and OPC := " &to_string(OPC) severity Error;
 			nx_state <= rType2;
 		WHEN rType2 =>
 			Cin <= '0'; Ain <= '0'; RFout <= '0'; RFin <= '1'; Cout <= '1';

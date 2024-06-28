@@ -80,7 +80,7 @@ begin
 		wait until falling_edge(clk);
 
 		-- read from data mem
-		wait until falling_edge(clk);
+		wait until rising_edge(clk);
 		TBactive <= '1';
 		readDataMem_phase_start <= true;
 		wait until (readDataMem_phase_finish'event and readDataMem_phase_finish=true); 

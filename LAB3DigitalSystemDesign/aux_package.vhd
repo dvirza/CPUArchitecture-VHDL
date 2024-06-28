@@ -24,10 +24,10 @@ package aux_package is
 	end component;
 -----------------------------------------------------------------
 	component Adder IS
-		GENERIC (n : INTEGER );
-  		PORT ( a, b: IN STD_LOGIC_VECTOR (n-1 DOWNTO 0);
+		GENERIC (length : INTEGER );
+  		PORT ( a, b: IN STD_LOGIC_VECTOR (length-1 DOWNTO 0);
           cin: IN STD_LOGIC;
-            s: OUT STD_LOGIC_VECTOR (n-1 DOWNTO 0);
+            s: OUT STD_LOGIC_VECTOR (length-1 DOWNTO 0);
          cout: OUT STD_LOGIC);
 	END component;
 -----------------------------------------------------------------
@@ -134,13 +134,14 @@ component Datapath is
 --------------------------------------------------------------
 component mod_dataMem is
 	generic( Dwidth: integer:=16;
-			 Awidth: integer:=6;
-			 dept:   integer:=64);
+		 Awidth: integer:=6;
+		 dept:   integer:=64);
 	port(	clk,Mem_in, Mem_wr, tbActive, tbMem_wr: in std_logic;
-			tbDataIn : in std_logic_vector(Dwidth-1 downto 0);
-			tbAddrR, tbAddrW: in std_logic_vector(Awidth-1 downto 0);
-			dataInOut: inout std_logic_vector(Dwidth-1 downto 0)
-		);
+        tbDataIn : in std_logic_vector(Dwidth-1 downto 0);
+        tbAddrR, tbAddrW: in std_logic_vector(Awidth-1 downto 0);
+		dataIn : in std_logic_vector(Dwidth-1 downto 0);
+        dataOut: out std_logic_vector(Dwidth-1 downto 0)
+    );
 	end component;
 --------------------------------------------------------------
 component mod_ProgMem is
