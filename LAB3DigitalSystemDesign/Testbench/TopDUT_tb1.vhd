@@ -97,7 +97,6 @@ begin
         end process;
 
 	write_instructions : process
-		--variable WAddrProg_1 : std_logic_vector(AregWidth-1 downto 0) := (others => '0');
 		variable line_entry : std_logic_vector(Dwidth-1 downto 0);
 		variable good : boolean;
 		variable L : line;

@@ -55,12 +55,7 @@ progmem_inst : progMem
 
 
 
-    --internalData <= internalData when IRin = '1' else (others => '0');
-
     dataOut <= internalData;
 
-    
-
-	
 
 end behav;

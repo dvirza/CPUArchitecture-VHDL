@@ -27,7 +27,7 @@ begin
 rf_inst : RF 
             generic map( Dwidth=> Dwidth,
                         opwidth=> Awidth)
-            port map(	clk => clk,
+            port map(clk => clk,
                     rst => rst,
                     WregEn => RFin,	
                     WregData => dataInBUS,

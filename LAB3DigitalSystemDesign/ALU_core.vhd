@@ -20,8 +20,8 @@ end aluCore;
 
 architecture behav of aluCore is
 
-signal internalsrcA, internalsrcB : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signals for component connect
-signal internalOUT : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signal for computing the output
+signal internalsrcA, internalsrcB, internalsrcAForAdder, internalsrcBForAdder, intB : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signals for component connect
+signal internalOUTadder,internalOUTlogic : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signal for computing the output
 signal internalCarryOut, internalCarryIn : std_logic; --internal carrys
 signal zeros_vector: std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 
@@ -29,46 +29,32 @@ begin
 Adder_inst : Adder ---Adder inner connect Add \ Substract
 		GENERIC MAP (length=>n)
 		PORT MAP (
-				a => internalsrcA,
-				b => internalsrcB,
+				a => internalsrcAForAdder,
+				b => internalsrcBForAdder,
 				cin => internalCarryIn,
-				s => internalOUT,
+				s => internalOUTadder,
 				cout => internalCarryOut
 			  );
 			
- --internalOPC <= opc;
-PROCESS (opc,srcA,srcB)
-begin
-	CASE opc IS
-		WHEN "0000" =>
-			--add op
-			internalsrcA <= srcA;
-			internalsrcB <= srcB;
-			internalCarryIn <= '0';
-		WHEN "0001" =>
-			--sub op
-			internalsrcA <= srcA;
-			internalsrcB <= not(srcB);
-			internalCarryIn <= '1';
-		WHEN "0010" =>
-			--and op
-			internalOUT <= srcA and srcB;
-		WHEN "0011" =>
-			--or op
-			internalOUT <= srcA or srcB;
-		WHEN "0100" =>
-			--xor op
-			internalOUT <= srcA xor srcB;
-		WHEN others =>
-			internalOUT <= (others => '0'); --zero the staement
-	END CASE;
-END PROCESS;
+	
+	with opc select
+	internalOUTlogic <= srcA and srcB when "0010",
+						srcA or srcB when "0011",
+						srcA xor srcB when "0100",
+						(others => 'Z') when others;
+	with opc select
+		internalCarryIn <= '1' when "0001", '0' when others;
 
-	aluOut <= internalOUT; -- connecting wires for output
+	
+	internalsrcAForAdder <= srcA when opc = "0000" or opc = "0001";
+	intB <= srcB when opc = "0000" or opc = "0001" else zeros_vector;
+	internalsrcBForAdder <= not(intB) when opc = "0001" else intB when opc = "0000";
+
+	aluOut <= internalOUTadder when opc = "0000" or opc = "0001" else internalOUTlogic when opc = "0010" or opc = "0011" or opc = "0100" else (others => '0'); -- connecting wires for output
 	
 	--/*			FLAG statments			*/
-	cFlag <= '1' when (internalCarryOut = '1' and (opc = "0000" or opc = "0001"));
-	nFlag <= '1' when internalOUT(Dwidth-1) = '1';
-	zFlag <= '1' when internalOUT = zeros_vector;
+	cFlag <= internalCarryOut when opc = "0000" or opc = "0000" else unaffected;
+	nFlag <= '1' when internalOUTlogic(Dwidth-1) = '1' or internalOUTadder(Dwidth-1) = '1' else '0';
+	zFlag <= '1' when internalOUTadder = zeros_vector or internalOUTlogic = zeros_vector else '0';
 	
 end behav;

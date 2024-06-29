@@ -79,7 +79,7 @@ Datapath_inst : Datapath
 						ARwidth => AregWidth)
 					port map (
 						clk => clk,
-						rst => clk,
+						rst => rst,
 						op_st => op_st,
 						op_ld => op_ld,
 						op_mov => op_mov,

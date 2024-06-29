@@ -34,7 +34,7 @@ signal internalSrcA :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 signal internalCreg :std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 signal internalOPC : std_logic_vector(opwidth-1 downto 0);
 signal zeros_vector : std_logic_vector(Dwidth-1 downto 0) := (others => '0');
-
+signal saveC : std_logic := '0';
 begin
 
 ALU_inst : aluCore --Instance connect to the ALU core component
@@ -52,9 +52,9 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 						nFlag => internalNegFlag
 						);
 
-
+	saveC <= internalCarryFlag when opc_wire = "0000" or opc_wire ="0001";
 --/*			Flags connect			*/
-	wire_cFlag <= internalCarryFlag;
+	wire_cFlag <= saveC;
 	wire_zFlag <= internalZeroFlag;
 	wire_nFlag <= internalNegFlag;
 --------------------------------------
