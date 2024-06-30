@@ -54,9 +54,7 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 
 	saveC <= internalCarryFlag when opc_wire = "0000" or opc_wire ="0001";
 --/*			Flags connect			*/
-	wire_cFlag <= saveC;
-	wire_zFlag <= internalZeroFlag;
-	wire_nFlag <= internalNegFlag;
+	
 --------------------------------------
 
 	process(clk,regCin,regAin)
@@ -64,6 +62,9 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 		if (clk'event and clk='1') then
 			if (regCin ='1') then
 				reg_cOut <= internalCreg;
+				wire_cFlag <= saveC;
+				wire_zFlag <= internalZeroFlag;
+				wire_nFlag <= internalNegFlag;
 			end if;
 			if (regAin ='1') then
 				internalSrcA <= reg_srcA;

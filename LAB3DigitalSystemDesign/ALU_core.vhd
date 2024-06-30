@@ -53,7 +53,7 @@ Adder_inst : Adder ---Adder inner connect Add \ Substract
 	aluOut <= internalOUTadder when opc = "0000" or opc = "0001" else internalOUTlogic when opc = "0010" or opc = "0011" or opc = "0100" else (others => '0'); -- connecting wires for output
 	
 	--/*			FLAG statments			*/
-	cFlag <= internalCarryOut when opc = "0000" or opc = "0000" else unaffected;
+	cFlag <= internalCarryOut;-- when opc = "0000" or opc = "0000" else unaffected;
 	nFlag <= '1' when internalOUTlogic(Dwidth-1) = '1' or internalOUTadder(Dwidth-1) = '1' else '0';
 	zFlag <= '1' when internalOUTadder = zeros_vector or internalOUTlogic = zeros_vector else '0';
 	
