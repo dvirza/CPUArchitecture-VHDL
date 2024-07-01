@@ -116,11 +116,11 @@ BEGIN
 		WHEN rType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; 
 			PCsel <= "10"; -- +1
-			RFaddr <= "00"; --takes rc
+			RFaddr <= "01"; --takes rb
 			nx_state <= rType1;
 		WHEN rType1 =>
 			Cin <= '1'; Ain <= '0'; RFout <= '1'; Cout <= '0';
-			RFaddr <= "01"; --takes rb
+			RFaddr <= "00"; --takes rc
 			OPC <= "0000" when op_add = '1' else
 				"0001" when op_sub = '1' else
 				"0010" when op_and = '1' else
