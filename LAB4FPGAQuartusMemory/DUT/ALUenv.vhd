@@ -5,7 +5,7 @@ USE work.aux_package.all;
 ENTITY aluEnv IS
     GENERIC (
         n : INTEGER := 8;
-        k : INTEGER := 3;   -- k=log2(n)
+        k : INTEGER := 3   -- k=log2(n)
     );
     PORT (
         X_i, Y_i : IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
