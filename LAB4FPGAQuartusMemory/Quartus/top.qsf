@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSXFC6D6F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY top
+set_global_assignment -name TOP_LEVEL_ENTITY topEnv
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 21.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:26:53  JULY 01, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
@@ -56,6 +56,20 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_AC23 -to z_flag_o
+set_location_assignment PIN_AA24 -to n_flag_o
+set_location_assignment PIN_AB23 -to c_flag_o
+set_location_assignment PIN_AD24 -to ov_flag_o
+set_location_assignment PIN_AD21 -to aluRes_o[0]
+set_location_assignment PIN_AG22 -to aluRes_o[1]
+set_location_assignment PIN_AE22 -to aluRes_o[2]
+set_location_assignment PIN_AE23 -to aluRes_o[3]
+set_location_assignment PIN_AG23 -to aluRes_o[4]
+set_location_assignment PIN_AF23 -to aluRes_o[5]
+set_location_assignment PIN_AH22 -to aluRes_o[6]
+set_location_assignment PIN_AF21 -to aluRes_o[7]
+set_location_assignment PIN_AH5 -to pwm_o
+set_global_assignment -name VHDL_FILE ../DUT/topEnv.vhd
 set_global_assignment -name SDC_FILE SDC1_LAB4.sdc
 set_global_assignment -name VHDL_FILE ../DUT/top.vhd
 set_global_assignment -name VHDL_FILE ../DUT/Shifter.vhd
@@ -67,6 +81,8 @@ set_global_assignment -name VHDL_FILE ../DUT/counter.vhd
 set_global_assignment -name VHDL_FILE ../DUT/aux_package.vhd
 set_global_assignment -name VHDL_FILE ../DUT/ALUenv.vhd
 set_global_assignment -name VHDL_FILE ../DUT/AdderSub.vhd
+set_global_assignment -name QIP_FILE pll.qip
+set_global_assignment -name SIP_FILE pll.sip
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

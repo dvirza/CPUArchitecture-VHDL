@@ -55,19 +55,19 @@ alufn_i[3] => RegForALU[3].DATAIN
 alufn_i[3] => Equal0.IN1
 alufn_i[4] => RegForALU[4].DATAIN
 alufn_i[4] => Equal0.IN0
-pwm_o << pwm_o~reg0.DB_MAX_OUTPUT_PORT_TYPE
-ov_flag_o << ov_flag_o.DB_MAX_OUTPUT_PORT_TYPE
-z_flag_o << z_flag_o.DB_MAX_OUTPUT_PORT_TYPE
-c_flag_o << c_flag_o.DB_MAX_OUTPUT_PORT_TYPE
-n_flag_o << n_flag_o.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[0] << aluRes_o[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[1] << aluRes_o[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[2] << aluRes_o[2]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[3] << aluRes_o[3]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[4] << aluRes_o[4]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[5] << aluRes_o[5]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[6] << aluRes_o[6]~reg0.DB_MAX_OUTPUT_PORT_TYPE
-aluRes_o[7] << aluRes_o[7]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+pwm_o <= pwm_o~reg0.DB_MAX_OUTPUT_PORT_TYPE
+ov_flag_o <= ov_flag_o.DB_MAX_OUTPUT_PORT_TYPE
+z_flag_o <= z_flag_o.DB_MAX_OUTPUT_PORT_TYPE
+c_flag_o <= c_flag_o.DB_MAX_OUTPUT_PORT_TYPE
+n_flag_o <= n_flag_o.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[0] <= aluRes_o[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[1] <= aluRes_o[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[2] <= aluRes_o[2]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[3] <= aluRes_o[3]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[4] <= aluRes_o[4]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[5] <= aluRes_o[5]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[6] <= aluRes_o[6]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+aluRes_o[7] <= aluRes_o[7]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 
 
 |top|aluEnv:alu_inst

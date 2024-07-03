@@ -43,9 +43,6 @@ architecture dataflow of pwm is
                 if (intCount = intX) then
                     intPWM <= not(intPWMstartMode);
                 end if;
-                -- if (intCount = intX) then
-                --     intPWM <= not(intPWMstartMode);
-                -- end if;
             end if;
         end process;
         pwmOut <= intPWM; --connect the output

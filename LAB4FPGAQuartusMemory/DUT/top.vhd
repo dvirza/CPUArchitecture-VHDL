@@ -27,14 +27,7 @@ architecture dataflow of top is
                                                         Nflag_o => intFlagN, Cflag_o=> intFlagC, Zflag_o=>intFlagZ,Vflag_o=>intFlagOV);
     
     pwm_inst : pwmEnv generic map (n=>n) port map (clk=>clk, ena=>ena, rst=>rst, alufn_i=>RegForALU, x_i=>RegForX, y_i=>RegForY, PWMoutput=>intPWM);
-    
-    -- with alufn_i select
-    --     intOUTputForPWM <= intPWM when "00---",
-    --     intOUTputForPWM <= '0' when others;
 
-    -- with alufn_i SELECT
-    --     intOUTputForALU <= intALU when ("01---" or "10---" or "11---"),
-    --     intOUTputForALU <= (others => '0') when others;
     intOUTputForPWM <= intPWM when alufn_i(4 downto 3) = "00" else '0';
     intOUTputForALU <= intALU when alufn_i(4 downto 3) /= "00" else (others => '0');
     ov_flag_o <= intFlagOV when alufn_i(4 downto 3) /= "00" else '0';
@@ -42,19 +35,16 @@ architecture dataflow of top is
     c_flag_o <= intFlagC when alufn_i(4 downto 3) /= "00" else '0';
     n_flag_o <= intFlagN when alufn_i(4 downto 3) /= "00" else '0';
 
-    -- --connect output signals
-    -- pwm_o <= intOUTputForPWM;
-    -- aluRes_o <= intOUTputForALU;
 
-    process(clk)
-        begin
-            if (rising_edge(clk)) then -- REMOVE BEFORE FPGA
+    -- process(clk)
+    --     begin
+    --         if (rising_edge(clk)) then -- REMOVE BEFORE FPGA
                  --connect output signals
-                pwm_o <= intOUTputForPWM;
-                aluRes_o <= intOUTputForALU;
+                pwm_o <= intOUTputForPWM; -- remove this
+                aluRes_o <= intOUTputForALU; --remove this
                 RegForALU <= alufn_i;
                 RegForX <= x_i;
                 RegForY <= y_i;
-            end if;
-        end process;
+        --     end if;
+        -- end process;
     end dataflow;

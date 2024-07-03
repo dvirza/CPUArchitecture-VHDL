@@ -69,6 +69,11 @@ package aux_package is
 	q          : out std_logic_vector (n-1 downto 0)
     ); 
 	end component;
+---------------------------------------------------------  COUNTER Envelope
+	component CounterEnvelope is port (
+		Clk,En : in std_logic;	
+		Qout          : out std_logic_vector (5 downto 0)); 
+	end component;
 ---------------------------------------------------------  PWM
 	component pwm IS
 		generic (n : INTEGER );
@@ -87,5 +92,14 @@ package aux_package is
 				PWMoutput: out std_logic
 		);
 	END component;
+--------------------------------------------------------- PLL
+	component pll is
+		port (
+			refclk   : in  std_logic := '0'; --  refclk.clk
+			rst      : in  std_logic := '0'; --   reset.reset
+			outclk_0 : out std_logic;        -- outclk0.clk
+			locked   : out std_logic         --  locked.export
+		);
+	end component;
 
 end aux_package;
