@@ -3,6 +3,19 @@ use ieee.std_logic_1164.all;
 
 
 package aux_package is
+-------------------------------------------------------- TOP Envalope
+	component topEnv is
+		generic(n:INTEGER := 8;
+         k: INTEGER := 3);
+    port(clk,ena,rst: in std_logic;
+         x_ena,y_ena,alufn_ena : in std_logic;
+         sw07_i : in std_logic_vector(n-1 downto 0);
+         y_tohex_o, x_tohex_o : out std_logic_vector(n-1 downto 0);
+         alufn_tohex_o : out std_logic_vector(4 downto 0);
+         pwn_o , ov_flag_o, z_flag_o, c_flag_o, n_flag_o: out std_logic;
+         aluRes_o : out std_logic_vector(n-1 downto 0)
+         );
+	end component;
 -------------------------------------------------------- TOP
 	component top is
 		generic(n:INTEGER;
@@ -72,7 +85,7 @@ package aux_package is
 ---------------------------------------------------------  COUNTER Envelope
 	component CounterEnvelope is port (
 		Clk,En : in std_logic;	
-		Qout          : out std_logic_vector (5 downto 0)); 
+		clk_out          : out std_logic); 
 	end component;
 ---------------------------------------------------------  PWM
 	component pwm IS
