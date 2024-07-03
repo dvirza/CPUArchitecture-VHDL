@@ -3,8 +3,8 @@ USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
 
 entity top is
-    generic(n:INTEGER;
-         k: INTEGER);
+    generic(n:INTEGER := 8;
+         k: INTEGER := 3);
     port(clk,ena,rst: in std_logic;
          x_i,y_i : in std_logic_vector(n-1 downto 0);
          alufn_i : in std_logic_vector(4 downto 0);
