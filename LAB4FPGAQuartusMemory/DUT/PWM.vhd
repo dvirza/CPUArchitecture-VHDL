@@ -33,7 +33,7 @@ architecture dataflow of pwm is
                 if (ena = '1') then
                     count <= count + 1;
                 end if;
-                if (rst = '1') then
+                if (rst = '0') then
                     count <= (others => '0');
                 end if;
                 if (intCount = intY) then

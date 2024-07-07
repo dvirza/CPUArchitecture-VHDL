@@ -10,10 +10,11 @@ package aux_package is
     port(clk,ena,rst: in std_logic;
          x_ena,y_ena,alufn_ena : in std_logic;
          sw07_i : in std_logic_vector(n-1 downto 0);
-         y_tohex_o, x_tohex_o : out std_logic_vector(n-1 downto 0);
+         y_tohex_o1,y_tohex_o2, x_tohex_o1,x_tohex_o2 : out std_logic_vector(6 downto 0);
+         aluout_tohex_o1,aluout_tohex_o2 : out std_logic_vector(6 downto 0);
          alufn_tohex_o : out std_logic_vector(4 downto 0);
-         pwn_o , ov_flag_o, z_flag_o, c_flag_o, n_flag_o: out std_logic;
-         aluRes_o : out std_logic_vector(n-1 downto 0)
+         pwm_o , ov_flag_o, z_flag_o, c_flag_o, n_flag_o: out std_logic
+         --aluRes_o : out std_logic_vector(n-1 downto 0)
          );
 	end component;
 -------------------------------------------------------- TOP
@@ -84,7 +85,7 @@ package aux_package is
 	end component;
 ---------------------------------------------------------  COUNTER Envelope
 	component CounterEnvelope is port (
-		Clk,En : in std_logic;	
+		Clk : in std_logic;	
 		clk_out          : out std_logic); 
 	end component;
 ---------------------------------------------------------  PWM
@@ -114,5 +115,12 @@ package aux_package is
 			locked   : out std_logic         --  locked.export
 		);
 	end component;
+--------------------------------------------------------- DECODE
+	component decode IS
+		GENERIC (  n : INTEGER);
+	PORT (      sw_i : IN std_logic_vector (n-1 downto 0);
+	            hex_o1,hex_o2: OUT std_logic_vector (6 downto 0)
+	     );
+	END component;
 
 end aux_package;

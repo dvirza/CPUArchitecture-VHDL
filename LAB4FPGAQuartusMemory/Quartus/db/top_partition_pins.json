@@ -4,6 +4,90 @@
 			"name" : "Top",
 			"pins" : [
 				{
+					"name" : "y_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[5]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[6]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[7]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[5]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[6]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[7]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[4]",
+					"strict" : false
+				},
+				{
 					"name" : "pwm_o",
 					"strict" : false
 				},
@@ -56,11 +140,7 @@
 					"strict" : false
 				},
 				{
-					"name" : "alufn_i[3]",
-					"strict" : false
-				},
-				{
-					"name" : "alufn_i[4]",
+					"name" : "sw07_i[0]",
 					"strict" : false
 				},
 				{
@@ -68,79 +148,43 @@
 					"strict" : false
 				},
 				{
-					"name" : "alufn_i[0]",
+					"name" : "y_ena",
 					"strict" : false
 				},
 				{
-					"name" : "alufn_i[1]",
+					"name" : "sw07_i[1]",
 					"strict" : false
 				},
 				{
-					"name" : "y_i[7]",
+					"name" : "sw07_i[2]",
 					"strict" : false
 				},
 				{
-					"name" : "x_i[7]",
+					"name" : "sw07_i[3]",
 					"strict" : false
 				},
 				{
-					"name" : "alufn_i[2]",
+					"name" : "sw07_i[4]",
 					"strict" : false
 				},
 				{
-					"name" : "x_i[6]",
+					"name" : "sw07_i[5]",
 					"strict" : false
 				},
 				{
-					"name" : "y_i[6]",
+					"name" : "sw07_i[6]",
 					"strict" : false
 				},
 				{
-					"name" : "x_i[5]",
+					"name" : "sw07_i[7]",
 					"strict" : false
 				},
 				{
-					"name" : "y_i[5]",
+					"name" : "x_ena",
 					"strict" : false
 				},
 				{
-					"name" : "x_i[4]",
-					"strict" : false
-				},
-				{
-					"name" : "y_i[4]",
-					"strict" : false
-				},
-				{
-					"name" : "x_i[3]",
-					"strict" : false
-				},
-				{
-					"name" : "y_i[3]",
-					"strict" : false
-				},
-				{
-					"name" : "x_i[2]",
-					"strict" : false
-				},
-				{
-					"name" : "y_i[2]",
-					"strict" : false
-				},
-				{
-					"name" : "x_i[1]",
-					"strict" : false
-				},
-				{
-					"name" : "y_i[1]",
-					"strict" : false
-				},
-				{
-					"name" : "x_i[0]",
-					"strict" : false
-				},
-				{
-					"name" : "y_i[0]",
+					"name" : "alufn_ena",
 					"strict" : false
 				},
 				{
