@@ -13,16 +13,16 @@ architecture rtl of CounterEnvelope is
     signal PLLOut : std_logic ;
 	signal q_int_check : std_logic ;
 	signal clk_out_int : std_logic := '0';
-	signal counter : std_logic_vector(5 downto 0) := (others =>'0');
+	signal counter : std_logic_vector(4 downto 0) := (others =>'0');
 begin
 	  m1: PLL port map(
 		refclk => Clk,
-		 outclk_0 => PLLOut
+		 outclk_0 => PLLOut --2MHz
 	   );
 	   process(PLLOut)
 	   begin
 		   if rising_edge(PLLOut) then
-			   if counter = "111111" then
+			   if counter = "11111" then
 				   counter <= (others => '0');
 				   clk_out_int <= not clk_out_int;
 			   else

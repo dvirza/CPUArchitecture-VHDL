@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 
 package aux_package is
 -------------------------------------------------------- TOP Envalope
-	component topEnv is
+	component top is
 		generic(n:INTEGER := 8;
          k: INTEGER := 3);
     port(clk,ena,rst: in std_logic;
@@ -18,7 +18,7 @@ package aux_package is
          );
 	end component;
 -------------------------------------------------------- TOP
-	component top is
+	component topalu is
 		generic(n:INTEGER;
          k: INTEGER);
     port(clk,ena,rst: in std_logic;
@@ -93,8 +93,8 @@ package aux_package is
 		generic (n : INTEGER );
 		port (  clk, ena ,rst : in std_logic;
 				x,y : in std_logic_vector(n-1 downto 0);
-				workMode : in std_logic;
-				pwmOut : out std_logic  
+				workMode : in std_logic_vector(1 downto 0); -- CHANGE HERE
+				pwmOut : buffer std_logic  
 		);
 	END component;
 ---------------------------------------------------------  PWM envelope

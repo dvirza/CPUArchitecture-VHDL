@@ -1,5 +1,5 @@
 Assembler report for FINAL_LAB4
-Fri Jul  5 16:29:01 2024
+Sun Jul  7 19:27:14 2024
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -39,9 +39,9 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Fri Jul  5 16:29:01 2024 ;
+; Assembler Status      ; Successful - Sun Jul  7 19:27:14 2024 ;
 ; Revision Name         ; FINAL_LAB4                            ;
-; Top-level Entity Name ; topEnv                                ;
+; Top-level Entity Name ; top                                   ;
 ; Family                ; Cyclone V                             ;
 ; Device                ; 5CSXFC6D6F31C6                        ;
 +-----------------------+---------------------------------------+
@@ -78,8 +78,8 @@ https://fpgasoftware.intel.com/eula.
 +----------------+-------------------------------------------------------------------------------------------------------------------------------------+
 ; Option         ; Setting                                                                                                                             ;
 +----------------+-------------------------------------------------------------------------------------------------------------------------------------+
-; JTAG usercode  ; 0x00C73363                                                                                                                          ;
-; Checksum       ; 0x00C73363                                                                                                                          ;
+; JTAG usercode  ; 0x011D90BF                                                                                                                          ;
+; Checksum       ; 0x011D90BF                                                                                                                          ;
 +----------------+-------------------------------------------------------------------------------------------------------------------------------------+
 
 
@@ -89,14 +89,14 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
     Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
-    Info: Processing started: Fri Jul  5 16:28:54 2024
+    Info: Processing started: Sun Jul  7 19:27:06 2024
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off FINAL_LAB4 -c FINAL_LAB4
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (115030): Assembler is generating device programming files
 Info: Quartus Prime Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4887 megabytes
-    Info: Processing ended: Fri Jul  5 16:29:01 2024
-    Info: Elapsed time: 00:00:07
+    Info: Peak virtual memory: 4900 megabytes
+    Info: Processing ended: Sun Jul  7 19:27:14 2024
+    Info: Elapsed time: 00:00:08
     Info: Total CPU time (on all processors): 00:00:06
 
 

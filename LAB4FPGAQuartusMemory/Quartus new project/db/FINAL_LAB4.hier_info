@@ -1,4 +1,4 @@
-|topEnv
+|top
 clk => CounterEnvelope:counter_env_clk.Clk
 clk => alufnReg[0].CLK
 clk => alufnReg[1].CLK
@@ -21,8 +21,8 @@ clk => xReg[4].CLK
 clk => xReg[5].CLK
 clk => xReg[6].CLK
 clk => xReg[7].CLK
-ena => top:top_inst.ena
-rst => top:top_inst.rst
+ena => topalu:top_inst.ena
+rst => topalu:top_inst.rst
 x_ena => xReg[0].ENA
 x_ena => xReg[1].ENA
 x_ena => xReg[2].ENA
@@ -65,61 +65,61 @@ sw07_i[6] => yReg[6].DATAIN
 sw07_i[6] => xReg[6].DATAIN
 sw07_i[7] => yReg[7].DATAIN
 sw07_i[7] => xReg[7].DATAIN
-y_tohex_o1[0] << decode:decode_inst_forY.hex_o1[0]
-y_tohex_o1[1] << decode:decode_inst_forY.hex_o1[1]
-y_tohex_o1[2] << decode:decode_inst_forY.hex_o1[2]
-y_tohex_o1[3] << decode:decode_inst_forY.hex_o1[3]
-y_tohex_o1[4] << decode:decode_inst_forY.hex_o1[4]
-y_tohex_o1[5] << decode:decode_inst_forY.hex_o1[5]
-y_tohex_o1[6] << decode:decode_inst_forY.hex_o1[6]
-y_tohex_o2[0] << decode:decode_inst_forY.hex_o2[0]
-y_tohex_o2[1] << decode:decode_inst_forY.hex_o2[1]
-y_tohex_o2[2] << decode:decode_inst_forY.hex_o2[2]
-y_tohex_o2[3] << decode:decode_inst_forY.hex_o2[3]
-y_tohex_o2[4] << decode:decode_inst_forY.hex_o2[4]
-y_tohex_o2[5] << decode:decode_inst_forY.hex_o2[5]
-y_tohex_o2[6] << decode:decode_inst_forY.hex_o2[6]
-x_tohex_o1[0] << decode:decode_inst_forX.hex_o1[0]
-x_tohex_o1[1] << decode:decode_inst_forX.hex_o1[1]
-x_tohex_o1[2] << decode:decode_inst_forX.hex_o1[2]
-x_tohex_o1[3] << decode:decode_inst_forX.hex_o1[3]
-x_tohex_o1[4] << decode:decode_inst_forX.hex_o1[4]
-x_tohex_o1[5] << decode:decode_inst_forX.hex_o1[5]
-x_tohex_o1[6] << decode:decode_inst_forX.hex_o1[6]
-x_tohex_o2[0] << decode:decode_inst_forX.hex_o2[0]
-x_tohex_o2[1] << decode:decode_inst_forX.hex_o2[1]
-x_tohex_o2[2] << decode:decode_inst_forX.hex_o2[2]
-x_tohex_o2[3] << decode:decode_inst_forX.hex_o2[3]
-x_tohex_o2[4] << decode:decode_inst_forX.hex_o2[4]
-x_tohex_o2[5] << decode:decode_inst_forX.hex_o2[5]
-x_tohex_o2[6] << decode:decode_inst_forX.hex_o2[6]
-aluout_tohex_o1[0] << decode:decode_inst_forALUout.hex_o1[0]
-aluout_tohex_o1[1] << decode:decode_inst_forALUout.hex_o1[1]
-aluout_tohex_o1[2] << decode:decode_inst_forALUout.hex_o1[2]
-aluout_tohex_o1[3] << decode:decode_inst_forALUout.hex_o1[3]
-aluout_tohex_o1[4] << decode:decode_inst_forALUout.hex_o1[4]
-aluout_tohex_o1[5] << decode:decode_inst_forALUout.hex_o1[5]
-aluout_tohex_o1[6] << decode:decode_inst_forALUout.hex_o1[6]
-aluout_tohex_o2[0] << decode:decode_inst_forALUout.hex_o2[0]
-aluout_tohex_o2[1] << decode:decode_inst_forALUout.hex_o2[1]
-aluout_tohex_o2[2] << decode:decode_inst_forALUout.hex_o2[2]
-aluout_tohex_o2[3] << decode:decode_inst_forALUout.hex_o2[3]
-aluout_tohex_o2[4] << decode:decode_inst_forALUout.hex_o2[4]
-aluout_tohex_o2[5] << decode:decode_inst_forALUout.hex_o2[5]
-aluout_tohex_o2[6] << decode:decode_inst_forALUout.hex_o2[6]
-alufn_tohex_o[0] << alufnReg[0].DB_MAX_OUTPUT_PORT_TYPE
-alufn_tohex_o[1] << alufnReg[1].DB_MAX_OUTPUT_PORT_TYPE
-alufn_tohex_o[2] << alufnReg[2].DB_MAX_OUTPUT_PORT_TYPE
-alufn_tohex_o[3] << alufnReg[3].DB_MAX_OUTPUT_PORT_TYPE
-alufn_tohex_o[4] << alufnReg[4].DB_MAX_OUTPUT_PORT_TYPE
-pwm_o << top:top_inst.pwm_o
-ov_flag_o << top:top_inst.ov_flag_o
-z_flag_o << top:top_inst.z_flag_o
-c_flag_o << top:top_inst.c_flag_o
-n_flag_o << top:top_inst.n_flag_o
+y_tohex_o1[0] <= decode:decode_inst_forY.hex_o1[0]
+y_tohex_o1[1] <= decode:decode_inst_forY.hex_o1[1]
+y_tohex_o1[2] <= decode:decode_inst_forY.hex_o1[2]
+y_tohex_o1[3] <= decode:decode_inst_forY.hex_o1[3]
+y_tohex_o1[4] <= decode:decode_inst_forY.hex_o1[4]
+y_tohex_o1[5] <= decode:decode_inst_forY.hex_o1[5]
+y_tohex_o1[6] <= decode:decode_inst_forY.hex_o1[6]
+y_tohex_o2[0] <= decode:decode_inst_forY.hex_o2[0]
+y_tohex_o2[1] <= decode:decode_inst_forY.hex_o2[1]
+y_tohex_o2[2] <= decode:decode_inst_forY.hex_o2[2]
+y_tohex_o2[3] <= decode:decode_inst_forY.hex_o2[3]
+y_tohex_o2[4] <= decode:decode_inst_forY.hex_o2[4]
+y_tohex_o2[5] <= decode:decode_inst_forY.hex_o2[5]
+y_tohex_o2[6] <= decode:decode_inst_forY.hex_o2[6]
+x_tohex_o1[0] <= decode:decode_inst_forX.hex_o1[0]
+x_tohex_o1[1] <= decode:decode_inst_forX.hex_o1[1]
+x_tohex_o1[2] <= decode:decode_inst_forX.hex_o1[2]
+x_tohex_o1[3] <= decode:decode_inst_forX.hex_o1[3]
+x_tohex_o1[4] <= decode:decode_inst_forX.hex_o1[4]
+x_tohex_o1[5] <= decode:decode_inst_forX.hex_o1[5]
+x_tohex_o1[6] <= decode:decode_inst_forX.hex_o1[6]
+x_tohex_o2[0] <= decode:decode_inst_forX.hex_o2[0]
+x_tohex_o2[1] <= decode:decode_inst_forX.hex_o2[1]
+x_tohex_o2[2] <= decode:decode_inst_forX.hex_o2[2]
+x_tohex_o2[3] <= decode:decode_inst_forX.hex_o2[3]
+x_tohex_o2[4] <= decode:decode_inst_forX.hex_o2[4]
+x_tohex_o2[5] <= decode:decode_inst_forX.hex_o2[5]
+x_tohex_o2[6] <= decode:decode_inst_forX.hex_o2[6]
+aluout_tohex_o1[0] <= decode:decode_inst_forALUout.hex_o1[0]
+aluout_tohex_o1[1] <= decode:decode_inst_forALUout.hex_o1[1]
+aluout_tohex_o1[2] <= decode:decode_inst_forALUout.hex_o1[2]
+aluout_tohex_o1[3] <= decode:decode_inst_forALUout.hex_o1[3]
+aluout_tohex_o1[4] <= decode:decode_inst_forALUout.hex_o1[4]
+aluout_tohex_o1[5] <= decode:decode_inst_forALUout.hex_o1[5]
+aluout_tohex_o1[6] <= decode:decode_inst_forALUout.hex_o1[6]
+aluout_tohex_o2[0] <= decode:decode_inst_forALUout.hex_o2[0]
+aluout_tohex_o2[1] <= decode:decode_inst_forALUout.hex_o2[1]
+aluout_tohex_o2[2] <= decode:decode_inst_forALUout.hex_o2[2]
+aluout_tohex_o2[3] <= decode:decode_inst_forALUout.hex_o2[3]
+aluout_tohex_o2[4] <= decode:decode_inst_forALUout.hex_o2[4]
+aluout_tohex_o2[5] <= decode:decode_inst_forALUout.hex_o2[5]
+aluout_tohex_o2[6] <= decode:decode_inst_forALUout.hex_o2[6]
+alufn_tohex_o[0] <= alufnReg[0].DB_MAX_OUTPUT_PORT_TYPE
+alufn_tohex_o[1] <= alufnReg[1].DB_MAX_OUTPUT_PORT_TYPE
+alufn_tohex_o[2] <= alufnReg[2].DB_MAX_OUTPUT_PORT_TYPE
+alufn_tohex_o[3] <= alufnReg[3].DB_MAX_OUTPUT_PORT_TYPE
+alufn_tohex_o[4] <= alufnReg[4].DB_MAX_OUTPUT_PORT_TYPE
+pwm_o <= topalu:top_inst.pwm_o
+ov_flag_o <= topalu:top_inst.ov_flag_o
+z_flag_o <= topalu:top_inst.z_flag_o
+c_flag_o <= topalu:top_inst.c_flag_o
+n_flag_o <= topalu:top_inst.n_flag_o
 
 
-|topEnv|top:top_inst
+|top|topalu:top_inst
 clk => pwmEnv:pwm_inst.clk
 ena => pwmEnv:pwm_inst.ena
 rst => pwmEnv:pwm_inst.rst
@@ -182,7 +182,7 @@ aluRes_o[6] <= intOUTputForALU.DB_MAX_OUTPUT_PORT_TYPE
 aluRes_o[7] <= intOUTputForALU.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst
+|top|topalu:top_inst|aluEnv:alu_inst
 X_i[0] => AdderSub:AddSub_inst.x[0]
 X_i[0] => shifter:Shift_inst.x[0]
 X_i[0] => Logic:Boolean_inst.x[0]
@@ -295,7 +295,7 @@ Zflag_o <= Equal4.DB_MAX_OUTPUT_PORT_TYPE
 Vflag_o <= Vflag_o.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst
 x[0] => xForAdder[0].IN0
 x[1] => xForAdder[1].IN0
 x[2] => xForAdder[2].IN0
@@ -332,7 +332,7 @@ result[7] <= FA:FAN:7:FA_i_instance.s
 c_out <= FA:FAN:7:FA_i_instance.cout
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:FA0
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:FA0
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -346,7 +346,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:1:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:1:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -360,7 +360,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:2:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:2:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -374,7 +374,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:3:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:3:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -388,7 +388,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:4:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:4:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -402,7 +402,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:5:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:5:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -416,7 +416,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:6:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:6:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -430,7 +430,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:7:FA_i_instance
+|top|topalu:top_inst|aluEnv:alu_inst|AdderSub:AddSub_inst|FA:\FAN:7:FA_i_instance
 xi => s.IN0
 xi => cout.IN0
 xi => cout.IN0
@@ -444,7 +444,7 @@ s <= s.DB_MAX_OUTPUT_PORT_TYPE
 cout <= cout.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|shifter:Shift_inst
+|top|topalu:top_inst|aluEnv:alu_inst|shifter:Shift_inst
 x[0] => horiz[0][8].OUTPUTSELECT
 x[0] => horiz[0][7].OUTPUTSELECT
 x[0] => horiz[0][6].OUTPUTSELECT
@@ -520,7 +520,7 @@ result[7] <= result.DB_MAX_OUTPUT_PORT_TYPE
 cout <= horiz.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|aluEnv:alu_inst|LOGIC:Boolean_inst
+|top|topalu:top_inst|aluEnv:alu_inst|LOGIC:Boolean_inst
 x[0] => result.IN0
 x[0] => result.IN0
 x[0] => result.IN0
@@ -659,12 +659,12 @@ result[6] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
 result[7] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|top:top_inst|pwmEnv:pwm_inst
+|top|topalu:top_inst|pwmEnv:pwm_inst
 clk => pwm:pwm_inst.clk
 ena => pwm:pwm_inst.ena
 rst => pwm:pwm_inst.rst
-alufn_i[0] => pwm:pwm_inst.workMode
-alufn_i[1] => ~NO_FANOUT~
+alufn_i[0] => pwm:pwm_inst.workMode[0]
+alufn_i[1] => pwm:pwm_inst.workMode[1]
 alufn_i[2] => ~NO_FANOUT~
 alufn_i[3] => Equal0.IN1
 alufn_i[3] => Equal1.IN1
@@ -689,7 +689,7 @@ y_i[7] => intYforPWM[7].DATAB
 PWMoutput <= pwm:pwm_inst.pwmOut
 
 
-|topEnv|top:top_inst|pwmEnv:pwm_inst|pwm:pwm_inst
+|top|topalu:top_inst|pwmEnv:pwm_inst|pwm:pwm_inst
 clk => intPWM.CLK
 clk => count[0].CLK
 clk => count[1].CLK
@@ -707,6 +707,7 @@ ena => count.OUTPUTSELECT
 ena => count.OUTPUTSELECT
 ena => count.OUTPUTSELECT
 ena => count.OUTPUTSELECT
+ena => intPWM.ENA
 rst => count.OUTPUTSELECT
 rst => count.OUTPUTSELECT
 rst => count.OUTPUTSELECT
@@ -715,47 +716,58 @@ rst => count.OUTPUTSELECT
 rst => count.OUTPUTSELECT
 rst => count.OUTPUTSELECT
 rst => count.OUTPUTSELECT
-x[0] => Equal1.IN7
-x[1] => Equal1.IN6
-x[2] => Equal1.IN5
-x[3] => Equal1.IN4
-x[4] => Equal1.IN3
-x[5] => Equal1.IN2
-x[6] => Equal1.IN1
-x[7] => Equal1.IN0
-y[0] => Equal0.IN7
-y[1] => Equal0.IN6
-y[2] => Equal0.IN5
-y[3] => Equal0.IN4
-y[4] => Equal0.IN3
-y[5] => Equal0.IN2
-y[6] => Equal0.IN1
-y[7] => Equal0.IN0
-workMode => intPWM.DATAB
-workMode => intPWM.DATAB
+x[0] => Add2.IN16
+x[1] => Add2.IN15
+x[2] => Add2.IN14
+x[3] => Add2.IN13
+x[4] => Add2.IN12
+x[5] => Add2.IN11
+x[6] => Add2.IN10
+x[7] => Add2.IN9
+y[0] => Add1.IN16
+y[1] => Add1.IN15
+y[2] => Add1.IN14
+y[3] => Add1.IN13
+y[4] => Add1.IN12
+y[5] => Add1.IN11
+y[6] => Add1.IN10
+y[7] => Add1.IN9
+workMode[0] => intPWM.DATAB
+workMode[0] => Equal0.IN3
+workMode[0] => intPWM.DATAA
+workMode[1] => Equal0.IN2
+workMode[1] => intPWM.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
+workMode[1] => count.OUTPUTSELECT
 pwmOut <= intPWM.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|CounterEnvelope:counter_env_clk
+|top|CounterEnvelope:counter_env_clk
 Clk => pll:m1.refclk
 clk_out <= clk_out_int.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|CounterEnvelope:counter_env_clk|pll:m1
+|top|CounterEnvelope:counter_env_clk|pll:m1
 refclk => pll_0002:pll_inst.refclk
 rst => pll_0002:pll_inst.rst
 outclk_0 <= pll_0002:pll_inst.outclk_0
 locked <= pll_0002:pll_inst.locked
 
 
-|topEnv|CounterEnvelope:counter_env_clk|pll:m1|pll_0002:pll_inst
+|top|CounterEnvelope:counter_env_clk|pll:m1|pll_0002:pll_inst
 refclk => refclk.IN1
 rst => rst.IN1
 outclk_0 <= altera_pll:altera_pll_i.outclk
 locked <= altera_pll:altera_pll_i.locked
 
 
-|topEnv|CounterEnvelope:counter_env_clk|pll:m1|pll_0002:pll_inst|altera_pll:altera_pll_i
+|top|CounterEnvelope:counter_env_clk|pll:m1|pll_0002:pll_inst|altera_pll:altera_pll_i
 refclk => general[0].gpll.I_REFCLK
 refclk1 => ~NO_FANOUT~
 fbclk => ~NO_FANOUT~
@@ -927,7 +939,7 @@ cascade_out[0] <= <GND>
 zdbfbclk <> <GND>
 
 
-|topEnv|decode:decode_inst_forX
+|top|decode:decode_inst_forX
 sw_i[0] => Mux0.IN19
 sw_i[0] => Mux1.IN19
 sw_i[0] => Mux2.IN19
@@ -1000,7 +1012,7 @@ hex_o2[5] <= Mux8.DB_MAX_OUTPUT_PORT_TYPE
 hex_o2[6] <= Mux7.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|decode:decode_inst_forY
+|top|decode:decode_inst_forY
 sw_i[0] => Mux0.IN19
 sw_i[0] => Mux1.IN19
 sw_i[0] => Mux2.IN19
@@ -1073,7 +1085,7 @@ hex_o2[5] <= Mux8.DB_MAX_OUTPUT_PORT_TYPE
 hex_o2[6] <= Mux7.DB_MAX_OUTPUT_PORT_TYPE
 
 
-|topEnv|decode:decode_inst_forALUout
+|top|decode:decode_inst_forALUout
 sw_i[0] => Mux0.IN19
 sw_i[0] => Mux1.IN19
 sw_i[0] => Mux2.IN19

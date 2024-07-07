@@ -260,11 +260,11 @@
 					"strict" : false
 				},
 				{
-					"name" : "rst",
+					"name" : "ena",
 					"strict" : false
 				},
 				{
-					"name" : "ena",
+					"name" : "rst",
 					"strict" : false
 				}
 			]

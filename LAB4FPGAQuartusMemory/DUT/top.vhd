@@ -6,45 +6,60 @@ entity top is
     generic(n:INTEGER := 8;
          k: INTEGER := 3);
     port(clk,ena,rst: in std_logic;
-         x_i,y_i : in std_logic_vector(n-1 downto 0);
-         alufn_i : in std_logic_vector(4 downto 0);
-         pwm_o, ov_flag_o, z_flag_o, c_flag_o, n_flag_o : out std_logic;
-         aluRes_o : out std_logic_vector(n-1 downto 0)
+         x_ena,y_ena,alufn_ena : in std_logic;
+         sw07_i : in std_logic_vector(n-1 downto 0);
+         y_tohex_o1,y_tohex_o2, x_tohex_o1,x_tohex_o2 : out std_logic_vector(6 downto 0);
+         aluout_tohex_o1,aluout_tohex_o2 : out std_logic_vector(6 downto 0);
+         alufn_tohex_o : out std_logic_vector(4 downto 0);
+         pwm_o , ov_flag_o, z_flag_o, c_flag_o, n_flag_o: out std_logic
          );
 end top;
 
 
+
 architecture dataflow of top is
-    signal intOUTputForPWM, intPWM : std_logic;
-    signal intOUTputForALU, intALU : std_logic_vector(n-1 downto 0);
-    signal intFlagN,intFlagC,intFlagZ,intFlagOV : std_logic;
-    signal RegForX,RegForY : std_logic_vector(n-1 downto 0);
-    signal RegForALU : std_logic_vector(4 downto 0);
+
+    signal xReg,yReg : std_logic_vector (n-1 downto 0) := (others => '0'); --register for x and y after getting enable
+    signal alufnReg : std_logic_vector(4 downto 0) := (others => '0'); -- register for alu aftergetting enable
+    signal switchSave : std_logic_vector(n-1 downto 0) := (others => '0'); --signal to save the switch with buffer not to instant connect
+    signal clk2Top : std_logic := '0';
+    signal xDecode1,xDecode2, yDecode1,yDecode2 ,ALUdecode1, ALUdecode2 : std_logic_vector(6 downto 0) := (others => '0');
+    signal xDecodeIN, yDecodeIN : std_logic_vector(n-1 downto 0) := (others => '0');
+    signal ALUoutBuff : std_logic_vector(n-1 downto 0) := (others => '0');
 
     begin
+        top_inst : topalu generic map (n=>n , k=>k) port map (clk=>clk2Top , rst=>rst, ena=> ena, x_i=>xReg ,y_i=>yReg ,alufn_i=>alufnReg ,pwm_o=>pwm_o,ov_flag_o=>ov_flag_o,
+                                                          z_flag_o=>z_flag_o ,c_flag_o=>c_flag_o ,n_flag_o=>n_flag_o ,aluRes_o=>ALUoutBuff);
 
-    alu_inst : aluEnv generic map (n=>n,k=>k) port map (X_i=>RegForX, Y_i=>RegForY, ALUFN_i=>RegForALU, ALUout_o => intALU ,
-                                                        Nflag_o => intFlagN, Cflag_o=> intFlagC, Zflag_o=>intFlagZ,Vflag_o=>intFlagOV);
-    
-    pwm_inst : pwmEnv generic map (n=>n) port map (clk=>clk, ena=>ena, rst=>rst, alufn_i=>RegForALU, x_i=>RegForX, y_i=>RegForY, PWMoutput=>intPWM);
-
-    intOUTputForPWM <= intPWM when alufn_i(4 downto 3) = "00" else '0';
-    intOUTputForALU <= intALU when alufn_i(4 downto 3) /= "00" else (others => '0');
-    ov_flag_o <= intFlagOV when alufn_i(4 downto 3) /= "00" else '0';
-    z_flag_o <= intFlagZ when alufn_i(4 downto 3) /= "00" else '0';
-    c_flag_o <= intFlagC when alufn_i(4 downto 3) /= "00" else '0';
-    n_flag_o <= intFlagN when alufn_i(4 downto 3) /= "00" else '0';
+        counter_env_clk : CounterEnvelope port map (clk => clk, clk_out => clk2Top); --generate the clock from pll to digital system
+        
+        switchSave <= sw07_i; --connect the input
 
 
-    -- process(clk)
-    --     begin
-    --         if (rising_edge(clk)) then -- REMOVE BEFORE FPGA
-                 --connect output signals
-                pwm_o <= intOUTputForPWM; -- remove this
-                aluRes_o <= intOUTputForALU; --remove this
-                RegForALU <= alufn_i;
-                RegForX <= x_i;
-                RegForY <= y_i;
-        --     end if;
-        -- end process;
+        --****              DECODE              ****--
+        decode_inst_forX : decode generic map (n=>n) port map (sw_i=> xReg, hex_o1 =>xDecode1 , hex_o2 =>xDecode2);
+        decode_inst_forY : decode generic map (n=>n) port map (sw_i=> yReg, hex_o1 =>yDecode1 , hex_o2 =>yDecode2);
+        decode_inst_forALUout : decode generic map (n=>n) port map (sw_i=> ALUoutBuff, hex_o1 =>ALUdecode1 , hex_o2 =>ALUdecode2);
+        ----------------------------------------------
+        
+        
+        process(clk,x_ena,y_ena,alufn_ena)
+        begin
+            if (rising_edge(clk)) then
+                if (x_ena = '0') then --I NEED TO CHECK HERE IF MY TOUCH IS OK IN TImING
+                    xReg <= switchSave;
+                end if;
+                if (y_ena = '0') then --I NEED TO CHECK HERE IF MY TOUCH IS OK IN TImING
+                    yReg <= switchSave;
+                end if;
+                if (alufn_ena = '0') then --I NEED TO CHECK HERE IF MY TOUCH IS OK IN TImING
+                    alufnReg <= switchSave(4 downto 0);
+                end if;
+            end if;
+        end process;
+
+        --connect the outputs
+        y_tohex_o1 <= yDecode1; y_tohex_o2 <=yDecode2; x_tohex_o1 <= xDecode1 ; x_tohex_o2 <= xDecode2; alufn_tohex_o <= alufnReg;
+        aluout_tohex_o1 <= ALUdecode1; aluout_tohex_o2 <= ALUdecode2;
+
     end dataflow;
