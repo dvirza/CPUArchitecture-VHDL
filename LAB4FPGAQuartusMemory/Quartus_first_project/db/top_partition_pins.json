@@ -1,0 +1,201 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "y_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[5]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[6]",
+					"strict" : false
+				},
+				{
+					"name" : "y_tohex_o[7]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[5]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[6]",
+					"strict" : false
+				},
+				{
+					"name" : "x_tohex_o[7]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_tohex_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "pwm_o",
+					"strict" : false
+				},
+				{
+					"name" : "ov_flag_o",
+					"strict" : false
+				},
+				{
+					"name" : "z_flag_o",
+					"strict" : false
+				},
+				{
+					"name" : "c_flag_o",
+					"strict" : false
+				},
+				{
+					"name" : "n_flag_o",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[0]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[1]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[2]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[3]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[4]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[5]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[6]",
+					"strict" : false
+				},
+				{
+					"name" : "aluRes_o[7]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[0]",
+					"strict" : false
+				},
+				{
+					"name" : "clk",
+					"strict" : false
+				},
+				{
+					"name" : "y_ena",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[1]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[2]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[3]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[4]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[5]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[6]",
+					"strict" : false
+				},
+				{
+					"name" : "sw07_i[7]",
+					"strict" : false
+				},
+				{
+					"name" : "x_ena",
+					"strict" : false
+				},
+				{
+					"name" : "alufn_ena",
+					"strict" : false
+				},
+				{
+					"name" : "rst",
+					"strict" : false
+				},
+				{
+					"name" : "ena",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
