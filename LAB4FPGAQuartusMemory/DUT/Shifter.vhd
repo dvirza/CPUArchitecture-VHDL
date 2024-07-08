@@ -1,19 +1,20 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
---------------------------------------------------------
+
+
 ENTITY shifter IS
-	GENERIC (       n : INTEGER;
-		        k : INTEGER
-		);
-	PORT (          x, y: IN std_logic_vector (n-1 downto 0);
-                        dir: IN std_logic;
-	                result: OUT std_logic_vector (n-1 downto 0); 
-	                cout: OUT std_logic
-            );
+        GENERIC (n : INTEGER;
+                k : INTEGER );
+        PORT (  x, y: IN std_logic_vector (n-1 downto 0);
+                dir: IN std_logic;
+                result: OUT std_logic_vector (n-1 downto 0); 
+                cout: OUT std_logic );
 END shifter;
---------------------------------------------------------
+
+
 ARCHITECTURE dataflow OF shifter IS
+
 -- we'll define it oversized by 1 to easily find the carry value
 SUBTYPE vector IS STD_LOGIC_VECTOR (n DOWNTO 0); --vector Size is one bigger then regular to look for carry.
 TYPE mat IS ARRAY (k-1 DOWNTO 0) OF vector; -- making array of vectors as needed in SPEC, size K x N+1.
@@ -37,4 +38,5 @@ BEGIN
     end generate;
     
     cout <= horiz(k-1)(n); --set carry bit value
+    
 END dataflow;

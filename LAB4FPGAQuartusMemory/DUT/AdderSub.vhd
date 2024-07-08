@@ -3,12 +3,11 @@ USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
 --------------------------------------------------------
 ENTITY AdderSub IS
-	GENERIC (   n : INTEGER);
-	PORT (      x, y: IN std_logic_vector(n-1 downto 0);
-                sub_ena: IN std_logic;
-                result: OUT std_logic_vector(n-1 downto 0);
-	            c_out: OUT std_logic
-        );
+	GENERIC (   n : INTEGER );
+	PORT (  x, y: IN std_logic_vector(n-1 downto 0);
+            sub_ena: IN std_logic;
+            result: OUT std_logic_vector(n-1 downto 0);
+            c_out: OUT std_logic );
 END AdderSub;
 --------------------------------------------------------
 ARCHITECTURE dataflow OF AdderSub IS

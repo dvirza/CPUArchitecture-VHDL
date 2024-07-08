@@ -3,9 +3,9 @@ use ieee.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all; 
 USE work.aux_package.all;
  
-entity CounterEnvelope is port (
-	Clk : in std_logic;	
-	clk_out          : out std_logic); 
+entity CounterEnvelope is 
+	port (	Clk : in std_logic;	
+			clk_out : out std_logic ); 
 end CounterEnvelope;
 
 architecture rtl of CounterEnvelope is
@@ -16,13 +16,13 @@ architecture rtl of CounterEnvelope is
 	signal counter : std_logic_vector(4 downto 0) := (others =>'0');
 begin
 	  m1: PLL port map(
-		refclk => Clk,
-		 outclk_0 => PLLOut --2MHz
+		refclk => Clk, --50MHz for task4
+		 outclk_0 => PLLOut --2MHz for task4
 	   );
 	   process(PLLOut)
 	   begin
 		   if rising_edge(PLLOut) then
-			   if counter = "11111" then
+			   if counter = "11111" then --Overflow reset the count to zero at 2^32 what makes 2^64 delay for Period
 				   counter <= (others => '0');
 				   clk_out_int <= not clk_out_int;
 			   else

@@ -2,9 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all; 
  
-entity counter is port (
-	clk,enable : in std_logic;	
-	q          : out std_logic_vector (5 downto 0)); 
+entity counter is 
+    port (  clk,enable : in std_logic;	
+	        q : out std_logic_vector (5 downto 0) ); 
 end counter;
 
 architecture rtl of counter is
