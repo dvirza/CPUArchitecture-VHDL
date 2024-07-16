@@ -53,6 +53,7 @@ ALU_inst : aluCore --Instance connect to the ALU core component
 						);
 
 	saveC <= internalCarryFlag when opc_wire = "0000" or opc_wire ="0001";
+	--wire_cFlag <= saveC when regCin = '1';
 --/*			Flags connect			*/
 	
 --------------------------------------
