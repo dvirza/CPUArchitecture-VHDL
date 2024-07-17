@@ -11,7 +11,7 @@ port(
 	  clk,rst,ena: in std_logic;
 	  done : out std_logic;
 	
-	  op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: in std_logic; --NEW
+	  op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor, op_jz: in std_logic; --NEW
 	  cFlag,nFlag,zFlag: in std_logic;
 
 	  Mem_wr,Mem_out,Mem_in :out std_logic;
@@ -91,7 +91,7 @@ BEGIN
 			assert false report "IM in Decode and op_mov is := " &to_string(op_mov) severity Error;
 			nx_state <= iTypeMov0 when (op_mov = '1') else
 						rType0 when (op_add = '1' or op_sub = '1' or op_and = '1' or op_or = '1' or op_xor = '1') else
-						jType0 when (op_jmp = '1' or op_jc = '1' or op_jnc = '1') else
+						jType0 when (op_jmp = '1' or op_jc = '1' or op_jnc = '1' or op_jz = '1') else
 						iType0 when (op_ld = '1' or op_st = '1') else
 						st_done when (op_done = '1') else 
 						fetch;
@@ -108,6 +108,8 @@ BEGIN
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
 			elsif (op_jmp = '1') then
 				assert false report " Im in J TYPE   Regular~!!~ " severity Error;
+				IRin <= '0'; PCin <= '1'; PCsel <= "01";
+			elsif (op_jz = '1' and zFlag = '1') then
 				IRin <= '0'; PCin <= '1'; PCsel <= "01";
 			else
 				IRin <= '0'; PCin <= '1'; PCsel <= "10";

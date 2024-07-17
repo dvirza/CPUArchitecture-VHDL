@@ -21,7 +21,7 @@ end aluCore;
 architecture behav of aluCore is
 
 signal internalsrcA, internalsrcB, internalsrcAForAdder, internalsrcBForAdder, intB : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signals for component connect
-signal internalOUTadder,internalOUTlogic : std_logic_vector(Dwidth-1 downto 0) := (others => '0'); --internal signal for computing the output
+signal internalOUTadder,internalOUTlogic : std_logic_vector(Dwidth-1 downto 0) := (others => 'Z'); --internal signal for computing the output
 signal internalCarryOut, internalCarryIn : std_logic; --internal carrys
 signal zeros_vector: std_logic_vector(Dwidth-1 downto 0) := (others => '0');
 

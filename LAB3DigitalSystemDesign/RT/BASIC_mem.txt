@@ -1,0 +1,11 @@
+// memory data file (do not edit the following line - required for mem load use)
+// instance=/tb_topdut/top_unit/Datapath_inst/dataMEM_inst/dataMem_inst/sysRAM
+// format=mti addressradix=h dataradix=h version=1.0 wordsperline=8
+ 0: 0000 0001 0002 0003 0004 0005 0006 0007
+ 8: 0008 0009 000A 000B 000C 000D 000D 000C
+10: 000B 000A 0009 0008 0007 0006 0005 0004
+18: 0003 0002 0001 0000 000D 000D 0009 0009
+20: 000D 000D 0001 0001 000D 000D 0009 0009
+28: 000D 000D XXXX XXXX XXXX XXXX XXXX XXXX
+30: XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
+38: XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX

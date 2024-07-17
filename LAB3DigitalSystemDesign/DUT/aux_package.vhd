@@ -70,27 +70,27 @@ package aux_package is
 -----------------------------------------------------------------
 	component Control is
 		generic( Dwidth: integer:=16;
-				Awidth: integer:=4);
-				
-		port( 
-			clk,rst,ena: in std_logic;
-			done : out std_logic;
-			
-			op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: in std_logic; --UUSEDDDDDD
-			cFlag,nFlag,zFlag: in std_logic;
-		
-			Mem_wr,Mem_out,Mem_in :out std_logic;
-			Cin,Cout :out std_logic;
-			Ain:out std_logic;
-			RFin,RFout :out std_logic;
-			RFaddr:out std_logic_vector(1 downto 0);
-			IRin: out std_logic;
-			PCin:out std_logic;
-			PCsel:out std_logic_vector(1 downto 0);
-			Imm1_in,Imm2_in: out std_logic;
-			OPC :out std_logic_vector(Awidth-1 downto 0)
-		
-			);
+		 Awidth: integer:=4);
+		 
+port( 
+	  clk,rst,ena: in std_logic;
+	  done : out std_logic;
+	
+	  op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor, op_jz: in std_logic; --NEW
+	  cFlag,nFlag,zFlag: in std_logic;
+
+	  Mem_wr,Mem_out,Mem_in :out std_logic;
+	  Cin,Cout :out std_logic;
+	  Ain:out std_logic;
+	  RFin,RFout :out std_logic;
+	  RFaddr:out std_logic_vector(1 downto 0);
+	  IRin: out std_logic;
+	  PCin:out std_logic;
+	  PCsel:out std_logic_vector(1 downto 0);
+	  Imm1_in,Imm2_in: out std_logic;
+	  OPC :out std_logic_vector(Awidth-1 downto 0)
+
+	);
 			
 		end component;
 -----------------------------------------------------------------
@@ -108,28 +108,30 @@ package aux_package is
 -----------------------------------------------------------------
 component Datapath is
 	generic( Dwidth: integer:=16;
-			 AMwidth: integer:=6;
-			 ARwidth: integer:=4
-			);
-	port(	clk,rst: in std_logic;
-	
-			Mem_wr, Mem_out,Mem_in, Cout,Cin,Ain,RFin,RFout,IRin,PCin,Imm1_in,Imm2_in : IN std_logic;
-			OPC : in std_logic_vector(ARwidth-1 downto 0);
-			RFaddr, PCsel : in std_logic_vector(1 downto 0);
-	
-			tbWren, tbActive : in std_logic;
-			tbDataIn : in std_logic_vector(Dwidth-1 downto 0);
-			tbAddrInW, tbAddrInR : in std_logic_vector(AMwidth-1 downto 0);
-	
-			tbWrenProg : in std_logic;
-			tbAddrInWProg : in std_logic_vector(AMwidth-1 downto 0);
-			tbDataInProg : in std_logic_vector(Dwidth-1 downto 0);
-	
-			op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic; --UUSEDDDDDD
-			  cFlag,nFlag,zFlag: out std_logic;
-	
-			MEMdataOut : out std_logic_vector(Dwidth-1 downto 0)
-			);
+		 AMwidth: integer:=6;
+		 ARwidth: integer:=4
+		);
+port(	clk,rst: in std_logic;
+
+		Mem_wr, Mem_out,Mem_in, Cout,Cin,Ain,RFin,RFout,IRin,PCin,Imm1_in,Imm2_in : IN std_logic;
+		OPC : in std_logic_vector(ARwidth-1 downto 0);
+		RFaddr, PCsel : in std_logic_vector(1 downto 0);
+
+		tbWren, tbActive : in std_logic;
+		tbDataIn : in std_logic_vector(Dwidth-1 downto 0);
+		tbAddrInW, tbAddrInR : in std_logic_vector(AMwidth-1 downto 0);
+
+		tbWrenProg : in std_logic;
+		tbAddrInWProg : in std_logic_vector(AMwidth-1 downto 0);
+		tbDataInProg : in std_logic_vector(Dwidth-1 downto 0);
+
+		op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor, op_jz: out std_logic; --UUSEDDDDDD --NEW
+
+	  	cFlag,nFlag,zFlag: out std_logic;
+
+		MEMdataOut : out std_logic_vector(Dwidth-1 downto 0)
+
+);
 	end component;
 --------------------------------------------------------------
 component mod_dataMem is
@@ -159,21 +161,21 @@ component mod_ProgMem is
 --------------------------------------------------------------
 component progToRF is
 	generic( Dwidth: integer:=16;
-			 Awidth: integer:=6;
-			 opwidth:   integer:=4);
-	port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
-			 pcsel : in std_logic_vector(1 downto 0);
-			 RFaddr: in std_logic_vector(1 downto 0);
-			 tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
-			 tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
-	 
-			 RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
-	 
-			 Imm1 : out std_logic_vector(7 downto 0);
-			 Imm2 : out std_logic_vector(3 downto 0);
-			 RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
-			 op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --NEW
-	 );
+		 Awidth: integer:=6;
+		 opwidth:   integer:=4);
+port(	clk, rst, tbWren, pcin, tbActive, IRin, RFin:        in std_logic;
+        pcsel : in std_logic_vector(1 downto 0);
+        RFaddr: in std_logic_vector(1 downto 0);
+        tbAddrIn : in std_logic_vector(Awidth-1 downto 0);
+        tbDataIn : in std_logic_vector (Dwidth-1 downto 0);
+
+        RFinFromBus : in std_logic_vector(Dwidth-1 downto 0);
+
+        Imm1 , Imm2: out std_logic_vector(Dwidth-1 downto 0);
+       
+        RFoutToBus : out std_logic_vector(Dwidth-1 downto 0);
+        op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor, op_jz: out std_logic --NEW
+);
 	end component;
 --------------------------------------------------------------
 component mod_RF is
@@ -189,11 +191,11 @@ component mod_RF is
 	end component;
 --------------------------------------------------------------
 component opcDecode is
-		generic( opwidth: integer:=4 );
-		port(	clk,rst: 	 in std_logic;	
-				opDataIn:	     in std_logic_vector(opwidth-1 downto 0); --connect the IR
-				op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor: out std_logic --output every bit
-		);
+	generic( opwidth: integer:=4 );
+	port(	clk,rst: 	 in std_logic;	
+			opDataIn:	     in std_logic_vector(opwidth-1 downto 0); --connect the IR
+			op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor , op_jz: out std_logic --NEW
+	);
 		end component;
 --------------------------------------------------------------
 component pcWork is

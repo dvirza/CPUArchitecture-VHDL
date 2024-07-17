@@ -25,7 +25,7 @@ end top;
 
 architecture behav of top is
 
-	signal 	op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor:  std_logic;  --NEW
+	signal 	op_st, op_ld, op_mov, op_done, op_add, op_sub, op_jmp, op_jc, op_jnc, op_and, op_or, op_xor, op_jz:  std_logic;  --NEW
 	signal cFlag,nFlag,zFlag: std_logic;
 	signal Mem_wr,Mem_in,Mem_out ,Cin, Cout, Ain, RFin, RFout,IRin, PCin, Imm1_in, Imm2_in : std_logic;
 	signal RFaddr, PCsel : std_logic_vector(1 downto 0);
@@ -51,7 +51,8 @@ Control_inst : Control
 					op_jnc => op_jnc,
 					op_and => op_and,
 					op_or => op_or,
-					op_xor => op_xor, --NEW
+					op_xor => op_xor,
+					op_jz => op_jz, --NEW
 					cFlag => cFlag,
 					nFlag => nFlag,
 					zFlag => zFlag,
@@ -91,7 +92,8 @@ Datapath_inst : Datapath
 						op_jnc => op_jnc,
 						op_and => op_and,
 						op_or => op_or,
-						op_xor => op_xor, --NEW
+						op_xor => op_xor,
+						op_jz => op_jz, --NEW
 						cFlag => cFlag,
 						nFlag => nFlag,
 						zFlag => zFlag,
