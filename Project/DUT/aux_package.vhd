@@ -36,4 +36,14 @@ component Adder is
          cout: OUT STD_LOGIC);
 end component;
 
+component check is
+	GENERIC (  n : INTEGER;
+               m : INTEGER ); --m := log2(N)
+	PORT (  clk : IN std_logic;
+            a, b : IN std_logic_vector (n-1 downto 0);
+	        valid: IN std_logic;
+            result : OUT std_logic_vector (n-1 downto 0)
+         );
+end component;
+
 end aux_package;
