@@ -47,7 +47,7 @@ begin
 
     Stimulus_proc: process(divCLK_tb)
         variable state : integer := 0;
-        variable dive :integer := 9;
+        variable dive :integer := 6;
         variable divs :integer := 3;
     begin
         dividend_i <= std_logic_vector(to_unsigned(dive, dividend_i'length));

@@ -114,6 +114,7 @@ BEGIN
 			else
 				IRin <= '0'; PCin <= '1'; PCsel <= "10";
 			end if;
+			
 			nx_state <= fetch;
 		WHEN rType0 =>
 			IRin <= '0'; Ain <= '1'; RFout <= '1'; 
