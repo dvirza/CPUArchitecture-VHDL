@@ -46,4 +46,14 @@ component check is
          );
 end component;
 
+component clock_div is
+   port(
+     i_clk         : in  std_logic;
+     i_rst         : in  std_logic;
+     o_clk_div2    : out std_logic;
+     o_clk_div4    : out std_logic;
+     o_clk_div8    : out std_logic
+     );
+   end component;
+
 end aux_package;
