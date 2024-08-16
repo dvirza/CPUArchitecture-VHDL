@@ -17,6 +17,33 @@ package aux_package is
     --      --aluRes_o : out std_logic_vector(n-1 downto 0)
     --      );
 	-- end component;
+-------------------------------------------------------- BidirPin
+   component BidirPin is
+      generic( width: integer);
+      port(   Dout: 	in 		std_logic_vector(width-1 downto 0);
+            en:		in 		std_logic;
+            Din:	out		std_logic_vector(width-1 downto 0);
+            IOpin: 	inout 	std_logic_vector(width-1 downto 0)
+      );
+   end component;
+-------------------------------------------------------- HEX decode
+   component hexdecode IS
+	GENERIC (  n : INTEGER := 8);
+	PORT (  sw_i : IN std_logic_vector (n-1 downto 0);
+	        hex_o1,hex_o2: OUT std_logic_vector (6 downto 0) );
+   END component;
+-------------------------------------------------------- HEX and LEDs
+   component hexled IS
+	GENERIC (  n : INTEGER );
+	PORT (  i_control, i_A0 : in std_logic;
+            i_memRead, i_memWrite : in std_logic;
+            io_data : inout std_logic(7 downto 0);
+            o_outToHEX : buffer std_logic_vector (7 downto 0) );
+   END component;
+-------------------------------------------------------- Address decoder
+   component addr_decoder IS
+	
+   END component;
 -------------------------------------------------------- Divider
 component DIV is
 	GENERIC (  n : INTEGER:= 32;

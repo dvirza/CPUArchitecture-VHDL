@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 -----------------------------------------------------------------
 entity BidirPin is
-	generic( width: integer:=16 );
+	generic( width: integer);
 	port(   Dout: 	in 		std_logic_vector(width-1 downto 0);
 			en:		in 		std_logic;
 			Din:	out		std_logic_vector(width-1 downto 0);

@@ -43,7 +43,7 @@ BEGIN
 	read_data_2 <= register_array( 
 			      CONV_INTEGER( read_register_2_address ) );
 					-- Mux for Register Write Address
-   write_register_address <= write_register_address_1 
+    write_register_address <= write_register_address_1 
 			WHEN RegDst = '1'  			ELSE write_register_address_0;
 					-- Mux to bypass data memory for Rformat instructions
 	write_data <= ALU_result( 31 DOWNTO 0 ) 
@@ -68,6 +68,7 @@ PROCESS
 		      register_array( CONV_INTEGER( write_register_address)) <= write_data;
 		END IF;
 	END PROCESS;
+
 END behavior;
 
 

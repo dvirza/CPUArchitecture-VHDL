@@ -24,20 +24,18 @@ ARCHITECTURE behavior OF Ifetch IS
 BEGIN
 						--ROM for Instruction Memory
 inst_memory: altsyncram
-	
 	GENERIC MAP (
-		operation_mode => "ROM",
-		width_a => 32,
-		widthad_a => 8,
-		lpm_type => "altsyncram",
-		outdata_reg_a => "UNREGISTERED",
-		init_file => "C:\TestPrograms\ModelSim\L1_Cache\asm_ver1\program.hex",
-		intended_device_family => "Cyclone"
-	)
-	PORT MAP (
-		clock0     => clock,
-		address_a 	=> Mem_Addr, 
-		q_a 			=> Instruction );
+				operation_mode => "ROM",
+				width_a => 32,
+				widthad_a => 8,
+				lpm_type => "altsyncram",
+				outdata_reg_a => "UNREGISTERED",
+				init_file => "C:\TestPrograms\ModelSim\L1_Cache\asm_ver1\program.hex", --CHANGE HERE PLACE TO TAKE INSTRUCTIONS
+				intended_device_family => "Cyclone")
+
+	PORT MAP (clock0 => clock, address_a => Mem_Addr, q_a => Instruction);
+--------------------------------------------------------------------------
+
 					-- Instructions always start on word address - not byte
 		PC(1 DOWNTO 0) <= "00";
 					-- copy output signals - allows read inside module
@@ -52,6 +50,7 @@ inst_memory: altsyncram
 		Next_PC  <= X"00" WHEN Reset = '1' ELSE
 			Add_result  WHEN ( ( Branch = '1' ) AND ( Zero = '1' ) ) 
 			ELSE   PC_plus_4( 9 DOWNTO 2 );
+
 	PROCESS
 		BEGIN
 			WAIT UNTIL ( clock'EVENT ) AND ( clock = '1' );
@@ -61,6 +60,7 @@ inst_memory: altsyncram
 				   PC( 9 DOWNTO 2 ) <= next_PC;
 			END IF;
 	END PROCESS;
+
 END behavior;
 
 
