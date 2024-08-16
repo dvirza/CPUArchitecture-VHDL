@@ -14,11 +14,11 @@ ARCHITECTURE dataflow OF addr_decoder IS
 BEGIN
 
     with i_addrBits select
-        int_output <=   (0 => '1', others => '0') when "10000", --0x800 cs 0
-                        (1 => '1', others => '0') when "10001",--0x804 & 0x805 cs 1
+        int_output <=   (0 => '1', others => '0') when "10000", --0x800 cs 0 LEDS
+                        (1 => '1', others => '0') when "10001", --0x804 & 0x805 cs 1
                         (2 => '1', others => '0') when "10010", --0x808 & 0x809 cs 2
                         (3 => '1', others => '0') when "10011", --0x80C & 0x80D cs 3
-                        (4 => '1', others => '0') when "10100", --0x810 cs 4
+                        (4 => '1', others => '0') when "10100", --0x810 cs 4 SW
                         (others => '0') when others;
 
     --connect the outputs

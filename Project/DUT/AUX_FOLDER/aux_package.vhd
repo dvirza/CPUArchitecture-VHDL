@@ -14,13 +14,19 @@ package aux_package is
    end component;
 -------------------------------------------------------- HEX decode
    component hexdecode IS
-	GENERIC (  n : INTEGER := 8);
-	PORT (  sw_i : IN std_logic_vector (n-1 downto 0);
-	        hex_o1,hex_o2: OUT std_logic_vector (6 downto 0) );
+      GENERIC (  n : INTEGER);
+      PORT (  sw_i : IN std_logic_vector (n-1 downto 0);
+              hex_o1: OUT std_logic_vector (6 downto 0) );
+   END component;
+-------------------------------------------------------- Switch ports
+   component sw_port IS
+	PORT    (   i_control : in std_logic;
+                i_memRead : in std_logic;
+                i_swport : in std_logic_vector(7 downto 0);
+                o_data : out std_logic(7 downto 0) );
    END component;
 -------------------------------------------------------- HEX and LEDs
    component hexled IS
-	GENERIC (  n : INTEGER );
 	PORT (  i_control, i_A0 : in std_logic;
             i_memRead, i_memWrite : in std_logic;
             io_data : inout std_logic(7 downto 0);

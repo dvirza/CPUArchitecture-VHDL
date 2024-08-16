@@ -3,7 +3,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 USE work.aux_package.all;
 
 ENTITY hexled IS
-	GENERIC (  n : INTEGER );
 	PORT (  i_control, i_A0 : in std_logic;
             i_memRead, i_memWrite : in std_logic;
             io_data : inout std_logic(7 downto 0);
