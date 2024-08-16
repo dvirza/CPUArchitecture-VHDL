@@ -3,20 +3,6 @@ use ieee.std_logic_1164.all;
 
 
 package aux_package is
--------------------------------------------------------- TOP Envalope
-	-- component top is
-	-- 	generic(n:INTEGER := 8;
-    --      k: INTEGER := 3);
-    -- port(clk,ena,rst: in std_logic;
-    --      x_ena,y_ena,alufn_ena : in std_logic;
-    --      sw07_i : in std_logic_vector(n-1 downto 0);
-    --      y_tohex_o1,y_tohex_o2, x_tohex_o1,x_tohex_o2 : out std_logic_vector(6 downto 0);
-    --      aluout_tohex_o1,aluout_tohex_o2 : out std_logic_vector(6 downto 0);
-    --      alufn_tohex_o : out std_logic_vector(4 downto 0);
-    --      pwm_o , ov_flag_o, z_flag_o, c_flag_o, n_flag_o: out std_logic
-    --      --aluRes_o : out std_logic_vector(n-1 downto 0)
-    --      );
-	-- end component;
 -------------------------------------------------------- BidirPin
    component BidirPin is
       generic( width: integer);
@@ -42,7 +28,8 @@ package aux_package is
    END component;
 -------------------------------------------------------- Address decoder
    component addr_decoder IS
-	
+      PORT    (   i_addrBits : in std_logic_vector(4 downto 0);
+                o_controlBits : out std_logic(4 downto 0) );
    END component;
 -------------------------------------------------------- Divider
 component DIV is
@@ -61,16 +48,6 @@ component Adder is
           cin: IN STD_LOGIC;
             s: OUT STD_LOGIC_VECTOR (length-1 DOWNTO 0);
          cout: OUT STD_LOGIC);
-end component;
--------------------------------------------------------- Check
-component check is
-	GENERIC (  n : INTEGER;
-               m : INTEGER ); --m := log2(N)
-	PORT (  clk : IN std_logic;
-            a, b : IN std_logic_vector (n-1 downto 0);
-	        valid: IN std_logic;
-            result : OUT std_logic_vector (n-1 downto 0)
-         );
 end component;
 -------------------------------------------------------- Clock divider
 component clock_div is

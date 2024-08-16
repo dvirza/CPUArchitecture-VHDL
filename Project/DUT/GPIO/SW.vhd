@@ -4,7 +4,7 @@ USE work.aux_package.all;
 
 ENTITY sw_port IS
 	GENERIC (   n : INTEGER );
-	PORT    (   i_control, : in std_logic;
+	PORT    (   i_control : in std_logic;
                 i_memRead : in std_logic;
                 i_swport : in std_logic_vector(7 downto 0);
                 o_data : out std_logic(7 downto 0) );
