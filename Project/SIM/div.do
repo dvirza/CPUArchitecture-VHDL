@@ -1,26 +1,25 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /tb_div/div_inst/divCLK_i
-add wave -noupdate /tb_div/div_inst/divRST_i
-add wave -noupdate /tb_div/div_inst/divENA_i
-add wave -noupdate -radix decimal /tb_div/div_inst/dividend_i
-add wave -noupdate -radix decimal /tb_div/div_inst/divisor_i
-add wave -noupdate -radix decimal /tb_div/div_inst/divIFG_o
-add wave -noupdate -radix binary /tb_div/div_inst/residue_o
-add wave -noupdate -radix binary /tb_div/div_inst/quotient_o
+add wave -noupdate /tb_div/div_inst/i_divCLK
+add wave -noupdate /tb_div/div_inst/i_divRST
+add wave -noupdate /tb_div/div_inst/i_divENA
+add wave -noupdate -radix decimal /tb_div/div_inst/i_dividend
+add wave -noupdate -radix decimal /tb_div/div_inst/i_divisor
+add wave -noupdate /tb_div/div_inst/o_divIFG
 add wave -noupdate -radix decimal /tb_div/div_inst/divisorREG
-add wave -noupdate -radix binary /tb_div/div_inst/quotientREG
-add wave -noupdate -radix binary /tb_div/div_inst/quotientREGstep
-add wave -noupdate -radix hexadecimal /tb_div/div_inst/dividendREG
-add wave -noupdate -radix hexadecimal /tb_div/div_inst/counter
+add wave -noupdate -radix decimal /tb_div/div_inst/dividendREG
+add wave -noupdate -radix decimal /tb_div/div_inst/quotientREG
+add wave -noupdate -radix decimal /tb_div/div_inst/counter
 add wave -noupdate -radix decimal /tb_div/div_inst/divisorSUB
 add wave -noupdate -radix decimal /tb_div/div_inst/dividendSUB
-add wave -noupdate -radix decimal /tb_div/div_inst/resultSUB
+add wave -noupdate /tb_div/div_inst/resultSUB
+add wave -noupdate -radix decimal /tb_div/div_inst/o_residue
+add wave -noupdate -radix decimal /tb_div/div_inst/o_quotient
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1715467 ps} 0}
+WaveRestoreCursors {{Cursor 1} {569103 ps} 0}
 quietly wave cursor active 1
-configure wave -namecolwidth 230
-configure wave -valuecolwidth 430
+configure wave -namecolwidth 208
+configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -33,5 +32,5 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {1564837 ps} {2126646 ps}
+WaveRestoreZoom {0 ps} {1000808 ps}
 bookmark add wave bookmark0 {{0 ps} {4200 ns}} 0

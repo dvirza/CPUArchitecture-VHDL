@@ -21,8 +21,8 @@ architecture dataflow of tb_div is
     constant clk_period : time := 50 ns;
 
 begin
-    div_inst : div generic map (n=>n, m=>m) port map (divCLK_i=>divCLK_tb, divRST_i=>divRST_tb, divENA_i=>divENA_tb, dividend_i=>dividend_i, divisor_i=>divisor_i,
-                                                        divIFG_o=>divIFG_o, residue_o=>residue_o, quotient_o=>quotient_o);
+    div_inst : div generic map (n=>n, m=>m) port map (i_divCLK=>divCLK_tb, i_divRST=>divRST_tb, i_divENA=>divENA_tb, i_dividend=>dividend_i, i_divisor=>divisor_i,
+                                                        o_divIFG=>divIFG_o, o_residue=>residue_o, o_quotient=>quotient_o);
 
     -- Clock process
     clk_process :process

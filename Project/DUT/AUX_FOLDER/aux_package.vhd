@@ -39,13 +39,11 @@ package aux_package is
    END component;
 -------------------------------------------------------- Divider
 component DIV is
-	GENERIC (  n : INTEGER:= 32;
-               m : INTEGER := 6 ); --m := log2(N)
-	PORT (  divCLK_i , divRST_i, divENA_i : IN std_logic;
-            dividend_i, divisor_i : IN std_logic_vector (n-1 downto 0);
-	        divIFG_o: OUT std_logic;
-            residue_o , quotient_o : OUT std_logic_vector (n-1 downto 0)
-         );
+	GENERIC (  n : INTEGER; m : INTEGER );
+	PORT (  i_divCLK , i_divRST, i_divENA   : IN std_logic;
+            i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
+	        o_divIFG                        : OUT std_logic;
+            o_residue , o_quotient          : OUT std_logic_vector (n-1 downto 0) );
 end component;
 -------------------------------------------------------- Adder
 component Adder is

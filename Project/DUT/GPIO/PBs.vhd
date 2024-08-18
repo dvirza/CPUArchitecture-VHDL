@@ -5,9 +5,7 @@ USE work.aux_package.all;
 
 
 ENTITY pushbuttons IS
-    PORT    (   i_memRead, i_memWrite, i_MCLK, i_rst   : in    std_logic;
-                i_addr              : in    std_logic_vector (7 downto 0);
-                io_data              : inout std_logic_vector(31 downto 0);
+    PORT    (   i_PB1,i_PB2,i_PB3   : in    std_logic;
                 o_pwm, o_BTIFG      : out   std_logic );
 END pushbuttons;
 
@@ -18,8 +16,6 @@ ARCHITECTURE dataflow OF pushbuttons IS
     signal int_PWM, int_BTIFG : std_logic := '0';
 
 begin
-
-BTimer_inst : BTimer generic map (n=> 32, k=> 8) port map (i_MCLK => i_MCLK,i_BTCTL => BTCTL,i_BTCCR0 => BTCCR0,i_BTCCR1 => BTCCR1,i_BTCNT => BTCNT,o_BTPWM => int_PWM,o_BTIFG => int_BTIFG);
 
 
     --connect the outputs
