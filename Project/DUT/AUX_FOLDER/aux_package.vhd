@@ -23,19 +23,19 @@ package aux_package is
 	PORT    (   i_control : in std_logic;
                 i_memRead : in std_logic;
                 i_swport : in std_logic_vector(7 downto 0);
-                o_data : out std_logic(7 downto 0) );
+                o_data : out std_logic_vector(7 downto 0) );
    END component;
 -------------------------------------------------------- HEX and LEDs
    component hexled IS
 	PORT (  i_control, i_A0 : in std_logic;
             i_memRead, i_memWrite : in std_logic;
-            io_data : inout std_logic(7 downto 0);
+            io_data : inout std_logic_vector(7 downto 0);
             o_outToHEX : buffer std_logic_vector (7 downto 0) );
    END component;
 -------------------------------------------------------- Address decoder
    component addr_decoder IS
       PORT    (   i_addrBits : in std_logic_vector(4 downto 0);
-                o_controlBits : out std_logic(4 downto 0) );
+                o_controlBits : out std_logic_vector(4 downto 0) );
    END component;
 -------------------------------------------------------- Divider
 component DIV is
@@ -55,6 +55,24 @@ component Adder is
             s: OUT STD_LOGIC_VECTOR (length-1 DOWNTO 0);
          cout: OUT STD_LOGIC);
 end component;
+-------------------------------------------------------- Basic Timer
+component BTimer IS
+	generic (  n : INTEGER;
+               k : INTEGER --size of control register (8 in this case)
+            );
+   port (  i_MCLK, i_rst, i_valid : IN std_logic;
+            i_BTCTL : IN std_logic_vector (k-1 downto 0);
+            i_BTCCR0, i_BTCCR1, i_BTCNT : IN std_logic_vector(n-1 downto 0);
+            o_BTPWM : OUT std_logic;
+	        o_BTIFG: OUT std_logic );
+END component;
+-------------------------------------------------------- Basic Envalope
+component BTimer_env IS
+   PORT    (   i_memRead, i_memWrite, i_MCLK, i_rst   : in    std_logic;
+   i_addr              : in    std_logic_vector (11 downto 0);
+   io_data             : inout std_logic_vector(31 downto 0);
+   o_pwm, o_BTIFG      : out   std_logic );
+END component;
 -------------------------------------------------------- Clock divider
 component clock_div is
    port(
@@ -65,6 +83,14 @@ component clock_div is
      o_clk_div8    : out std_logic
      );
    end component;
+-------------------------------------------------------- PWM
+component pwm IS
+   generic(n : INTEGER );
+    port (  clk, ena ,rst : in std_logic;
+            x,y,i_count : in std_logic_vector(n-1 downto 0);
+            workMode : in std_logic;
+            pwmOut : buffer std_logic  );
+END component;
 -------------------------------------------------------- MIPS fetch
 COMPONENT Ifetch
    PORT(	 Instruction 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );

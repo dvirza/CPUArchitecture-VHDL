@@ -1,55 +1,97 @@
 LIBRARY ieee;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.numeric_std.ALL;
 USE work.aux_package.all;
 
 
 ENTITY BTimer_env IS
-	generic (  n : INTEGER;
-               k : INTEGER --size of control register (8 in this case)
-            );
-	port (  i_MCLK : IN std_logic;
-            i_BTCTL : IN std_logic_vector (k-1 downto 0);
-            BTCCR0, BTCCR1 : IN std_logic_vector(n-1 downto 0);
-            o_BTPWM : OUT std_logic;
-	        o_BTIFG: OUT std_logic
-         );
+    PORT    (   i_memRead, i_memWrite, i_MCLK, i_rst   : in    std_logic;
+                i_addr              : in    std_logic_vector (11 downto 0);
+                io_data             : inout std_logic_vector(31 downto 0);
+                o_pwm, o_BTIFG      : out   std_logic );
 END BTimer_env;
-
 
 ARCHITECTURE dataflow OF BTimer_env IS
 
-    signal BTControl_internal : std_logic_vector(k-1 downto 0) := (others => '0');
-    signal interruptFlag_internal : std_logic;
-    signal BTOUTMD_internal, BTOUTEN_internal, BTHOLD_internal : std_logic := '0';
-    signal BTSSEL_internal : std_logic_vector : (1 downto 0) := (others => '0');
-    signal BTIP_internal : std_logic_vector : (2 downto 0) := (others => '0');
-    signal MCLK_2,MCLK_4,MCLK_8,CLKtoTIMER : std_logic := '0';
+    signal BTCCR0,BTCCR1, BTCNT : std_logic_vector(31 downto 0);
+    signal BTCTL,BTCTL_write : std_logic_vector(7 downto 0);
+    signal int_PWM, int_BTIFG : std_logic := '0';
+    signal int_data_w, int_data_r : std_logic_vector(31 downto 0) := (others => 'X');
+    signal enable_bus, valid_write_BTCNT : std_logic;
 
 begin
 
-    basicTimer_inst : BTimer generic map () port map ();
-    pwm_inst : PWM generic map () port map ();
-    clkdiv_inst : clock_div port map (i_clk=>i_MCLK,i_rst=>'0',o_clk_div2=>MCLK_2 ,o_clk_div4=>MCLK_4 ,o_clk_div8=>MCLK_8 );
+BTimer_inst : BTimer generic map (n=> 32, k=> 8) port map (i_MCLK => i_MCLK,i_rst => i_rst,i_valid => valid_write_BTCNT,i_BTCTL => BTCTL,i_BTCCR0 => BTCCR0,i_BTCCR1 => BTCCR1,i_BTCNT => int_data_w,o_BTPWM => int_PWM,o_BTIFG => int_BTIFG);
+bus_inst : BidirPin generic map (32) port map (Dout => int_data_r, en => enable_bus,Din => int_data_w,IOpin => io_data);
 
-    BTControl_internal <= i_BTCTL; --takes the control register for internal use
+enable_bus <= i_memRead when (i_addr = X"824" or i_addr = X"828" or i_addr = X"820" or i_addr = X"81C") else '0';
 
-    --connect wires from control register to control bits (SPEC)
-    BTOUTMD_internal <= BTControl_internal(7);
-    BTOUTEN_internal <= BTControl_internal(6);
-    BTHOLD_internal <= BTControl_internal(5);
-    BTSSEL_internal <= BTControl_internal(4 downto 3);
-    BTIP_internal <= BTControl_internal(2 downto 0);
+valid_write_BTCNT <= i_memWrite when i_addr = X"820" else '0';
 
-    --MUX for clock
-    CLKtoTIMER <= i_MCLK when BTSSEL_internal = "00" else
-                  MCLK_2 when BTSSEL_internal = "01" else
-                  MCLK_4 when BTSSEL_internal = "10" else
-                  MCLK_8 when BTSSEL_internal = "11";
+-- process(i_MCLK,i_rst)
+--     begin
+--         if i_rst = '1' then
+--             valid_write_BTCNT <= '0';
+--         end if;
+--         if rising_edge(i_MCLK) then
+--             if (i_memWrite = '1' and addr = X"820") then
+--                 valid_write_BTCNT <= '1';
+--             else
+--                 valid_write_BTCNT <= '0';
+--             end if;
+--         end if;
+-- end process;
 
 
+process(i_MCLK)
+begin
+    if (i_rst = '1') then
+        BTCCR0 <= (others => '0');
+        BTCCR1 <= (others => '0');
+        BTCNT <= (others => '0');
+        BTCTL <= (others => '0');
+    end if;
+    if rising_edge(i_MCLK) then
+        if i_memWrite = '1' then
+            -- if i_addr = X"820" then
+            --     -- BTCNT <= int_data_w;
+            -- end if;
+            if i_addr = X"824" then
+                BTCCR0 <= int_data_w;
+            end if;
+            if i_addr = X"828" then
+                BTCCR1 <= int_data_w;
+            end if;
+            if i_addr = X"81C" then
+                BTCTL <= int_data_w(7 downto 0);
+            end if;
+        end if;
+    end if;
+end process;
 
+process(i_MCLK)
+    begin
+    if rising_edge(i_MCLK) then
+        if i_memRead = '1' then
+            if i_addr = X"820" then
+                int_data_r <= BTCNT;
+            end if;
+            if i_addr = X"824" then
+                int_data_r <= BTCCR0;
+            end if;
+            if i_addr = X"828" then
+                int_data_r <= BTCCR1;
+            end if;
+            if i_addr = X"81C" then
+                int_data_r(7 downto 0) <= BTCTL;
+                int_data_r(31 downto 8) <= (others => '0');
+            end if;
+        end if;
+    end if;
+end process;
 
-    o_BTIFG <= interruptFlag_internal; --push to output
+    --connect the outputs
+    o_BTIFG <= int_BTIFG;
+    o_pwm <= int_PWM;
+    
 end dataflow;
