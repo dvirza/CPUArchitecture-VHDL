@@ -7,6 +7,7 @@ USE work.aux_package.all;
 ENTITY DIV IS
 	GENERIC (  n : INTEGER; m : INTEGER );
 	PORT (  i_divCLK , i_divRST, i_divENA   : IN std_logic;
+            i_valid_divisor, i_valid_dividend : IN std_logic;
             i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
 	        o_divIFG                        : OUT std_logic;
             o_residue , o_quotient          : OUT std_logic_vector (n-1 downto 0) );
@@ -28,7 +29,7 @@ substract_inst : Adder generic map (length=>n) port map (a=> dividendSUB, b=>div
 divisorSUB <= not(divisorREG);
 dividendSUB <= dividendREG(2*n-1 downto n);
 ------------------------
-PROCESS(i_divCLK,i_divRST) 
+PROCESS(i_divCLK,i_divRST,i_valid_divisor,i_valid_dividend) 
 BEGIN
     if (i_divRST = '1') then
         --reset all values
@@ -37,20 +38,25 @@ BEGIN
         dividendREG <= (others => '0');
         quotientREG <= (others => '0');
     elsif (rising_edge(i_divCLK)) then 
-        if (i_divENA = '1') then
+        if(i_valid_dividend = '1' or i_valid_divisor = '1') then
+            counter <= (others => '0');
+            divisorREG <= (others => '0');
+            dividendREG <= (others => '0');
+            quotientREG <= (others => '0');
+        elsif (i_divENA = '1') then
             if (counter = 0) then
                 --initial values
                 divisorREG <= i_divisor;
                 dividendREG <= (2*n-1 downto n => '0') & i_dividend;
                 o_divIFG <= '0';
-            elsif (counter < n-1) then
+            elsif (counter < n+1) then
                 --step
                 if (resultSUB(n-1) ='0') then
                     dividendREG(2*n-1 downto n) <= resultSUB;
                     quotientREG <= quotientREG(n-2 downto 0) & '1';
                 end if;
                 dividendREG <= dividendREG sll 1;
-            elsif (counter = n) then
+            elsif (counter = n+1) then
                 counter <= (others => '0'); assert false report "Set Count to Zero" severity warning; --set counter to zero when finish (others => '0')(m downto 0)
                 --push output the data
                 o_residue <= dividendREG(2*n-1 downto n);

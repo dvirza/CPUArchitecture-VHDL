@@ -41,10 +41,18 @@ package aux_package is
 component DIV is
 	GENERIC (  n : INTEGER; m : INTEGER );
 	PORT (  i_divCLK , i_divRST, i_divENA   : IN std_logic;
+            i_valid_divisor, i_valid_dividend : IN std_logic;
             i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
-	        o_divIFG                        : OUT std_logic;
+	         o_divIFG                        : OUT std_logic;
             o_residue , o_quotient          : OUT std_logic_vector (n-1 downto 0) );
 end component;
+-------------------------------------------------------- Divider env
+component div_env IS
+	PORT    (   i_divCLK, i_divRST, i_memRead, i_memWrite, i_divENA : in std_logic;
+                i_addr : in std_logic_vector(11 downto 0);
+                o_divIFG : out std_logic;
+                io_data : inout std_logic_vector(31 downto 0) );
+END component;
 -------------------------------------------------------- Adder
 component Adder is
 	GENERIC (length : INTEGER := 32);
@@ -145,6 +153,12 @@ PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
        write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
        MemRead, Memwrite 	: IN 	STD_LOGIC;
        Clock,reset			: IN 	STD_LOGIC );
+END COMPONENT;
+-------------------------------------------------------- interrupt register 1 bit
+COMPONENT interrupt_reg IS
+    PORT    (   i_isrc, i_eint, i_clear     : in    std_logic;
+                o_ifg                       : out   std_logic;
+                o_irq                    : buffer   std_logic );
 END COMPONENT;
 --------------------------------------------------------
 end aux_package;
