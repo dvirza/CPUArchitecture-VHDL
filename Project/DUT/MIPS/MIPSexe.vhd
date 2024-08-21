@@ -45,7 +45,7 @@ BEGIN
 		ELSE  	ALU_output_mux( 31 DOWNTO 0 );
 						-- Adder to compute Branch Address
 	Branch_Add	<= PC_plus_4( 9 DOWNTO 2 ) +  Sign_extend( 7 DOWNTO 0 ) ;
-		Add_result 	<= Branch_Add( 7 DOWNTO 0 );
+	Add_result 	<= Branch_Add( 7 DOWNTO 0 );
 
 PROCESS ( ALU_ctl, Ainput, Binput )
 	BEGIN

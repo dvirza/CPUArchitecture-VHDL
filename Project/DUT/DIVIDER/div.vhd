@@ -10,62 +10,63 @@ ENTITY DIV IS
             i_valid_divisor, i_valid_dividend : IN std_logic;
             i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
 	        o_divIFG                        : OUT std_logic;
-            o_residue , o_quotient          : OUT std_logic_vector (n-1 downto 0) );
+            o_residue , o_quotient,o_dividend,o_divisor  : OUT unsigned (n-1 downto 0) );
 END DIV;
 
 
 ARCHITECTURE dataflow OF DIV IS
 
-    signal divisorREG, quotientREG: std_logic_vector(n-1 downto 0) := (others => '0');
-    signal dividendREG: std_logic_vector(2*n-1 downto 0); --size 2N register for shift left
+    signal int_divisor, int_quotient: unsigned(n-1 downto 0) := (others => '0');
+    signal dividend_2n: unsigned(2*n-1 downto 0) := (others => '0'); --size 2N register for shift left
     signal counter : unsigned(m downto 0) := (others => '0'); --counter initial as zeros
-    signal divisorSUB,dividendSUB, resultSUB : std_logic_vector (n-1 downto 0) := (others => 'Z'); --signals for the substractor
+    signal int_subtractor, int_sub_dividend : unsigned(n-1 downto 0);
+    signal int_residue : unsigned(n-1 downto 0);
     
 BEGIN
 
-substract_inst : Adder generic map (length=>n) port map (a=> dividendSUB, b=>divisorSUB, cin => '1', s => resultSUB, cout => open);
+    int_sub_dividend <= dividend_2n(2*n-1 downto n);
+    int_divisor <= unsigned(i_divisor);
+    int_subtractor <= int_sub_dividend - int_divisor;--std_logic_vector(unsigned(int_sub_dividend) - unsigned(int_divisor));
+    int_residue <= (unsigned(int_subtractor));
+    o_quotient <= int_quotient;
+    o_divIFG <= '1' when unsigned(counter) = to_unsigned(n, counter'length) else '0';
 
---push "- divisor" into sub valid only when ena is '1'
-divisorSUB <= not(divisorREG);
-dividendSUB <= dividendREG(2*n-1 downto n);
-------------------------
-PROCESS(i_divCLK,i_divRST,i_valid_divisor,i_valid_dividend) 
-BEGIN
-    if (i_divRST = '1') then
-        --reset all values
-        counter <= (others => '0');
-        divisorREG <= (others => '0');
-        dividendREG <= (others => '0');
-        quotientREG <= (others => '0');
-    elsif (rising_edge(i_divCLK)) then 
-        if(i_valid_dividend = '1' or i_valid_divisor = '1') then
-            counter <= (others => '0');
-            divisorREG <= (others => '0');
-            dividendREG <= (others => '0');
-            quotientREG <= (others => '0');
-        elsif (i_divENA = '1') then
-            if (counter = 0) then
-                --initial values
-                divisorREG <= i_divisor;
-                dividendREG <= (2*n-1 downto n => '0') & i_dividend;
-                o_divIFG <= '0';
-            elsif (counter < n+1) then
-                --step
-                if (resultSUB(n-1) ='0') then
-                    dividendREG(2*n-1 downto n) <= resultSUB;
-                    quotientREG <= quotientREG(n-2 downto 0) & '1';
+process(i_divCLK,i_divRST,i_valid_divisor,i_valid_dividend)
+    begin
+        if (i_divRST = '1') then
+            --reset all values
+            counter <= (others => '0'); 
+            dividend_2n <= (others => '0'); int_quotient <= (others => '0'); 
+        elsif (rising_edge(i_divCLK)) then 
+            if(i_valid_dividend = '1' or i_valid_divisor = '1') then
+                counter <= (others => '0');
+                int_quotient <= (others => '0');
+                dividend_2n <= (2*n-1 downto n => '0') & unsigned(i_dividend);
+            elsif (i_divENA = '1') then
+                if (unsigned(counter) < to_unsigned(n, counter'length)) then
+                    if (int_subtractor(n-1) ='0') then
+                        dividend_2n <= int_subtractor(n-2 downto 0) & dividend_2n(n-1 downto 0) & '0';
+                        int_quotient <= int_quotient(n-2 downto 0) & '1';
+                    else
+                        int_quotient <= int_quotient(n-2 downto 0) & '0';
+                        dividend_2n <= dividend_2n(2*n-2 downto 0) & '0'; 
+                    end if;
+                counter <= counter + 1;--std_logic_vector(unsigned(counter) + 1);                  
+                elsif (unsigned(counter) = to_unsigned(n, counter'length)) then
+                    if (int_subtractor(n-1) ='1') then
+                        int_quotient <= int_quotient(n-2 downto 0) & '0';
+                        o_residue <= int_subtractor;--std_logic_vector(unsigned(int_subtractor));
+                    else
+                        int_quotient <= int_quotient(n-2 downto 0) & '1';
+                        o_residue <= dividend_2n(2*n-1 downto n); 
+                    end if;
+                    counter <= counter + 1; --std_logic_vector(unsigned(counter) + 1);
                 end if;
-                dividendREG <= dividendREG sll 1;
-            elsif (counter = n+1) then
-                counter <= (others => '0'); assert false report "Set Count to Zero" severity warning; --set counter to zero when finish (others => '0')(m downto 0)
-                --push output the data
-                o_residue <= dividendREG(2*n-1 downto n);
-                o_quotient <= quotientREG;
-                o_divIFG <= '1';   
+            
             end if;
-            counter <= counter + 1;
         end if;
-    end if;
-END PROCESS;
+
+    end process;
+
 
 END dataflow;

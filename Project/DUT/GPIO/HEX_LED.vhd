@@ -5,7 +5,7 @@ USE work.aux_package.all;
 ENTITY hexled IS
 	PORT (  i_control, i_A0 : in std_logic;
             i_memRead, i_memWrite : in std_logic;
-            io_data : inout std_logic(7 downto 0);
+            io_data : inout std_logic_vector(7 downto 0);
             o_outToHEX : buffer std_logic_vector (7 downto 0) );
 END hexled;
 
@@ -23,7 +23,8 @@ BEGIN
     enable_bus <= i_control and i_memRead and i_A0;
 
     -- Latch
-    process(enable)
+    process(enable_latch)
+    begin
         if enable_latch = '1' then
             o_outToHEX <= int_data;
         end if;

@@ -81,17 +81,19 @@ begin
     process(i_MCLK,CLKtoTIMER)
         begin
         if (BTHOLD_internal = '0') then
-            if rising_edge(i_MCLK) then
+            -- if rising_edge(i_MCLK) then
+            --     if (i_valid = '1') then
+            --         BTCNT_count_internal <= i_BTCNT;
+            --     -- elsif (BTCNT_count_internal < i_BTCCR0 and rising_edge(CLKtoTIMER)) then
+            --     --     BTCNT_count_internal <= std_logic_vector(unsigned(BTCNT_count_internal) + 1);
+            --     -- else
+            --     --     BTCNT_count_internal <= (others => '0'); 
+            --     end if;
+            -- --end if;
+            if rising_edge(CLKtoTIMER) then --elsif
                 if (i_valid = '1') then
                     BTCNT_count_internal <= i_BTCNT;
-                -- elsif (BTCNT_count_internal < i_BTCCR0 and rising_edge(CLKtoTIMER)) then
-                --     BTCNT_count_internal <= std_logic_vector(unsigned(BTCNT_count_internal) + 1);
-                -- else
-                --     BTCNT_count_internal <= (others => '0'); 
-                end if;
-            --end if;
-            elsif rising_edge(CLKtoTIMER) then
-                if (BTCNT_count_internal < i_BTCCR0) then
+                elsif (BTCNT_count_internal < i_BTCCR0) then
                     BTCNT_count_internal <= std_logic_vector(unsigned(BTCNT_count_internal) + 1);
                 else
                     BTCNT_count_internal <= (others => '0');

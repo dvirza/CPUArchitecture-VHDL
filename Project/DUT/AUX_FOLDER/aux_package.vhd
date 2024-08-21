@@ -1,5 +1,6 @@
 library IEEE;
 use ieee.std_logic_1164.all;
+use IEEE.numeric_std.ALL;
 
 
 package aux_package is
@@ -14,16 +15,16 @@ package aux_package is
    end component;
 -------------------------------------------------------- HEX decode
    component hexdecode IS
-      GENERIC (  n : INTEGER);
+      GENERIC (  n : INTEGER );
       PORT (  sw_i : IN std_logic_vector (n-1 downto 0);
               hex_o1: OUT std_logic_vector (6 downto 0) );
    END component;
 -------------------------------------------------------- Switch ports
    component sw_port IS
-	PORT    (   i_control : in std_logic;
+      PORT    (   i_control : in std_logic;
                 i_memRead : in std_logic;
                 i_swport : in std_logic_vector(7 downto 0);
-                o_data : out std_logic_vector(7 downto 0) );
+                o_data : inout std_logic_vector(7 downto 0) );
    END component;
 -------------------------------------------------------- HEX and LEDs
    component hexled IS
@@ -37,14 +38,23 @@ package aux_package is
       PORT    (   i_addrBits : in std_logic_vector(4 downto 0);
                 o_controlBits : out std_logic_vector(4 downto 0) );
    END component;
+-------------------------------------------------------- GPIO
+component GPIO IS
+	PORT    (   i_memRead, i_memWrite   : in    std_logic;
+                i_addr      : in    std_logic_vector (5 downto 0);--<A11,A5,A4,A3,A2,A0>
+                i_swport    : in    std_logic_vector(7 downto 0);
+                o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5 : out std_logic_vector(6 downto 0);
+                o_leds      : out   std_logic_vector(7 downto 0);
+                io_data     : inout   std_logic_vector(7 downto 0) );
+END component;
 -------------------------------------------------------- Divider
 component DIV is
 	GENERIC (  n : INTEGER; m : INTEGER );
 	PORT (  i_divCLK , i_divRST, i_divENA   : IN std_logic;
             i_valid_divisor, i_valid_dividend : IN std_logic;
             i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
-	         o_divIFG                        : OUT std_logic;
-            o_residue , o_quotient          : OUT std_logic_vector (n-1 downto 0) );
+	        o_divIFG                        : OUT std_logic;
+            o_residue , o_quotient,o_dividend,o_divisor  : OUT unsigned (n-1 downto 0) );
 end component;
 -------------------------------------------------------- Divider env
 component div_env IS
@@ -159,6 +169,14 @@ COMPONENT interrupt_reg IS
     PORT    (   i_isrc, i_eint, i_clear     : in    std_logic;
                 o_ifg                       : out   std_logic;
                 o_irq                    : buffer   std_logic );
+END COMPONENT;
+-------------------------------------------------------- interrupt register 8 bit
+COMPONENT interrupt_reg_several IS
+    PORT    (   i_gie                       : in  std_logic;
+                i_isrc, i_clear, i_eint     : in  std_logic_vector(7 downto 0);
+                o_intr                      : out std_logic;
+                o_ifg                       : buffer std_logic_vector(7 downto 0);
+                o_irq                       : out std_logic_vector(7 downto 0) );
 END COMPONENT;
 --------------------------------------------------------
 end aux_package;

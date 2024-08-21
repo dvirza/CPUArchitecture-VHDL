@@ -16,8 +16,10 @@ add wave -noupdate -radix decimal /tb_divider/divenv_inst/div_inst/counter
 add wave -noupdate -radix decimal /tb_divider/divenv_inst/div_inst/int_divisor
 add wave -noupdate -radix decimal /tb_divider/divenv_inst/div_inst/int_sub_dividend
 add wave -noupdate -radix decimal /tb_divider/divenv_inst/div_inst/int_subtractor
+add wave -noupdate -radix decimal /tb_divider/divenv_inst/io_data
+add wave -noupdate /tb_divider/divenv_inst/enable_bus
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3826704 ps} 0}
+WaveRestoreCursors {{Cursor 1} {3892945 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 279
 configure wave -valuecolwidth 100
@@ -33,5 +35,5 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {3157894 ps} {4483522 ps}
+WaveRestoreZoom {7634349 ps} {8959977 ps}
 bookmark add wave bookmark0 {{0 ps} {4200 ns}} 0

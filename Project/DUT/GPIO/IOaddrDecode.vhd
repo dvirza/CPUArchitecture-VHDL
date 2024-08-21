@@ -4,7 +4,7 @@ USE work.aux_package.all;
 
 ENTITY addr_decoder IS
 	PORT    (   i_addrBits : in std_logic_vector(4 downto 0);
-                o_controlBits : out std_logic(4 downto 0) );
+                o_controlBits : out std_logic_vector(4 downto 0) );
 END addr_decoder;
 
 ARCHITECTURE dataflow OF addr_decoder IS

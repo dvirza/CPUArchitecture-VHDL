@@ -41,9 +41,9 @@ begin
         wait until rising_edge(clk);
         wait until rising_edge(clk);
         wait until rising_edge(clk); -- CCR are 0 then timer should not count
-        data <= X"00000007";
+        data <= X"0000000F";
         addr <= X"824";
-        MemWrite <= '1';             --set CCR0 to value 7
+        MemWrite <= '1';             --set CCR0 to value 15
         wait until rising_edge(clk);
         data <= X"00000004";
         addr <= X"828";              --set CCR1 to value 4
@@ -98,21 +98,21 @@ begin
         data <= x"000000CF";          --set BTCTL to EN (for PWN OUTput), Mode 1 and first FLAG with clock divider 2
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 14 loop
+        for i in 0 to 56 loop
             wait until rising_edge(clk);
         end loop;
         MemWrite <= '1';
         data <= x"000000D7";
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 28 loop
+        for i in 0 to 128 loop
             wait until rising_edge(clk);
         end loop;
         MemWrite <= '1';
         data <= x"000000DF";
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 56 loop
+        for i in 0 to 256 loop
             wait until rising_edge(clk);
         end loop;
       
