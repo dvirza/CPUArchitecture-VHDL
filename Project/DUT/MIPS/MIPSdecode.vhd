@@ -11,9 +11,9 @@ ENTITY Idecode IS
 			read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			RegWrite 	: IN 	STD_LOGIC;
-			MemtoReg 	: IN 	STD_LOGIC;
-			RegDst 		: IN 	STD_LOGIC;
-			Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+			RegDst 		: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);			
+			Sign_extend,Zero_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			clock,reset	: IN 	STD_LOGIC );
 END Idecode;
 
@@ -44,14 +44,19 @@ BEGIN
 			      CONV_INTEGER( read_register_2_address ) );
 					-- Mux for Register Write Address
     write_register_address <= write_register_address_1 
-			WHEN RegDst = '1'  			ELSE write_register_address_0;
+			WHEN RegDst = "01"  --Write address
+			ELSE "11111" WHEN RegDst = "10" --GPR[31] 
+			ELSE write_register_address_0; --no write address
 					-- Mux to bypass data memory for Rformat instructions
 	write_data <= ALU_result( 31 DOWNTO 0 ) 
-			WHEN ( MemtoReg = '0' ) 	ELSE read_data;
+			WHEN ( MemtoReg = '0' ) 	ELSE read_data
+			ELSE X"00000" & B"00" & PC_plus_4; --linked gpr31
 					-- Sign Extend 16-bits to 32-bits
-    	Sign_extend <= X"0000" & Instruction_immediate_value
-		WHEN Instruction_immediate_value(15) = '0'
-		ELSE	X"FFFF" & Instruction_immediate_value;
+	Sign_extend <= X"0000" & Instruction_immediate_value
+	WHEN Instruction_immediate_value(15) = '0'
+	ELSE	X"FFFF" & Instruction_immediate_value;
+					-- Sign Extend 16-bits to 32-bits for andi ori xori
+	Zero_extend <= X"0000" & Instruction_immediate_value;
 
 PROCESS
 	BEGIN

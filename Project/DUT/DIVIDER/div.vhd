@@ -26,10 +26,10 @@ BEGIN
 
     int_sub_dividend <= dividend_2n(2*n-1 downto n);
     int_divisor <= unsigned(i_divisor);
-    int_subtractor <= int_sub_dividend - int_divisor;--std_logic_vector(unsigned(int_sub_dividend) - unsigned(int_divisor));
+    int_subtractor <= int_sub_dividend - int_divisor;
     int_residue <= (unsigned(int_subtractor));
     o_quotient <= int_quotient;
-    o_divIFG <= '1' when unsigned(counter) = to_unsigned(n, counter'length) else '0';
+    o_divIFG <= '1' when unsigned(counter) = to_unsigned(n+1, counter'length) else '0';
 
 process(i_divCLK,i_divRST,i_valid_divisor,i_valid_dividend)
     begin
@@ -51,16 +51,23 @@ process(i_divCLK,i_divRST,i_valid_divisor,i_valid_dividend)
                         int_quotient <= int_quotient(n-2 downto 0) & '0';
                         dividend_2n <= dividend_2n(2*n-2 downto 0) & '0'; 
                     end if;
-                counter <= counter + 1;--std_logic_vector(unsigned(counter) + 1);                  
+                    if (unsigned(counter) = to_unsigned(n-1, counter'length)) then
+                        if (int_subtractor(n-1) ='1') then
+                            o_residue <= int_subtractor;
+                        else
+                            o_residue <= dividend_2n(2*n-1 downto n); 
+                        end if;
+                    end if;
+                counter <= counter + 1;                 
                 elsif (unsigned(counter) = to_unsigned(n, counter'length)) then
                     if (int_subtractor(n-1) ='1') then
                         int_quotient <= int_quotient(n-2 downto 0) & '0';
-                        o_residue <= int_subtractor;--std_logic_vector(unsigned(int_subtractor));
+                        --o_residue <= int_subtractor;
                     else
                         int_quotient <= int_quotient(n-2 downto 0) & '1';
-                        o_residue <= dividend_2n(2*n-1 downto n); 
+                        --o_residue <= dividend_2n(2*n-1 downto n); 
                     end if;
-                    counter <= counter + 1; --std_logic_vector(unsigned(counter) + 1);
+                    counter <= counter + 1;
                 end if;
             
             end if;

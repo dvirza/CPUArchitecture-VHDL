@@ -71,6 +71,17 @@ component Adder is
             s: OUT STD_LOGIC_VECTOR (length-1 DOWNTO 0);
          cout: OUT STD_LOGIC);
 end component;
+-------------------------------------------------------- Shifter
+component shifter IS
+	GENERIC (n : INTEGER;
+		 k : INTEGER
+		 );
+       PORT ( y: IN std_logic_vector (n-1 downto 0);
+       x : IN std_logic_vector(k-1 downto 0);
+         dir: IN std_logic;
+    res: OUT std_logic_vector (n-1 downto 0); 
+    cout: OUT std_logic);
+END component;
 -------------------------------------------------------- Basic Timer
 component BTimer IS
 	generic (  n : INTEGER;

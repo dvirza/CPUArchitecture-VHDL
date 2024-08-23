@@ -31,7 +31,7 @@ ARCHITECTURE structure OF MIPSenv IS
     SIGNAL MemWrite 		: STD_LOGIC;
     SIGNAL MemtoReg 		: STD_LOGIC;
     SIGNAL MemRead 			: STD_LOGIC;
-    SIGNAL ALUop 			: STD_LOGIC_VECTOR(  1 DOWNTO 0 );
+    SIGNAL ALUop 			: STD_LOGIC_VECTOR(  3 DOWNTO 0 );
     SIGNAL Instruction		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 
 BEGIN
