@@ -14,7 +14,7 @@ END interrupt_reg_several;
 
 ARCHITECTURE dataflow OF interrupt_reg_several IS
 
-    signal int_ifg : std_logic_vector(7 downto 0);
+    signal int_ifg : std_logic;--_vector(7 downto 0);
 
 begin
 

@@ -177,17 +177,44 @@ PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 END COMPONENT;
 -------------------------------------------------------- interrupt register 1 bit
 COMPONENT interrupt_reg IS
-    PORT    (   i_isrc, i_eint, i_clear     : in    std_logic;
-                o_ifg                       : out   std_logic;
-                o_irq                    : buffer   std_logic );
+   PORT    (   i_clk, i_rst, i_isrc, i_eint, i_clear     : in    std_logic;
+            o_ifg                       : out   std_logic;
+            o_irq                    : buffer   std_logic );
 END COMPONENT;
 -------------------------------------------------------- interrupt register 8 bit
 COMPONENT interrupt_reg_several IS
-    PORT    (   i_gie                       : in  std_logic;
-                i_isrc, i_clear, i_eint     : in  std_logic_vector(7 downto 0);
-                o_intr                      : out std_logic;
-                o_ifg                       : buffer std_logic_vector(7 downto 0);
-                o_irq                       : out std_logic_vector(7 downto 0) );
+PORT    (   i_clk, i_rst, i_gie         : in  std_logic;
+i_isrc, i_clear, i_eint     : in  std_logic_vector(7 downto 0);
+o_intr                      : out std_logic;
+o_ifg                       : buffer std_logic_vector(7 downto 0);
+o_irq                       : out std_logic_vector(7 downto 0) );
 END COMPONENT;
+-------------------------------------------------------- interrupt core
+COMPONENT interrupt_core IS
+    PORT    (   i_isrc, i_clear             : in    std_logic_vector(7 downto 0);
+                i_data                      : in    std_logic_vector(7 downto 0);
+                i_gie                       : in    std_logic;
+                i_valid_ie                  : in    std_logic;
+                o_intr                      : out   std_logic;
+                i_clk, i_rst                : in    std_logic;
+                o_ifg, o_irq                : out   std_logic_vector(7 downto 0);
+                o_data_ie,o_type            : out   std_logic_vector(7 downto 0) );
+END COMPONENT;
+-------------------------------------------------------- interrupt env
+COMPONENT interrupt_env IS
+    PORT    (   i_clk, i_rst                : in    std_logic;
+                i_isrc                      : in    std_logic_vector(7 downto 0);
+                i_intr_ack                  : in    std_logic;
+                i_addr                      : in    std_logic_vector(11 downto 0);
+                i_memread,i_memwrite,i_gie  : in    std_logic;
+                i_TXBUF,i_RXBUF             : in    std_logic;
+                i_irq                       : in   std_logic_vector(7 downto 0);
+                o_intr                      : out   std_logic;
+                io_data                     : inout   std_logic_vector(7 downto 0) );
+END COMPONENT;
+-------------------------------------------------------- interrupt register 8 bit
+
+-------------------------------------------------------- interrupt register 8 bit
+
 --------------------------------------------------------
 end aux_package;
