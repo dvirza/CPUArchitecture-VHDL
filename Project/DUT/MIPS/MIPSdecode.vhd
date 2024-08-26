@@ -10,10 +10,14 @@ ENTITY Idecode IS
 			Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			RegWrite 	: IN 	STD_LOGIC;
+			RegWrite	: IN 	STD_LOGIC;
+			gie_on,gie_off	: IN 	STD_LOGIC;
 			MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
-			RegDst 		: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);			
+			RegDst 		: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+			intr_save_pc: IN	STD_LOGIC_VECTOR(9 DOWNTO 0);
+			PC_plus_4	: IN	STD_LOGIC_VECTOR(31 DOWNTO 0);			
 			Sign_extend,Zero_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			GIE			: OUT	STD_LOGIC;
 			clock,reset	: IN 	STD_LOGIC );
 END Idecode;
 
@@ -69,8 +73,18 @@ PROCESS
 				register_array(i) <= CONV_STD_LOGIC_VECTOR( i, 32 );
  			END LOOP;
 					-- Write back to register - don't write to register 0
-  		ELSIF RegWrite = '1' AND write_register_address /= 0 THEN
+  		ELSE
+			IF RegWrite = '1' AND write_register_address /= 0 THEN
 		      register_array( CONV_INTEGER( write_register_address)) <= write_data;
+			END IF;
+			IF gie_off = '1' then
+				register_array(26)(0) <= '0';
+				register_array(27) <= X"00000" & "00" & intr_save_pc;
+				--register_array(27) <= PC_plus_4;
+			END IF;
+			IF gie_on = '1' then
+				register_array(26)(0) <= '1';
+			END IF;
 		END IF;
 	END PROCESS;
 

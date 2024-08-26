@@ -5,27 +5,27 @@ USE IEEE.STD_LOGIC_SIGNED.ALL;
 
 ENTITY control IS
    PORT( 	
-	Opcode 			: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
-	RegDst 			: OUT 	STD_LOGIC_VECTOR (1 DOWNTO 0);
-	ALUSrc 			: OUT 	STD_LOGIC;
-	MemtoReg 		: OUT 	STD_LOGIC;
-	RegWrite 		: OUT 	STD_LOGIC;
-	MemRead 		: OUT 	STD_LOGIC;
-	MemWrite 		: OUT 	STD_LOGIC;
-	Branch 			: OUT 	STD_LOGIC;
-	JUMP			: OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
-	ALUop 			: OUT 	STD_LOGIC_VECTOR( 3 DOWNTO 0 );
-	clock, reset	: IN 	STD_LOGIC );
+			Opcode 			: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
+			Function_opcode : IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
+			RegDst 			: OUT 	STD_LOGIC_VECTOR (1 DOWNTO 0);
+			ALUSrc 			: OUT 	STD_LOGIC;
+			MemtoReg 		: OUT 	STD_LOGIC;
+			RegWrite 		: OUT 	STD_LOGIC;
+			MemRead 		: OUT 	STD_LOGIC;
+			MemWrite 		: OUT 	STD_LOGIC;
+			Branch 			: OUT 	STD_LOGIC;
+			JUMP			: OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
+			ALUop 			: OUT 	STD_LOGIC_VECTOR( 3 DOWNTO 0 ) );
 
 END control;
 
 ARCHITECTURE behavior OF control IS
 
 	SIGNAL  R_format, Lw, Sw, Beq, int_add 	: STD_LOGIC;
-	SIGNAL	int_addi,int_sub, int_and, int_or, int_xor	:	STD_LOGIC;
+	SIGNAL	int_addi	:	STD_LOGIC;
 	SIGNAL	int_andi, int_ori,	int_xori	:	STD_LOGIC;
-	SIGNAL	int_sll, int_srl, int_lui	:	STD_LOGIC;
-	SIGNAL	int_bne, int_slt, int_slti	:	STD_LOGIC;
+	SIGNAL	int_lui	:	STD_LOGIC;
+	SIGNAL	int_bne, int_slti	:	STD_LOGIC;
 	SIGNAL	int_jmp, int_jr, int_jal, int_mult	:	STD_LOGIC;
 
 
@@ -66,8 +66,8 @@ BEGIN
 
 	ALUOp( 3 ) 	<=  int_slti;
 	ALUOp( 2 ) 	<=  int_ori OR int_xori OR int_mul OR  int_lui;
-	ALUOp( 1 ) 	<=  R_format OR int_andi OR int_mul OR int_lui; --OR int_ori OR int_xori OR int_lui OR int_slti;
-	ALUOp( 0 ) 	<=  Beq OR int_bne OR int_andi OR int_xori OR int_lui; --OR int_ori OR int_xori OR int_lui OR int_slti;
+	ALUOp( 1 ) 	<=  R_format OR int_andi OR int_mul OR int_lui;
+	ALUOp( 0 ) 	<=  Beq OR int_bne OR int_andi OR int_xori OR int_lui;
 
 	MemRead 	<=  Lw;
 	MemWrite 	<=  Sw; 
