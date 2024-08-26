@@ -8,7 +8,7 @@ USE altera_mf.altera_mf_components.all;
 
 ENTITY dmemory IS
 	PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-        	address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
+        	address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
         	write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 	   		MemRead, Memwrite 	: IN 	STD_LOGIC;
             clock,reset			: IN 	STD_LOGIC );
@@ -21,7 +21,8 @@ BEGIN
 	GENERIC MAP  (
 		operation_mode => "SINGLE_PORT",
 		width_a => 32,
-		widthad_a => 8,
+		widthad_a => 12,
+		lpm_hint  => "ENABLE_RUNTIME_MOD = YES,INSTANCE_NAME = DTCM",
 		lpm_type => "altsyncram",
 		outdata_reg_a => "UNREGISTERED",
 		init_file => "C:\TestPrograms\ModelSim\L1_Cache\asm_ver1\dmemory.hex",

@@ -7,15 +7,15 @@ USE work.aux_package.all;
 ENTITY  Execute IS
 	PORT(	Read_data_1 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			Read_data_2 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			Sign_extend,Zero_extend 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			Function_opcode : IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
-			ALUctrl 		: IN 	STD_LOGIC_VECTOR( 3 DOWNTO 0 );
+			Sign_extend		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			--Zero_extend 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			Function_opcode1 : IN 	STD_LOGIC;
+			ALUctrl 		: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
 			ALUSrc 			: IN 	STD_LOGIC;
+			PC_plus_4 		: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
 			Zero 			: OUT	STD_LOGIC;
 			ALU_Result 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			Add_Result 		: OUT	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-			PC_plus_4 		: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-			clock, reset	: IN 	STD_LOGIC );
+			Add_Result 		: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 ) );
 END Execute;
 
 ARCHITECTURE behavior OF Execute IS
@@ -30,9 +30,9 @@ BEGIN
 
 	Ainput <= Read_data_1;
 						-- ALU input mux
-	Binput <= X"00000000" when Function_opcode = "100001"  else Read_data_2 
+	Binput <= Read_data_2 
 		WHEN ( ALUSrc = '0' ) 
-  		ELSE  Sign_extend( 31 DOWNTO 0 );
+  		ELSE  Sign_extend( 31 DOWNTO 0 ); -- X"00000000" when Function_opcode = "100001" 
 
 	Zero <= '1' 
 		WHEN ( ALU_output_mux( 31 DOWNTO 0 ) = X"00000000"  )
@@ -51,7 +51,7 @@ BEGIN
 							Ainput OR Binput when "100101",
 							Ainput XOR Binput when "100110",
 							Ainput + Binput when "100000", --add/i
-							Ainput + Binput when "100001", --addu (MOV in MARS)
+							Ainput + X"00000000" when "100001", --addu (MOV in MARS)
 							Ainput - Binput when "100010", --SUB / BNE / BEQ
 							int_mult when "011000", --MUL
 							shift_save when "000000", --SLL
@@ -64,10 +64,10 @@ BEGIN
 
 	shift_inst : shifter 
 		generic map (n=>32,k=>5) 
-		port map (	x=> Binput(10 downto 6),y => Ainput,dir => shift_ctrl,
+		port map (	x=> Sign_extend(10 downto 6),y => Ainput,dir => shift_ctrl,
 					res => shift_save, cout => open);
 
-	shift_ctrl <= '1' when Function_opcode(1) = '1' else '0'; --choose if srl or sll (1 = srl)
+	shift_ctrl <= '1' when Function_opcode1 = '1' else '0'; --choose if srl or sll (1 = srl)
 
 	int_lui <= Binput(15 DOWNTO 0) & X"0000";
 

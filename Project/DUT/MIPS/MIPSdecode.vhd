@@ -80,7 +80,6 @@ PROCESS
 			IF gie_off = '1' then
 				register_array(26)(0) <= '0';
 				register_array(27) <= X"00000" & "00" & intr_save_pc;
-				--register_array(27) <= PC_plus_4;
 			END IF;
 			IF gie_on = '1' then
 				register_array(26)(0) <= '1';
