@@ -6,11 +6,10 @@ USE work.aux_package.all;
 ENTITY control IS
     port (  Opcode 			: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 ); --6 MSB
             Function_opcode : IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 ); --6 LSB
-            --ZERO_ext
-            --RF_W_SEL ??
-            RegDst 			: OUT 	STD_LOGIC_VECTOR (1 DOWNTO 0);
+            RegDst 			: OUT 	STD_LOGIC;
+            Zero_extend     : OUT   STD_LOGIC; 
             ALUSrc 			: OUT 	STD_LOGIC;
-            MemtoReg 		: OUT 	STD_LOGIC; --???
+            MemtoReg 		: OUT 	STD_LOGIC_VECTOR(1 DOWNTO 0);
             RegWrite 		: OUT 	STD_LOGIC;
             MemRead 		: OUT 	STD_LOGIC;
             MemWrite 		: OUT 	STD_LOGIC;
@@ -22,12 +21,12 @@ END control;
 
 ARCHITECTURE dataflow OF control IS
 
-    SIGNAL  R_format, Lw, Sw, Beq, int_add 	: STD_LOGIC;
-	SIGNAL	int_addi	:	STD_LOGIC;
-	SIGNAL	int_andi, int_ori,	int_xori	:	STD_LOGIC;
-	SIGNAL	int_lui	:	STD_LOGIC;
-	SIGNAL	int_bne, int_slti	:	STD_LOGIC;
-	SIGNAL	int_jmp, int_jr, int_jal, int_mult	:	STD_LOGIC;
+    SIGNAL  R_format, Lw, Sw, int_Beq 	    :   STD_LOGIC;
+	SIGNAL	int_addi	                        :	STD_LOGIC;
+	SIGNAL	int_andi, int_ori,	int_xori	    :	STD_LOGIC;
+	SIGNAL	int_lui	                            :	STD_LOGIC;
+	SIGNAL	int_bne, int_slti	                :	STD_LOGIC;
+	SIGNAL	int_jmp, int_jr, int_jal, int_mul	:	STD_LOGIC;
 
 begin
 
@@ -52,7 +51,7 @@ begin
 	R_format 	<=  '1'  WHEN  Opcode = "000000"  ELSE '0';
 	Lw          <=  '1'  WHEN  Opcode = "100011"  ELSE '0';
  	Sw          <=  '1'  WHEN  Opcode = "101011"  ELSE '0';
-   	Beq         <=  '1'  WHEN  Opcode = "000100"  ELSE '0';
+    int_Beq     <=  '1'  WHEN  Opcode = "000100"  ELSE '0';
 
     int_addi	<=	'1'  WHEN  Opcode = "001000"  ELSE '0';
     int_andi	<=	'1'  WHEN  Opcode = "001100"  ELSE '0';
@@ -67,29 +66,31 @@ begin
     int_slti	<=	'1'  WHEN  Opcode = "001010"  ELSE '0';
 
     int_jmp		<=	'1'  WHEN  Opcode = "000010"  ELSE '0';
-    int_jr		<=	'1'  WHEN  Opcode = "001000"  ELSE '0';
-    int_jal		<=	'1'  WHEN  Opcode = "001001"  ELSE '0';
+    int_jr		<=	'1'  WHEN  Opcode = "000000" and Function_opcode = "001000"  ELSE '0';
+    int_jal		<=	'1'  WHEN  Opcode = "000011"  ELSE '0';
 
-
+    Zero_extend <= '1' WHEN Opcode = "001101" or Opcode = "001100" ELSE '0'; --andi & ori
     ----------------------------------------------------
     MemRead 	<=  Lw;
     MemWrite 	<=  Sw;
-    MemtoReg 	<=  Lw;
-    Beq <= Beq;
+
+    Beq <= int_Beq;
     Bne <= int_bne;
-	RegDst(1)    	<=  int_jal ;
-    RegDst(0)    	<=  R_format or int_mul;
+
+    MemtoReg(1)     <= int_jal;
+    MemtoReg(0) 	<=  Lw;
+
+    RegDst    	<=  R_format or int_mul;
 
     RegWrite 	<=  R_format OR Lw OR int_lui OR int_slti OR int_jal OR int_andi OR int_ori OR int_xori
                   OR int_lui OR int_slti OR int_jal OR int_addi or int_mul;
 
     ALUSrc  	<=  Lw OR Sw OR int_addi OR int_andi OR int_ori OR int_xori
                   OR int_lui OR int_slti;
-    ----------------------------------------------------
-
+    
     JUMP(1)		<= 	int_jr OR int_jal;
     JUMP(0)		<= 	int_jmp OR int_jal;
 
 
 
-END behavior;
+END dataflow;

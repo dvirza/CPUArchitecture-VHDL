@@ -9,18 +9,18 @@ ENTITY mips_intr IS
                 i_gie                       : in    std_logic;
                 i_intr                      : in    std_logic;
                 i_instruction               : in    std_logic_vector(31 downto 0);
-                i_PC_plus_4                 : in    std_logic_vector(9 downto 0);
+                i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
                 o_inst_from_intr_valid      : out   std_logic;
-                --o_pc_save                   : out   std_logic_vector(9 downto 0);
+                o_pc_save                   : out   std_logic_vector(11 downto 0);
                 o_inst_from_intr            : out   std_logic_vector(31 downto 0);
                 o_inta,o_gie_off,o_gie_on   : out   std_logic );
 END mips_intr;
 
-ARCHITECTURE dataflow OF interrupt_env IS
+ARCHITECTURE dataflow OF mips_intr IS
 
     type stage is (stage0, stage1, stage2, stage3, stage4);
     signal nx_stage, pr_stage : stage;
-    signal int_pc_save : std_logic_vector(9 downto 0);
+    signal int_pc_save : std_logic_vector(11 downto 0);
     signal int_reti : std_logic; 
 
 begin
@@ -49,7 +49,7 @@ begin
 
     process(pr_stage, i_intr)
         begin
-            case stage is
+            case pr_stage is
                 when stage0 =>
                     if i_intr = '1' then
                         nx_stage <= stage1;

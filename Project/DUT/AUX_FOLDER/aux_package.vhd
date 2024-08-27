@@ -120,60 +120,77 @@ component pwm IS
 END component;
 -------------------------------------------------------- MIPS fetch
 COMPONENT Ifetch
-   PORT(	 Instruction 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-    PC_plus_4_out 	: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-    Add_result 		: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-    Branch 			: IN 	STD_LOGIC;
-    Zero 			: IN 	STD_LOGIC;
-    PC_out 			: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-    clock, reset 	: IN 	STD_LOGIC);
+   generic ( 	
+               addr_zise		: integer );
+   PORT(	clock, reset 	: IN 	STD_LOGIC;
+         Add_result 		: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
+         Sign_extend		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         o_Instruction 	: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         Jump 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
+         Beq, Bne 		: IN 	STD_LOGIC;
+         Zero 			: IN 	STD_LOGIC;
+         nx_pc_out		: OUT	STD_LOGIC_VECTOR(11 DOWNTO 0);
+         i_inst_from_intr_valid : IN std_logic;
+         i_inst_from_intr : IN std_logic_vector(31 downto 0);
+         read_data_1		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         PC_plus_4_out	: OUT	STD_LOGIC_VECTOR( 11 DOWNTO 0 ) );
 END COMPONENT; 
 -------------------------------------------------------- MIPS decode
 COMPONENT Idecode
- PORT(	read_data_1 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       read_data_2 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       Instruction 		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       read_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       ALU_result 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       RegWrite, MemtoReg 	: IN 	STD_LOGIC;
-       RegDst 				: IN 	STD_LOGIC;
-       Sign_extend 		: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       clock, reset		: IN 	STD_LOGIC );
+      PORT(	
+         clock,reset	: IN 	STD_LOGIC;
+         Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         RegWrite	: IN 	STD_LOGIC;
+         Zero_extend : IN	STD_LOGIC;
+         JUMP		: IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+         gie_on,gie_off	: IN 	STD_LOGIC;
+         MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+         RegDst 		: IN 	STD_LOGIC;
+         intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+         PC_plus_4	: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+         Function_opcode : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);			
+         Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         GIE			: OUT	STD_LOGIC;
+         read_data_1	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+         read_data_2	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
 END COMPONENT;
 -------------------------------------------------------- MIPS control
 COMPONENT control
-PORT( 	Opcode 				: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
-        RegDst 				: OUT 	STD_LOGIC;
-        ALUSrc 				: OUT 	STD_LOGIC;
-        MemtoReg 			: OUT 	STD_LOGIC;
-        RegWrite 			: OUT 	STD_LOGIC;
-        MemRead 			: OUT 	STD_LOGIC;
-        MemWrite 			: OUT 	STD_LOGIC;
-        Branch 				: OUT 	STD_LOGIC;
-        ALUop 				: OUT 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
-        clock, reset		: IN 	STD_LOGIC );
+      port (  Opcode 			: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 ); --6 MSB
+      Function_opcode : IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 ); --6 LSB
+      RegDst 			: OUT 	STD_LOGIC;
+      Zero_extend     : OUT   STD_LOGIC; 
+      ALUSrc 			: OUT 	STD_LOGIC;
+      MemtoReg 		: OUT 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+      RegWrite 		: OUT 	STD_LOGIC;
+      MemRead 		: OUT 	STD_LOGIC;
+      MemWrite 		: OUT 	STD_LOGIC;
+      Beq, Bne 		: OUT 	STD_LOGIC;
+      JUMP			: OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
+      ALUctrl 		: OUT 	STD_LOGIC_VECTOR( 5 DOWNTO 0 ));
 END COMPONENT;
 -------------------------------------------------------- MIPS execute
 COMPONENT  Execute
-   PORT(	Read_data_1 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-   Read_data_2 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-   Sign_extend 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-   Function_opcode : IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
-   ALUOp 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
-   ALUSrc 			: IN 	STD_LOGIC;
-   Zero 			: OUT	STD_LOGIC;
-   ALU_Result 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-   Add_Result 		: OUT	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-   PC_plus_4 		: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-   clock, reset	: IN 	STD_LOGIC );
+      PORT(	Read_data_1 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      Read_data_2 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      Sign_extend		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      Function_opcode1: IN 	STD_LOGIC;
+      ALUctrl 		: IN 	STD_LOGIC_VECTOR( 5 DOWNTO 0 );
+      ALUSrc 			: IN 	STD_LOGIC;
+      PC_plus_4 		: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+      Zero 			: OUT	STD_LOGIC;
+      ALU_Result 		: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      Add_Result 		: OUT	STD_LOGIC_VECTOR( 9 DOWNTO 0 ) );
 END COMPONENT;
 -------------------------------------------------------- MIPS data memory
 COMPONENT dmemory
-PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       address 			: IN 	STD_LOGIC_VECTOR( 7 DOWNTO 0 );
-       write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-       MemRead, Memwrite 	: IN 	STD_LOGIC;
-       Clock,reset			: IN 	STD_LOGIC );
+   PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+      write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      Memwrite 			: IN 	STD_LOGIC;
+      clock,reset			: IN 	STD_LOGIC );
 END COMPONENT;
 -------------------------------------------------------- interrupt register 1 bit
 COMPONENT interrupt_reg IS
@@ -212,9 +229,29 @@ COMPONENT interrupt_env IS
                 o_intr                      : out   std_logic;
                 io_data                     : inout   std_logic_vector(7 downto 0) );
 END COMPONENT;
--------------------------------------------------------- interrupt register 8 bit
+-------------------------------------------------------- mips intr
+COMPONENT mips_intr IS
+    PORT    (   i_clk, i_rst                : in    std_logic;
+                i_gie                       : in    std_logic;
+                i_intr                      : in    std_logic;
+                i_instruction               : in    std_logic_vector(31 downto 0);
+                i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
+                o_inst_from_intr_valid      : out   std_logic;
+                o_pc_save                   : out   std_logic_vector(11 downto 0);
+                o_inst_from_intr            : out   std_logic_vector(31 downto 0);
+                o_inta,o_gie_off,o_gie_on   : out   std_logic );
+END COMPONENT;
+-------------------------------------------------------- mips env
+COMPONENT MIPSenv IS
+GENERIC ( addr_zise : integer);
+PORT( i_reset, i_clock				: IN 	STD_LOGIC; 
+    -- Output important signals to pins for easy display in Simulator
+    i_intr                          : IN    STD_LOGIC;
+    o_inta                          : OUT   STD_LOGIC;
+    o_memwrite,o_memread            : OUT   STD_LOGIC;
+    o_addr							: OUT   STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+    io_bus                          : INOUT STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
 
--------------------------------------------------------- interrupt register 8 bit
+END COMPONENT;
 
---------------------------------------------------------
 end aux_package;

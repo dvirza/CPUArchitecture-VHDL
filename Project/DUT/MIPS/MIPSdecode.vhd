@@ -5,20 +5,24 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 USE work.aux_package.all;
 
 ENTITY Idecode IS
-	  PORT(	read_data_1	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			read_data_2	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+	   PORT(	
+			clock,reset	: IN 	STD_LOGIC;
 			Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			RegWrite	: IN 	STD_LOGIC;
-			gie_on,gie_off	: IN 	STD_LOGIC;
-			MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
-			RegDst 		: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
-			intr_save_pc: IN	STD_LOGIC_VECTOR(9 DOWNTO 0);
-			PC_plus_4	: IN	STD_LOGIC_VECTOR(31 DOWNTO 0);			
-			Sign_extend,Zero_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-			GIE			: OUT	STD_LOGIC;
-			clock,reset	: IN 	STD_LOGIC );
+			Zero_extend : IN	STD_LOGIC;
+			JUMP		: IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+	 		gie_on,gie_off	: IN 	STD_LOGIC;
+	 		MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+			RegDst 		: IN 	STD_LOGIC;
+	 		intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+	 		PC_plus_4	: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+			Function_opcode : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);			
+	 		Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+	 		GIE			: OUT	STD_LOGIC;
+			read_data_1	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			read_data_2	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
 END Idecode;
 
 
@@ -40,6 +44,8 @@ BEGIN
    	write_register_address_1	<= Instruction( 15 DOWNTO 11 );
    	write_register_address_0 	<= Instruction( 20 DOWNTO 16 );
    	Instruction_immediate_value <= Instruction( 15 DOWNTO 0 );
+	Function_opcode <= Instruction(5 DOWNTO 0);
+
 					-- Read Register 1 Operation
 	read_data_1 <= register_array( 
 			      CONV_INTEGER( read_register_1_address ) );
@@ -47,20 +53,19 @@ BEGIN
 	read_data_2 <= register_array( 
 			      CONV_INTEGER( read_register_2_address ) );
 					-- Mux for Register Write Address
-    write_register_address <= write_register_address_1 
-			WHEN RegDst = "01"  --Write address
-			ELSE "11111" WHEN RegDst = "10" --GPR[31] 
+    write_register_address <= "11111" WHEN JUMP = "11" --GPR[31] JAL
+			ELSE write_register_address_1 WHEN RegDst = '1'  --Write address
 			ELSE write_register_address_0; --no write address
 					-- Mux to bypass data memory for Rformat instructions
 	write_data <= ALU_result( 31 DOWNTO 0 ) 
-			WHEN ( MemtoReg = '0' ) 	ELSE read_data
-			ELSE X"00000" & B"00" & PC_plus_4; --linked gpr31
+			WHEN ( MemtoReg = "00" ) ELSE read_data WHEN ( MemtoReg = "01" )
+			ELSE X"00000" & PC_plus_4 WHEN ( MemtoReg = "10" ); --linked gpr31
 					-- Sign Extend 16-bits to 32-bits
-	Sign_extend <= X"0000" & Instruction_immediate_value
-	WHEN Instruction_immediate_value(15) = '0'
-	ELSE	X"FFFF" & Instruction_immediate_value;
-					-- Sign Extend 16-bits to 32-bits for andi ori xori
-	Zero_extend <= X"0000" & Instruction_immediate_value;
+	Sign_extend <= X"0000" & Instruction_immediate_value WHEN Zero_extend = '1'
+	ELSE X"0000" & Instruction_immediate_value WHEN Instruction_immediate_value(15) = '0'
+	ELSE X"FFFF" & Instruction_immediate_value;
+
+	GIE <= register_array(26)(0); --output gie to system
 
 PROCESS
 	BEGIN

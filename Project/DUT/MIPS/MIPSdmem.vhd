@@ -10,7 +10,7 @@ ENTITY dmemory IS
 	PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
         	address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
         	write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-	   		MemRead, Memwrite 	: IN 	STD_LOGIC;
+	   		Memwrite 			: IN 	STD_LOGIC;
             clock,reset			: IN 	STD_LOGIC );
 END dmemory;
 
@@ -25,7 +25,7 @@ BEGIN
 		lpm_hint  => "ENABLE_RUNTIME_MOD = YES,INSTANCE_NAME = DTCM",
 		lpm_type => "altsyncram",
 		outdata_reg_a => "UNREGISTERED",
-		init_file => "C:\TestPrograms\ModelSim\L1_Cache\asm_ver1\dmemory.hex",
+		init_file => "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\Project\test_files\dmemory.hex",
 		intended_device_family => "Cyclone"
 	)
 	PORT MAP (
