@@ -8,7 +8,7 @@ ENTITY MIPSenv IS
     PORT( i_reset, i_clock				: IN 	STD_LOGIC; 
         -- Output important signals to pins for easy display in Simulator
         i_intr                          : IN    STD_LOGIC;
-        o_inta                          : OUT   STD_LOGIC;
+        o_inta,o_gie                    : OUT   STD_LOGIC;
         o_memwrite,o_memread            : OUT   STD_LOGIC;
         o_addr							: OUT   STD_LOGIC_VECTOR( 11 DOWNTO 0 );
         io_bus                          : INOUT STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );

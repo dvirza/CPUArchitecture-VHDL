@@ -17,7 +17,6 @@ ARCHITECTURE dataflow OF GPIO IS
     signal int_addr, int_cs : std_logic_vector(4 downto 0);
     signal int_sw, int_io_data_in, int_io_data_out : std_logic_vector(7 downto 0);
     signal int_8hex0, int_8hex1, int_8hex2, int_8hex3, int_8hex4, int_8hex5,int_8hex6, int_LEDS : std_logic_vector (7 downto 0);
-    --signal int_8hex6 : std_logic_vector (7 downto 0);
 
 BEGIN
 
@@ -44,7 +43,6 @@ hexdecode2_inst : hexdecode GENERIC map (4) port map (sw_i => int_8hex2(3 downto
 hexdecode3_inst : hexdecode GENERIC map (4) port map (sw_i => int_8hex3(3 downto 0), hex_o1 => o_hex3);
 hexdecode4_inst : hexdecode GENERIC map (4) port map (sw_i => int_8hex4(3 downto 0), hex_o1 => o_hex4);
 hexdecode5_inst : hexdecode GENERIC map (4) port map (sw_i => int_8hex5(3 downto 0), hex_o1 => o_hex5);
---hexdecode6_inst : hexdecode GENERIC map (4) port map (sw_i => int_8hex6(3 downto 0), hex_o1 => o_hex6);
 
 
     int_sw <= i_swport; --input the switchs

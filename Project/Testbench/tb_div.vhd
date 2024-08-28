@@ -151,7 +151,7 @@ begin
         addr <= X"830";              --Set Divisor 5
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 33 loop
+        for i in 0 to 16 loop
             wait until rising_edge(clk);
         end loop;
             MemRead <= '1';

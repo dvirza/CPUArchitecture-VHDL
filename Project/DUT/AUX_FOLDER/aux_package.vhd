@@ -49,12 +49,13 @@ component GPIO IS
 END component;
 -------------------------------------------------------- Divider
 component DIV is
-	GENERIC (  n : INTEGER; m : INTEGER );
-	PORT (  i_divCLK , i_divRST, i_divENA   : IN std_logic;
-            i_valid_divisor, i_valid_dividend : IN std_logic;
-            i_dividend, i_divisor           : IN std_logic_vector (n-1 downto 0);
-	        o_divIFG                        : OUT std_logic;
-            o_residue , o_quotient,o_dividend,o_divisor  : OUT unsigned (n-1 downto 0) );
+	generic(n : INTEGER; m : INTEGER );
+	port (   i_divCLK, i_divRST, i_divENA        : IN std_logic;
+            i_valid_divisor, i_valid_dividend   : IN std_logic;
+            i_dividend, i_divisor               : IN std_logic_vector (n-1 downto 0);
+	         o_divIFG                            : OUT std_logic;
+            o_dividend, o_divisor               : OUT unsigned (n-1 downto 0);
+            o_residue, o_quotient               : OUT unsigned (n-1 downto 0) );
 end component;
 -------------------------------------------------------- Divider env
 component div_env IS
