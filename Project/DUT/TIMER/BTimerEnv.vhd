@@ -28,20 +28,6 @@ enable_bus <= i_memRead when (i_addr = X"824" or i_addr = X"828" or i_addr = X"8
 
 valid_write_BTCNT <= i_memWrite when i_addr = X"820" else '0';
 
--- process(i_MCLK,i_rst)
---     begin
---         if i_rst = '1' then
---             valid_write_BTCNT <= '0';
---         end if;
---         if rising_edge(i_MCLK) then
---             if (i_memWrite = '1' and addr = X"820") then
---                 valid_write_BTCNT <= '1';
---             else
---                 valid_write_BTCNT <= '0';
---             end if;
---         end if;
--- end process;
-
 
 process(i_MCLK)
 begin
@@ -53,9 +39,6 @@ begin
     end if;
     if rising_edge(i_MCLK) then
         if i_memWrite = '1' then
-            -- if i_addr = X"820" then
-            --     -- BTCNT <= int_data_w;
-            -- end if;
             if i_addr = X"824" then
                 BTCCR0 <= int_data_w;
             end if;
