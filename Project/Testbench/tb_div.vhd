@@ -93,7 +93,7 @@ architecture tb_Divider of tb_Divider is
 
 begin
 
-    divenv_inst : div_env port map (i_divCLK => clk, i_divRST => rst , i_memRead => MemRead, i_memWrite => MemWrite,i_divENA => ena, 
+    divenv_inst : div_env port map (i_divCLK => clk, i_divRST => rst , i_memRead => MemRead, i_memWrite => MemWrite, 
                                              i_addr => addr, o_divIFG => divifg, io_data => data);
     
     gen_clk : process begin

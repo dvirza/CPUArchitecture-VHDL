@@ -16,7 +16,7 @@ ENTITY Idecode IS
 	 		gie_on,gie_off	: IN 	STD_LOGIC;
 	 		MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
 			RegDst 		: IN 	STD_LOGIC;
-	 		intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+	 		intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);-- were 11 change to 9
 	 		PC_plus_4	: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
 			Function_opcode : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);			
 	 		Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
@@ -84,7 +84,7 @@ PROCESS
 			END IF;
 			IF gie_off = '1' then
 				register_array(26)(0) <= '0';
-				register_array(27) <= X"00000" & "00" & intr_save_pc;
+				register_array(27) <= X"00000"  & intr_save_pc;
 			END IF;
 			IF gie_on = '1' then
 				register_array(26)(0) <= '1';

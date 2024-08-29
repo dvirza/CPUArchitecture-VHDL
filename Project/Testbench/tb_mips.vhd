@@ -23,7 +23,7 @@ architecture tb of tb_mips is
 
 begin
 
-    U_0 : MIPSenv generic map (addr_zise => 10) port map (i_clock => clock,
+    U_0 : MIPSenv generic map (model_sim => true ,addr_size => 9) port map (i_clock => clock,
                             i_reset => reset,
                             i_intr => INTR,
                             o_inta => INTA,

@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_ARITH.ALL;
 USE work.aux_package.all;
 
 ENTITY MIPSenv IS
-    GENERIC ( addr_zise : integer);
+    GENERIC ( model_sim : boolean; addr_size : integer);
     PORT( i_reset, i_clock				: IN 	STD_LOGIC; 
         -- Output important signals to pins for easy display in Simulator
         i_intr                          : IN    STD_LOGIC;
@@ -46,10 +46,12 @@ ARCHITECTURE structure OF MIPSenv IS
     SIGNAL next_pc, int_intrrupt_pcsave         : STD_LOGIC_VECTOR(11 DOWNTO 0);
 
 
+
+
 BEGIN
 
     IFE : Ifetch
-    GENERIC MAP ( addr_zise => addr_zise)
+    GENERIC MAP ( model_sim => model_sim, addr_size => addr_size)
     PORT MAP (	clock => i_clock,
                 reset => i_reset,
                 Add_Result => Add_Result,
@@ -70,7 +72,7 @@ BEGIN
     PORT MAP (	clock => i_clock,
                 reset => i_reset,
                 Instruction => Instruction,
-                read_data => io_bus, --load from bus
+                read_data => dmem_from_bus, --load from bus
                 ALU_Result => ALU_result,
                 RegWrite => Regwrite,
                 Zero_extend => Zero_ext,
@@ -117,8 +119,9 @@ BEGIN
 
 
     MEM:  dmemory
+    GENERIC MAP ( model_sim => model_sim, addr_size => addr_size)
     PORT MAP (	read_data 		=> dmem_into_bus,
-                address 		=> ALU_Result (11 DOWNTO 0),--jump memory address by 4
+                address 		=> ALU_Result (10 DOWNTO 0),--jump memory address by 4
                 write_data 		=> dmem_from_bus,
                 Memwrite 		=> dmem_write, 
                 clock 			=> i_clock,  
@@ -128,7 +131,6 @@ BEGIN
     INTR_HANDLER : mips_intr
     PORT MAP (  i_clk => i_clock,
                 i_rst => i_reset,
-                i_gie => int_gie,
                 i_intr => i_intr,
                 i_instruction => Instruction,
                 i_PC_plus_4 => next_pc,
@@ -146,13 +148,16 @@ BEGIN
     
     --ALU connects
     r_data2_into_bus <= read_data_2;
+
     --dmemory connects
     dmem_read <= MemRead and (not ALU_Result(11)); 
-    dmem_write <= MemWrite and (not ALU_Result(11)); 
+    dmem_write <= MemWrite and (not ALU_Result(11));
+
     -- connect the outputs
     o_memwrite <= Memwrite;
     o_memread <= MemRead;
     o_addr <= ALU_Result(11 DOWNTO 0);
+    o_gie <= int_gie;
 
     END structure;
 

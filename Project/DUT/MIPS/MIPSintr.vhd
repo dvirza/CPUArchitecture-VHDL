@@ -6,7 +6,6 @@ USE work.aux_package.all;
 
 ENTITY mips_intr IS
     PORT    (   i_clk, i_rst                : in    std_logic;
-                i_gie                       : in    std_logic;
                 i_intr                      : in    std_logic;
                 i_instruction               : in    std_logic_vector(31 downto 0);
                 i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
@@ -75,7 +74,6 @@ begin
 
 
     o_gie_off <= '1' when pr_stage = stage0 and i_intr = '1' else '0'; --maybe delete
-    --o_gie_off <= '1' when pr_stage = stage1 else '0';
     o_gie_on <= '1' when pr_stage = stage4 and int_reti = '1' else '0';
     o_inst_from_intr <= X"8C1B083E" when pr_stage = stage1 else		-- lw $k1,TYPE
 			            X"8F7B0000" when pr_stage = stage2 else			-- lw $k1,0($k1)

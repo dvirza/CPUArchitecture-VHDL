@@ -24,14 +24,14 @@ package aux_package is
       PORT    (   i_control : in std_logic;
                 i_memRead : in std_logic;
                 i_swport : in std_logic_vector(7 downto 0);
-                o_data : inout std_logic_vector(7 downto 0) );
+                o_data : inout std_logic_vector(31 downto 0) );
    END component;
 -------------------------------------------------------- HEX and LEDs
    component hexled IS
-	PORT (  i_control, i_A0 : in std_logic;
+      PORT (  i_control, i_A0 : in std_logic;
             i_memRead, i_memWrite : in std_logic;
-            io_data : inout std_logic_vector(7 downto 0);
-            o_outToHEX : buffer std_logic_vector (7 downto 0) );
+            io_data : inout std_logic_vector(31 downto 0);
+            o_outToHEX : out std_logic_vector (7 downto 0) );
    END component;
 -------------------------------------------------------- Address decoder
    component addr_decoder IS
@@ -45,7 +45,7 @@ component GPIO IS
                 i_swport    : in    std_logic_vector(7 downto 0);
                 o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5 : out std_logic_vector(6 downto 0);
                 o_leds      : out   std_logic_vector(7 downto 0);
-                io_data     : inout   std_logic_vector(7 downto 0) );
+                io_data     : inout   std_logic_vector(31 downto 0) );
 END component;
 -------------------------------------------------------- Divider
 component DIV is
@@ -59,7 +59,7 @@ component DIV is
 end component;
 -------------------------------------------------------- Divider env
 component div_env IS
-	PORT    (   i_divCLK, i_divRST, i_memRead, i_memWrite, i_divENA : in std_logic;
+	PORT    (   i_divCLK, i_divRST, i_memRead, i_memWrite : in std_logic;
                 i_addr : in std_logic_vector(11 downto 0);
                 o_divIFG : out std_logic;
                 io_data : inout std_logic_vector(31 downto 0) );
@@ -121,20 +121,20 @@ component pwm IS
 END component;
 -------------------------------------------------------- MIPS fetch
 COMPONENT Ifetch
-   generic ( 	
-               addr_zise		: integer );
+   generic(model_sim		: boolean; 
+   addr_size		: integer );
    PORT(	clock, reset 	: IN 	STD_LOGIC;
-         Add_result 		: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
-         Sign_extend		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         o_Instruction 	: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         Jump 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
-         Beq, Bne 		: IN 	STD_LOGIC;
-         Zero 			: IN 	STD_LOGIC;
-         nx_pc_out		: OUT	STD_LOGIC_VECTOR(11 DOWNTO 0);
-         i_inst_from_intr_valid : IN std_logic;
-         i_inst_from_intr : IN std_logic_vector(31 downto 0);
-         read_data_1		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         PC_plus_4_out	: OUT	STD_LOGIC_VECTOR( 11 DOWNTO 0 ) );
+   Add_result 		: IN 	STD_LOGIC_VECTOR( 9 DOWNTO 0 );
+   Sign_extend		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   o_Instruction 	: OUT	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   Jump 			: IN 	STD_LOGIC_VECTOR( 1 DOWNTO 0 );
+   Beq, Bne 		: IN 	STD_LOGIC;
+   Zero 			: IN 	STD_LOGIC;
+   nx_pc_out		: OUT	STD_LOGIC_VECTOR(11 DOWNTO 0);
+   i_inst_from_intr_valid : IN std_logic;
+   i_inst_from_intr : IN std_logic_vector(31 downto 0);
+   read_data_1		: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   PC_plus_4_out	: OUT	STD_LOGIC_VECTOR( 11 DOWNTO 0 ) );
 END COMPONENT; 
 -------------------------------------------------------- MIPS decode
 COMPONENT Idecode
@@ -187,8 +187,10 @@ COMPONENT  Execute
 END COMPONENT;
 -------------------------------------------------------- MIPS data memory
 COMPONENT dmemory
-   PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-      address 			: IN 	STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+      generic(model_sim		: boolean; 
+      addr_size		: integer );
+      PORT(	read_data 			: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+      address 			: IN 	STD_LOGIC_VECTOR( 10 DOWNTO 0 );
       write_data 			: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
       Memwrite 			: IN 	STD_LOGIC;
       clock,reset			: IN 	STD_LOGIC );
@@ -220,39 +222,48 @@ COMPONENT interrupt_core IS
 END COMPONENT;
 -------------------------------------------------------- interrupt env
 COMPONENT interrupt_env IS
-    PORT    (   i_clk, i_rst                : in    std_logic;
-                i_isrc                      : in    std_logic_vector(7 downto 0);
-                i_intr_ack                  : in    std_logic;
-                i_addr                      : in    std_logic_vector(11 downto 0);
-                i_memread,i_memwrite,i_gie  : in    std_logic;
-                i_TXBUF,i_RXBUF             : in    std_logic;
-                i_irq                       : in   std_logic_vector(7 downto 0);
-                o_intr                      : out   std_logic;
-                io_data                     : inout   std_logic_vector(7 downto 0) );
+      PORT    (   i_clk, i_rst                : in    std_logic;
+      i_intr_ack                  : in    std_logic;
+      i_addr                      : in    std_logic_vector(11 downto 0);
+      i_memread,i_memwrite,i_gie  : in    std_logic;
+      i_TXBUF,i_RXBUF             : in    std_logic;
+      i_irq                       : in   std_logic_vector(7 downto 0);
+      o_intr                      : out   std_logic;
+      io_data                     : inout   std_logic_vector(31 downto 0) );
 END COMPONENT;
 -------------------------------------------------------- mips intr
 COMPONENT mips_intr IS
-    PORT    (   i_clk, i_rst                : in    std_logic;
-                i_gie                       : in    std_logic;
-                i_intr                      : in    std_logic;
-                i_instruction               : in    std_logic_vector(31 downto 0);
-                i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
-                o_inst_from_intr_valid      : out   std_logic;
-                o_pc_save                   : out   std_logic_vector(11 downto 0);
-                o_inst_from_intr            : out   std_logic_vector(31 downto 0);
-                o_inta,o_gie_off,o_gie_on   : out   std_logic );
+         PORT    (   i_clk, i_rst                : in    std_logic;
+         i_intr                      : in    std_logic;
+         i_instruction               : in    std_logic_vector(31 downto 0);
+         i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
+         o_inst_from_intr_valid      : out   std_logic;
+         o_pc_save                   : out   std_logic_vector(11 downto 0);
+         o_inst_from_intr            : out   std_logic_vector(31 downto 0);
+         o_inta,o_gie_off,o_gie_on   : out   std_logic );
 END COMPONENT;
 -------------------------------------------------------- mips env
 COMPONENT MIPSenv IS
-GENERIC ( addr_zise : integer);
-PORT( i_reset, i_clock				: IN 	STD_LOGIC; 
-    -- Output important signals to pins for easy display in Simulator
-    i_intr                          : IN    STD_LOGIC;
-    o_inta                          : OUT   STD_LOGIC;
-    o_memwrite,o_memread            : OUT   STD_LOGIC;
-    o_addr							: OUT   STD_LOGIC_VECTOR( 11 DOWNTO 0 );
-    io_bus                          : INOUT STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
+GENERIC ( model_sim : boolean;  addr_size : integer);
+    PORT( i_reset, i_clock				: IN 	STD_LOGIC; 
+        -- Output important signals to pins for easy display in Simulator
+        i_intr                          : IN    STD_LOGIC;
+        o_inta,o_gie                    : OUT   STD_LOGIC;
+        o_memwrite,o_memread            : OUT   STD_LOGIC;
+        o_addr							: OUT   STD_LOGIC_VECTOR( 11 DOWNTO 0 );
+        io_bus                          : INOUT STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
 
+END COMPONENT;
+-------------------------------------------------------- MCU
+COMPONENT mcu_top IS
+      GENERIC( model_sim : boolean := true; addr_size : integer := 9);
+      PORT(   i_reset, i_clock				            : IN 	STD_LOGIC;
+            i_rxuart,i_txuart                           : IN    STD_LOGIC;
+            i_pb1,i_pb2,i_pb3                           : IN    STD_LOGIC;
+            i_sw                                        : IN    STD_LOGIC_VECTOR(7 DOWNTO 0);
+            o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5   : OUT   STD_LOGIC_VECTOR(6 DOWNTO 0);
+            o_leds                                      : OUT   STD_LOGIC_VECTOR(7 DOWNTO 0);
+            o_pwm                                       : OUT   STD_LOGIC );
 END COMPONENT;
 
 end aux_package;
