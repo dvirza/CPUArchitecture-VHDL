@@ -138,24 +138,25 @@ COMPONENT Ifetch
 END COMPONENT; 
 -------------------------------------------------------- MIPS decode
 COMPONENT Idecode
-      PORT(	
-         clock,reset	: IN 	STD_LOGIC;
-         Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         RegWrite	: IN 	STD_LOGIC;
-         Zero_extend : IN	STD_LOGIC;
-         JUMP		: IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
-         gie_on,gie_off	: IN 	STD_LOGIC;
-         MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
-         RegDst 		: IN 	STD_LOGIC;
-         intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
-         PC_plus_4	: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
-         Function_opcode : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);			
-         Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         GIE			: OUT	STD_LOGIC;
-         read_data_1	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
-         read_data_2	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
+PORT(	
+   clock,reset	: IN 	STD_LOGIC;
+   Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   i_save_to_pc: IN 	STD_LOGIC;
+   RegWrite	: IN 	STD_LOGIC;
+   Zero_extend : IN	STD_LOGIC;
+   JUMP		: IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+    gie_on,gie_off	: IN 	STD_LOGIC;
+    MemtoReg 	: IN 	STD_LOGIC_VECTOR(1 DOWNTO 0);
+   RegDst 		: IN 	STD_LOGIC;
+    intr_save_pc: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);-- were 11 change to 9
+    PC_plus_4	: IN	STD_LOGIC_VECTOR(11 DOWNTO 0);
+   Function_opcode : OUT STD_LOGIC_VECTOR(5 DOWNTO 0);			
+    Sign_extend : OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+    GIE			: OUT	STD_LOGIC;
+   read_data_1	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+   read_data_2	: OUT 	STD_LOGIC_VECTOR( 31 DOWNTO 0 ) );
 END COMPONENT;
 -------------------------------------------------------- MIPS control
 COMPONENT control
@@ -233,14 +234,15 @@ COMPONENT interrupt_env IS
 END COMPONENT;
 -------------------------------------------------------- mips intr
 COMPONENT mips_intr IS
-         PORT    (   i_clk, i_rst                : in    std_logic;
-         i_intr                      : in    std_logic;
-         i_instruction               : in    std_logic_vector(31 downto 0);
-         i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
-         o_inst_from_intr_valid      : out   std_logic;
-         o_pc_save                   : out   std_logic_vector(11 downto 0);
-         o_inst_from_intr            : out   std_logic_vector(31 downto 0);
-         o_inta,o_gie_off,o_gie_on   : out   std_logic );
+   PORT    (   i_clk, i_rst                : in    std_logic;
+   i_intr                      : in    std_logic;
+   i_instruction               : in    std_logic_vector(31 downto 0);
+   i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
+   o_save_to_pc                : out   std_logic;
+   o_inst_from_intr_valid      : out   std_logic;
+   o_pc_save                   : out   std_logic_vector(11 downto 0);
+   o_inst_from_intr            : out   std_logic_vector(31 downto 0);
+   o_inta,o_gie_off,o_gie_on   : out   std_logic );
 END COMPONENT;
 -------------------------------------------------------- mips env
 COMPONENT MIPSenv IS

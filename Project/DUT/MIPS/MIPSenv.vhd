@@ -32,6 +32,7 @@ ARCHITECTURE structure OF MIPSenv IS
     SIGNAL MemtoReg 		: STD_LOGIC_VECTOR(1 DOWNTO 0);
     SIGNAL JUMP             : STD_LOGIC_VECTOR(1 DOWNTO 0);
     SIGNAL MemRead 			: STD_LOGIC;
+    SIGNAL save_to_pc     : STD_LOGIC;
     SIGNAL Function_opcode	: STD_LOGIC_VECTOR(  5 DOWNTO 0 );
     SIGNAL ALUctrl 			: STD_LOGIC_VECTOR(  5 DOWNTO 0 );
     SIGNAL Instruction		: STD_LOGIC_VECTOR( 31 DOWNTO 0 );
@@ -75,6 +76,7 @@ BEGIN
                 read_data => dmem_from_bus, --load from bus
                 ALU_Result => ALU_result,
                 RegWrite => Regwrite,
+                i_save_to_pc => save_to_pc,
                 Zero_extend => Zero_ext,
                 jump => jump,
                 gie_on => int_gie_on,
@@ -134,6 +136,7 @@ BEGIN
                 i_intr => i_intr,
                 i_instruction => Instruction,
                 i_PC_plus_4 => next_pc,
+                o_save_to_pc => save_to_pc,
                 o_inst_from_intr_valid => int_inst_from_intr_val,
                 o_pc_save => int_intrrupt_pcsave,
                 o_inst_from_intr => int_inst_from_intr,

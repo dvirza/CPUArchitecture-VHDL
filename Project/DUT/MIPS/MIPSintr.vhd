@@ -9,6 +9,7 @@ ENTITY mips_intr IS
                 i_intr                      : in    std_logic;
                 i_instruction               : in    std_logic_vector(31 downto 0);
                 i_PC_plus_4                 : in    std_logic_vector(11 downto 0);
+                o_save_to_pc                : out   std_logic;
                 o_inst_from_intr_valid      : out   std_logic;
                 o_pc_save                   : out   std_logic_vector(11 downto 0);
                 o_inst_from_intr            : out   std_logic_vector(31 downto 0);
@@ -46,7 +47,7 @@ begin
             end if;
         end process;
 
-    process(pr_stage, i_intr)
+    process(pr_stage, i_intr,int_reti)
         begin
             case pr_stage is
                 when stage0 =>
@@ -83,5 +84,6 @@ begin
     o_inta <= '1' when pr_stage = stage1 else '0';
     o_pc_save <= int_pc_save; -- pc back output
 
+    o_save_to_pc <= '1' when pr_stage = stage3 else '0';
     int_reti <= '1' when i_instruction = X"03600008" else '0';
 end dataflow;

@@ -10,6 +10,7 @@ ENTITY Idecode IS
 			Instruction : IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			read_data 	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
 			ALU_result	: IN 	STD_LOGIC_VECTOR( 31 DOWNTO 0 );
+			i_save_to_pc: IN 	STD_LOGIC;
 			RegWrite	: IN 	STD_LOGIC;
 			Zero_extend : IN	STD_LOGIC;
 			JUMP		: IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
@@ -82,9 +83,11 @@ PROCESS
 			IF RegWrite = '1' AND write_register_address /= 0 THEN
 		      register_array( CONV_INTEGER( write_register_address)) <= write_data;
 			END IF;
+			IF i_save_to_pc = '1' THEN
+				register_array(27) <= X"00000"  & intr_save_pc;
+			END IF;
 			IF gie_off = '1' then
 				register_array(26)(0) <= '0';
-				register_array(27) <= X"00000"  & intr_save_pc;
 			END IF;
 			IF gie_on = '1' then
 				register_array(26)(0) <= '1';
