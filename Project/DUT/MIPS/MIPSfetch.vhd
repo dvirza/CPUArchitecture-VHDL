@@ -78,7 +78,7 @@ inst_memory: altsyncram
 		Next_PC_jmp		<=	Next_PC_branch WHEN Jump = "00" ELSE
 							Instruction(9 downto 0)	WHEN (JUMP = "01" OR Jump = "11") ELSE X"00" & "00";
 
-		Next_PC <= read_data_1(11 DOWNTO 2) WHEN JUMP = "10" ELSE Next_PC_jmp; --Handle jump register jump = 10
+		Next_PC <= (others => '0') WHEN reset = '1' ELSE read_data_1(11 DOWNTO 2) WHEN JUMP = "10" ELSE Next_PC_jmp; --Handle jump register jump = 10
 
 		nx_pc_out <= next_PC & "00";
 

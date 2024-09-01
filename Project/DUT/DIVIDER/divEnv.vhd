@@ -66,7 +66,7 @@ div_inst : div generic map ( n=> 32, m => 5) port map ( i_divCLK => i_divCLK, i_
                     int_data_out <= std_logic_vector(int_residue);
                 end if;
                 if i_addr = X"82C" then
-                    int_data_out <= std_logic_vector(int_dividend_o);
+                    int_data_out <= std_logic_vector(int_dividend);
                 end if;
                 if i_addr = X"830" then
                     int_data_out <= std_logic_vector(int_divisor_o);

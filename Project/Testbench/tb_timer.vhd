@@ -98,21 +98,33 @@ begin
         data <= x"000000CF";          --set BTCTL to EN (for PWN OUTput), Mode 1 and first FLAG with clock divider 2
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 56 loop
+        for i in 0 to 9 loop
             wait until rising_edge(clk);
         end loop;
         MemWrite <= '1';
         data <= x"000000D7";
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 128 loop
+        for i in 0 to 11 loop
             wait until rising_edge(clk);
         end loop;
         MemWrite <= '1';
         data <= x"000000DF";
         wait until rising_edge(clk);
         MemWrite <= '0';
-        for i in 0 to 256 loop
+        for i in 0 to 11 loop
+            wait until rising_edge(clk);
+        end loop;
+
+        wait until rising_edge(clk);
+        wait until rising_edge(clk);
+        MemWrite <= '1';
+        addr <= x"820";
+        data <= X"00000002";          --set Timer to 2
+        wait until rising_edge(clk);
+        MemWrite <= '0';
+        wait until rising_edge(clk);
+        for i in 0 to 56 loop         --wait for timer to count
             wait until rising_edge(clk);
         end loop;
       

@@ -74,7 +74,7 @@ begin
         end process;
 
 
-    o_gie_off <= '1' when pr_stage = stage0 and i_intr = '1' else '0'; --maybe delete
+    o_gie_off <= '1' when pr_stage = stage0 and i_intr = '1' else '0';
     o_gie_on <= '1' when pr_stage = stage4 and int_reti = '1' else '0';
     o_inst_from_intr <= X"8C1B083E" when pr_stage = stage1 else		-- lw $k1,TYPE
 			            X"8F7B0000" when pr_stage = stage2 else			-- lw $k1,0($k1)

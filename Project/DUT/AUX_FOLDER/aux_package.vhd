@@ -88,9 +88,10 @@ component BTimer IS
 	generic (  n : INTEGER;
                k : INTEGER --size of control register (8 in this case)
             );
-   port (  i_MCLK, i_rst, i_valid : IN std_logic;
+	port (  i_MCLK, i_rst, i_valid : IN std_logic;
             i_BTCTL : IN std_logic_vector (k-1 downto 0);
             i_BTCCR0, i_BTCCR1, i_BTCNT : IN std_logic_vector(n-1 downto 0);
+            o_BTCNT : OUT std_logic_vector(n-1 downto 0);
             o_BTPWM : OUT std_logic;
 	        o_BTIFG: OUT std_logic );
 END component;
