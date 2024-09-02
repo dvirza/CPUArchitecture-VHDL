@@ -28,7 +28,7 @@ package aux_package is
    END component;
 -------------------------------------------------------- HEX and LEDs
    component hexled IS
-      PORT (  i_control, i_A0 : in std_logic;
+      PORT (  i_control, i_A0, i_clk,i_rst : in std_logic;
             i_memRead, i_memWrite : in std_logic;
             io_data : inout std_logic_vector(31 downto 0);
             o_outToHEX : out std_logic_vector (7 downto 0) );
@@ -40,12 +40,12 @@ package aux_package is
    END component;
 -------------------------------------------------------- GPIO
 component GPIO IS
-	PORT    (   i_memRead, i_memWrite   : in    std_logic;
-                i_addr      : in    std_logic_vector (5 downto 0);--<A11,A5,A4,A3,A2,A0>
-                i_swport    : in    std_logic_vector(7 downto 0);
-                o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5 : out std_logic_vector(6 downto 0);
-                o_leds      : out   std_logic_vector(7 downto 0);
-                io_data     : inout   std_logic_vector(31 downto 0) );
+	PORT    (   i_clk, i_rst ,i_memRead, i_memWrite         : in    std_logic;
+                i_addr                                      : in    std_logic_vector (5 downto 0);--<A11,A5,A4,A3,A2,A0>
+                i_swport                                    : in    std_logic_vector(7 downto 0);
+                o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5   : out std_logic_vector(6 downto 0);
+                o_leds                                      : out   std_logic_vector(7 downto 0);
+                io_data                                     : inout   std_logic_vector(31 downto 0) );
 END component;
 -------------------------------------------------------- Divider
 component DIV is
@@ -267,6 +267,15 @@ COMPONENT mcu_top IS
             o_hex0,o_hex1,o_hex2,o_hex3,o_hex4,o_hex5   : OUT   STD_LOGIC_VECTOR(6 DOWNTO 0);
             o_leds                                      : OUT   STD_LOGIC_VECTOR(7 DOWNTO 0);
             o_pwm                                       : OUT   STD_LOGIC );
+END COMPONENT;
+-------------------------------------------------------- MCU
+COMPONENT PLL is
+	port (
+		refclk   : in  std_logic := '0'; --  refclk.clk
+		rst      : in  std_logic := '0'; --   reset.reset
+		outclk_0 : out std_logic;        -- outclk0.clk
+		locked   : out std_logic         --  locked.export
+	);
 END COMPONENT;
 
 end aux_package;

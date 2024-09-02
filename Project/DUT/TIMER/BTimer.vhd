@@ -36,13 +36,13 @@ begin
 
             -- clock divider section
     p_clk_divider: process(i_rst,i_MCLK)
-    begin
-    if(i_rst='1') then
-        clk_divider   <= (others=>'0');
-    elsif(rising_edge(i_MCLK)) then
-        clk_divider   <= clk_divider + 1;
-    end if;
-    end process p_clk_divider;
+        begin
+            if(i_rst='1') then
+                clk_divider   <= (others=>'0');
+            elsif(rising_edge(i_MCLK)) then
+                clk_divider   <= clk_divider + 1;
+            end if;
+        end process p_clk_divider;
             -- clock divider signals
     MCLK_2    <= clk_divider(0);
     MCLK_4    <= clk_divider(1);
@@ -67,9 +67,11 @@ begin
 
 
             --BTCNT implementation
-    process(i_MCLK,CLKtoTIMER)
+    process(i_MCLK,CLKtoTIMER,i_rst)
         begin
-        if (BTHOLD_internal = '0') then
+        if i_rst = '1' then
+            BTCNT_count_internal <= (others => '0');
+        elsif (BTHOLD_internal = '0') then
             if rising_edge(CLKtoTIMER) then
                 if (i_valid = '1') then
                     BTCNT_count_internal <= i_BTCNT;
@@ -102,5 +104,6 @@ begin
             -- connect the outputs
     o_BTPWM <= pwmOUT_internal when BTOUTEN_internal = '1' else '0';
     o_BTIFG <= interruptFlag_internal;
+    o_BTCNT <= BTCNT_count_internal;
 
 end dataflow;

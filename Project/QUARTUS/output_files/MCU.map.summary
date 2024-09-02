@@ -1,12 +1,17 @@
-Analysis & Synthesis Status : Failed - Wed Aug 28 20:35:53 2024
+Analysis & Synthesis Status : Successful - Mon Sep  2 17:08:49 2024
 Quartus Prime Version : 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 Revision Name : MCU
-Top-level Entity Name : MCU_top
+Top-level Entity Name : mcu_top
 Family : Cyclone V
-Logic utilization (in ALMs) : N/A until Partition Merge
-Total registers : N/A until Partition Merge
-Total pins : N/A until Partition Merge
-Total virtual pins : N/A until Partition Merge
-Total block memory bits : N/A until Partition Merge
-Total PLLs : N/A until Partition Merge
-Total DLLs : N/A until Partition Merge
+Logic utilization (in ALMs) : N/A
+Total registers : 5589
+Total pins : 66
+Total virtual pins : 0
+Total block memory bits : 1,261,568
+Total DSP Blocks : 2
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 1
+Total DLLs : 0

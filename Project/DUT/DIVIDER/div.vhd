@@ -29,8 +29,7 @@ begin
         begin
             if i_divRST = '1' then
                 counter <= (others => '0'); -- Reset step counter
-            end if;
-            if rising_edge(i_divCLK) then
+            elsif rising_edge(i_divCLK) then
                 if i_valid_dividend = '1' or i_valid_divisor = '1' then
                     counter <= (others => '0'); --Reset step counter when divisor \ dividend are written
                 elsif i_divENA = '1' and counter < to_unsigned(n+1, counter'length) then
@@ -48,8 +47,7 @@ begin
         begin
             if i_divRST = '1' then 
                 dividend_2n <= (others => '0'); int_quotient <= (others => '0'); -- Reset compute 
-            end if;
-            if rising_edge(i_divCLK) then
+            elsif rising_edge(i_divCLK) then
                 if i_valid_dividend = '1' or i_valid_divisor = '1' then -- sync set dividend internal signal
                     int_quotient <= (others => '0');
                     dividend_2n <= (2*n-1 downto n => '0') & unsigned(i_dividend);
@@ -70,8 +68,7 @@ begin
         begin
             if i_divRST = '1' then 
                 int_residue <= (others => '0'); -- Reset out
-            end if;
-            if rising_edge(i_divCLK) then
+            elsif rising_edge(i_divCLK) then
                 if i_divENA = '1' and counter = to_unsigned(n, counter'length) then
                     if int_subtractor(n-1) = '0' then
                         int_residue <= int_subtractor;

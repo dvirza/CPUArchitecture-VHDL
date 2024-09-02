@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_ARITH.ALL;
 USE work.aux_package.all;
 
 ENTITY mcu_top IS
-    GENERIC( model_sim : boolean := true; addr_size : integer := 9);
+    GENERIC( model_sim : boolean := false ; addr_size : integer := 11);
     PORT(   i_reset, i_clock				            : IN 	STD_LOGIC;
             i_rxuart,i_txuart                           : IN    STD_LOGIC;
             i_pb1,i_pb2,i_pb3                           : IN    STD_LOGIC;
@@ -27,8 +27,10 @@ ARCHITECTURE dataflow OF mcu_top IS
 
 BEGIN
 
+
+    PLL_inst : PLL port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, locked => open);
     t_rst <= not (i_reset); -- PBs is pull down
-    t_clk <= i_clock; --t_clk SHOULD CONNECT TO PLL
+    --t_clk <= i_clock; --t_clk SHOULD CONNECT TO PLL MODEL SIM
     t_irq(0) <= i_rxuart; t_irq(1) <= i_txuart;
     t_irq(3) <= not(i_pb1); t_irq(4) <= not(i_pb2); t_irq(5) <= not(i_pb3); 
 
@@ -53,7 +55,7 @@ BEGIN
     addr_to_gpio(0) <= t_addr_bus(0); addr_to_gpio(1) <= t_addr_bus(2); addr_to_gpio(2) <= t_addr_bus(3);
     addr_to_gpio(3) <= t_addr_bus(4); addr_to_gpio(4) <= t_addr_bus(5); addr_to_gpio(5) <= t_addr_bus(11);
     GPIO_inst : GPIO
-    PORT MAP    (   i_memRead => t_memread, i_memWrite => t_memwrite, i_addr => addr_to_gpio, i_swport => i_sw,
+    PORT MAP    (   i_clk => t_clk, i_rst => t_rst, i_memRead => t_memread, i_memWrite => t_memwrite, i_addr => addr_to_gpio, i_swport => i_sw,
                     o_hex0 => o_hex0, o_hex1 => o_hex1, o_hex2 => o_hex2, o_hex3 => o_hex3,
                     o_hex4 => o_hex4, o_hex5 => o_hex5, o_leds => o_leds, io_data => t_data_bus );
 

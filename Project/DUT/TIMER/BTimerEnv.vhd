@@ -39,17 +39,14 @@ valid_write_BTCNT <= i_memWrite when i_addr = X"820" else '0';
     begin
         if (i_rst = '1') then
             BTCCR0 <= (others => '0'); BTCCR1 <= (others => '0');
-            BTCNT <= (others => '0'); BTCTL <= (others => '0');
-        end if;
-        if rising_edge(i_MCLK) then
+            BTCTL <= (others => '0');
+        elsif rising_edge(i_MCLK) then
             if i_memWrite = '1' then
                 if i_addr = X"824" then
                     BTCCR0 <= int_data_w;
-                end if;
-                if i_addr = X"828" then
+                elsif i_addr = X"828" then
                     BTCCR1 <= int_data_w;
-                end if;
-                if i_addr = X"81C" then
+                elsif i_addr = X"81C" then
                     BTCTL <= int_data_w(7 downto 0);
                 end if;
             end if;
@@ -64,14 +61,11 @@ valid_write_BTCNT <= i_memWrite when i_addr = X"820" else '0';
             if i_memRead = '1' then
                 if i_addr = X"820" then
                     int_data_r <= BTCNT;
-                end if;
-                if i_addr = X"824" then
+                elsif i_addr = X"824" then
                     int_data_r <= BTCCR0;
-                end if;
-                if i_addr = X"828" then
+                elsif i_addr = X"828" then
                     int_data_r <= BTCCR1;
-                end if;
-                if i_addr = X"81C" then
+                elsif i_addr = X"81C" then
                     int_data_r(7 downto 0) <= BTCTL;
                     int_data_r(31 downto 8) <= (others => '0');
                 end if;
