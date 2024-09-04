@@ -46,7 +46,7 @@ begin
         END LOOP;
         WAIT;
     END PROCESS u_0clk_proc;
-    mw_U_0disable_clk <= TRUE AFTER 30000 ns;
+    mw_U_0disable_clk <= TRUE AFTER 1000 ms;
     clock <= mw_U_0clk;
     -- ModuleWare code(v1.9) for instance 'U_1' of 'pulse'
     reset <= mw_U_1pulse;
@@ -59,30 +59,75 @@ begin
         WAIT;
         END PROCESS u_1pulse_proc;
 
+
+
     ISR_gen : PROCESS
     BEGIN
+    for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+        end loop;
     sw <= X"20";
-        for i in 0 to 20 LOOP
+        for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+        end loop;
+    pb3 <= '0';
+    for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+        end loop;
+    pb3 <= '1';
+    for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+        end loop;
+    sw <= X"F1";
+        for i in 0 to 100 LOOP
             WAIT until rising_edge(clock);
         end loop;
     pb1 <= '0';
-    WAIT until rising_edge(clock);
-    pb1 <= '1';
-    for i in 0 to 6 LOOP
+    for i in 0 to 100 LOOP
             WAIT until rising_edge(clock);
         end loop;
-    sw <= X"08";
-        for i in 0 to 34 LOOP
+    pb1 <= '1';
+    for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+    end loop;
+    sw <= X"1F";
+    for i in 0 to 100 LOOP
             WAIT until rising_edge(clock);
         end loop;
     pb2 <= '0';
-    for i in 0 to 20 LOOP
+    for i in 0 to 100 LOOP
             WAIT until rising_edge(clock);
         end loop;
     pb2 <= '1';
-    pb3 <= '0';
-    WAIT until rising_edge(clock);
-    WAIT until rising_edge(clock);
-    pb3 <= '1';
+    for i in 0 to 100 LOOP
+            WAIT until rising_edge(clock);
+    end loop;
     end PROCESS;
+
+    -- ISR_gen : PROCESS
+    -- BEGIN
+    -- sw <= X"20";
+    --     for i in 0 to 5 LOOP
+    --         WAIT until rising_edge(clock);
+    --     end loop;
+    -- pb1 <= '0';
+    -- WAIT until rising_edge(clock);
+    -- pb1 <= '1';
+    -- for i in 0 to 6 LOOP
+    --         WAIT until rising_edge(clock);
+    --     end loop;
+    -- sw <= X"08";
+    --     for i in 0 to 34 LOOP
+    --         WAIT until rising_edge(clock);
+    --     end loop;
+    -- pb2 <= '0';
+    -- for i in 0 to 20 LOOP
+    --         WAIT until rising_edge(clock);
+    --     end loop;
+    -- pb2 <= '1';
+    -- pb3 <= '0';
+    -- WAIT until rising_edge(clock);
+    -- WAIT until rising_edge(clock);
+    -- pb3 <= '1';
+    -- end PROCESS;
 end tb;

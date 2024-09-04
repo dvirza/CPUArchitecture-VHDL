@@ -4,6 +4,7 @@ USE IEEE.STD_LOGIC_ARITH.ALL;
 USE work.aux_package.all;
 
 ENTITY mcu_top IS
+    -- GENERIC( model_sim : boolean := true ; addr_size : integer := 9);
     GENERIC( model_sim : boolean := false ; addr_size : integer := 11);
     PORT(   i_reset, i_clock				            : IN 	STD_LOGIC;
             i_rxuart,i_txuart                           : IN    STD_LOGIC;
@@ -16,7 +17,7 @@ END mcu_top;
 
 ARCHITECTURE dataflow OF mcu_top IS
 
-    SIGNAL  t_clk,t_gie,t_rst                           : STD_LOGIC;
+    SIGNAL  t_clk,t_gie,t_rst,div_clk                    : STD_LOGIC;
     SIGNAL  t_intr,t_inta,t_memwrite,t_memread          : STD_LOGIC;
     SIGNAL  t_addr_bus                                  : STD_LOGIC_VECTOR(11 DOWNTO 0);
     SIGNAL  t_data_bus                                  : STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -27,10 +28,12 @@ ARCHITECTURE dataflow OF mcu_top IS
 
 BEGIN
 
+    PLL_inst1 : PLL port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, locked => open);
 
-    PLL_inst : PLL port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, locked => open);
+    -- PLL_inst : PLL3 port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, outclk_1 => div_clk, locked => open);
+    -- t_clk <= i_clock; --t_clk SHOULD CONNECT TO PLL MODEL SIM
+
     t_rst <= not (i_reset); -- PBs is pull down
-    --t_clk <= i_clock; --t_clk SHOULD CONNECT TO PLL MODEL SIM
     t_irq(0) <= i_rxuart; t_irq(1) <= i_txuart;
     t_irq(3) <= not(i_pb1); t_irq(4) <= not(i_pb2); t_irq(5) <= not(i_pb3); 
 

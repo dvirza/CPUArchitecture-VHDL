@@ -1,0 +1,269 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "o_hex0[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex0[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex1[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex2[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex3[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex4[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hex5[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[7]",
+					"strict" : false
+				},
+				{
+					"name" : "o_pwm",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[0]",
+					"strict" : false
+				},
+				{
+					"name" : "i_reset",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[1]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[2]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[3]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[4]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[5]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[6]",
+					"strict" : false
+				},
+				{
+					"name" : "i_sw[7]",
+					"strict" : false
+				},
+				{
+					"name" : "i_rxuart",
+					"strict" : false
+				},
+				{
+					"name" : "i_txuart",
+					"strict" : false
+				},
+				{
+					"name" : "i_pb1",
+					"strict" : false
+				},
+				{
+					"name" : "i_pb2",
+					"strict" : false
+				},
+				{
+					"name" : "i_pb3",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

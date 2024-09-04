@@ -31,7 +31,7 @@ ARCHITECTURE dataflow OF control IS
 begin
 
     with Opcode Select
-        ALUctrl <= 	Function_opcode when "000000", --R-Type --MISING SHIFT
+        ALUctrl <= 	Function_opcode when "000000", --R-Type
 					"100000" when "001000", -- addi to add
                     "100100" when "001100", -- andi to and
                     "100101" when "001101", -- ori to or

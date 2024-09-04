@@ -39,7 +39,7 @@ div_inst : div generic map ( n=> 32, m => 5) port map ( i_divCLK => i_divCLK, i_
             elsif int_ifg = '1' then
                 int_enable_div <= '0';
             end if;
-        end process;
+    end process;
         
     process(i_divCLK)
     begin
@@ -55,24 +55,12 @@ div_inst : div generic map ( n=> 32, m => 5) port map ( i_divCLK => i_divCLK, i_
         end if;
     end process;
 
-    process(i_divCLK)
-    begin
-        if rising_edge(i_divCLK) then
-            if i_memRead = '1' then
-                if i_addr = X"834" then
-                    int_data_out <= std_logic_vector(int_quotient);
-                end if;
-                if i_addr = X"838" then
-                    int_data_out <= std_logic_vector(int_residue);
-                end if;
-                if i_addr = X"82C" then
-                    int_data_out <= std_logic_vector(int_dividend);
-                end if;
-                if i_addr = X"830" then
-                    int_data_out <= std_logic_vector(int_divisor_o);
-                end if;
-            end if;
-        end if;
-    end process;
+    with i_addr select
+        int_data_out <= std_logic_vector(int_quotient) when X"834",
+                        std_logic_vector(int_residue)  when X"838",
+                        std_logic_vector(int_dividend) when X"82C",
+                        std_logic_vector(int_divisor_o) when X"830",
+                        (others => '0') when others;
+
 
 END dataflow;

@@ -1,0 +1,8 @@
+
+State Machine - |mcu_top|MIPSenv:MIPS|mips_intr:INTR_HANDLER|pr_stage
+Name pr_stage.stage4 pr_stage.stage3 pr_stage.stage2 pr_stage.stage1 pr_stage.stage0 
+pr_stage.stage0 0 0 0 0 0 
+pr_stage.stage1 0 0 0 1 1 
+pr_stage.stage2 0 0 1 0 1 
+pr_stage.stage3 0 1 0 0 1 
+pr_stage.stage4 1 0 0 0 1 

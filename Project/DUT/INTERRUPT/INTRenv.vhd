@@ -46,7 +46,8 @@ begin
     int_INTR_ack <= X"01" when i_intr_ack = '1' and int_ifg(0) = '1'
                     else X"02" when i_intr_ack = '1' and int_ifg(0) = '0' and int_ifg(1) = '1'
                     else X"04" when i_intr_ack = '1' and int_ifg(0) = '0' and int_ifg(1) = '0' and int_ifg(2) = '1'
-                    else X"40" when i_intr_ack = '1' and int_ifg(0) = '0' and int_ifg(1) = '0' and int_ifg(2) = '0' and int_ifg(3) = '0' and int_ifg(4) = '0' and int_ifg(5) = '0' and int_ifg(6) = '1';
+                    else X"40" when i_intr_ack = '1' and int_ifg(0) = '0' and int_ifg(1) = '0' and int_ifg(2) = '0' and int_ifg(3) = '0' and int_ifg(4) = '0' and int_ifg(5) = '0' and int_ifg(6) = '1'
+                    else (others => '0');
 
     int_clear(0) <= int_INTR_ack(0) or int_not_soft_ifg_write(0) or i_RXBUF;
     int_clear(1) <= int_INTR_ack(1) or int_not_soft_ifg_write(1) or i_TXBUF;

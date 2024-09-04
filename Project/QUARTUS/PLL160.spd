@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file path="PLL160_sim/PLL160.vho" type="VHDL" />
+ <topLevel name="PLL160" />
+ <deviceFamily name="cyclonev" />
+</simPackage>

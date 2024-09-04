@@ -277,5 +277,14 @@ COMPONENT PLL is
 		locked   : out std_logic         --  locked.export
 	);
 END COMPONENT;
+COMPONENT PLL3 is
+	port (
+		refclk   : in  std_logic := '0'; --  refclk.clk
+		rst      : in  std_logic := '0'; --   reset.reset
+		outclk_0 : out std_logic;        -- outclk0.clk
+		outclk_1 : out std_logic;        -- outclk1.clk
+		locked   : out std_logic         --  locked.export
+	);
+   END COMPONENT;
 
 end aux_package;

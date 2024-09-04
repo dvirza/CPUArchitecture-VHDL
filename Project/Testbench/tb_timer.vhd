@@ -120,7 +120,7 @@ begin
         wait until rising_edge(clk);
         MemWrite <= '1';
         addr <= x"820";
-        data <= X"00000002";          --set Timer to 2
+        data <= X"00000006";          --set Timer to 2
         wait until rising_edge(clk);
         MemWrite <= '0';
         wait until rising_edge(clk);

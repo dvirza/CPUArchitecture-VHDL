@@ -6,12 +6,12 @@ USE work.aux_package.ALL;
 
 entity div IS
     generic(n : INTEGER; m : INTEGER );
-	port (  i_divCLK, i_divRST, i_divENA        : IN std_logic;
-            i_valid_divisor, i_valid_dividend   : IN std_logic;
-            i_dividend, i_divisor               : IN std_logic_vector (n-1 downto 0);
-	        o_divIFG                            : OUT std_logic;
-            o_dividend, o_divisor               : OUT unsigned (n-1 downto 0);
-            o_residue, o_quotient               : OUT unsigned (n-1 downto 0) );
+	port (  i_divCLK, i_divRST, i_divENA            : IN std_logic;
+            i_valid_divisor, i_valid_dividend       : IN std_logic;
+            i_dividend, i_divisor                   : IN std_logic_vector (n-1 downto 0);
+	        o_divIFG                                : OUT std_logic;
+            o_dividend, o_divisor                   : OUT unsigned (n-1 downto 0);
+            o_residue, o_quotient                   : OUT unsigned (n-1 downto 0) );
 end div;
 
 ARCHITECTURE dataflow OF DIV IS

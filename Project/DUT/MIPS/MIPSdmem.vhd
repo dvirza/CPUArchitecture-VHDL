@@ -40,7 +40,7 @@ end generate;
 		lpm_hint  => "ENABLE_RUNTIME_MOD = YES,INSTANCE_NAME = DTCM",
 		lpm_type => "altsyncram",
 		outdata_reg_a => "UNREGISTERED",
-		init_file => "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\Project\test_files\DTCM.hex",
+		init_file => "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\Project\test_files\INTR_TEST4\DTCM.hex",
 		intended_device_family => "Cyclone"
 	)
 	PORT MAP (

@@ -52,7 +52,7 @@ inst_memory: altsyncram
 				lpm_hint => "ENABLE_RUNTIME_MOD = YES,INSTANCE_NAME = ITCM",
 				lpm_type => "altsyncram",
 				outdata_reg_a => "UNREGISTERED",
-				init_file => "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\Project\test_files\ITCM.hex",
+				init_file => "C:\Users\elado\Desktop\vhdl_lab\CPUArchitecture-VHDL\Project\test_files\INTR_TEST4\ITCM.hex",
 				intended_device_family => "Cyclone")
 
 	PORT MAP (clock0 => clock, address_a => addr_gen, q_a => Instruction_mem);
