@@ -4,7 +4,7 @@ i_reset => div_env:DIVIDER.i_divRST
 i_reset => interrupt_env:INTR_CTRL.i_rst
 i_reset => GPIO:GPIO_inst.i_rst
 i_reset => BTimer_env:TIMER.i_rst
-i_clock => PLL:PLL_inst1.refclk
+i_clock => PLL10:PLL_inst.refclk
 i_rxuart => interrupt_env:INTR_CTRL.i_RXBUF
 i_rxuart => interrupt_env:INTR_CTRL.i_irq[0]
 i_txuart => interrupt_env:INTR_CTRL.i_TXBUF
@@ -73,25 +73,29 @@ o_leds[7] <= GPIO:GPIO_inst.o_leds[7]
 o_pwm <= BTimer_env:TIMER.o_pwm
 
 
-|MCU_top|PLL:PLL_inst1
-refclk => PLL_0002:pll_inst.refclk
-rst => PLL_0002:pll_inst.rst
-outclk_0 <= PLL_0002:pll_inst.outclk_0
-locked <= PLL_0002:pll_inst.locked
+|MCU_top|PLL10:PLL_inst
+refclk => PLL10_0002:pll10_inst.refclk
+rst => PLL10_0002:pll10_inst.rst
+outclk_0 <= PLL10_0002:pll10_inst.outclk_0
+outclk_1 <= PLL10_0002:pll10_inst.outclk_1
+locked <= PLL10_0002:pll10_inst.locked
 
 
-|MCU_top|PLL:PLL_inst1|PLL_0002:pll_inst
+|MCU_top|PLL10:PLL_inst|PLL10_0002:pll10_inst
 refclk => refclk.IN1
 rst => rst.IN1
 outclk_0 <= altera_pll:altera_pll_i.outclk
+outclk_1 <= altera_pll:altera_pll_i.outclk
 locked <= altera_pll:altera_pll_i.locked
 
 
-|MCU_top|PLL:PLL_inst1|PLL_0002:pll_inst|altera_pll:altera_pll_i
+|MCU_top|PLL10:PLL_inst|PLL10_0002:pll10_inst|altera_pll:altera_pll_i
 refclk => general[0].gpll.I_REFCLK
+refclk => general[1].gpll.I_REFCLK
 refclk1 => ~NO_FANOUT~
 fbclk => ~NO_FANOUT~
 rst => general[0].gpll.I_RST
+rst => general[1].gpll.I_RST
 phase_en => ~NO_FANOUT~
 updn => ~NO_FANOUT~
 num_phase_shifts[0] => ~NO_FANOUT~
@@ -171,6 +175,7 @@ extswitch => ~NO_FANOUT~
 adjpllin => ~NO_FANOUT~
 cclk => ~NO_FANOUT~
 outclk[0] <= general[0].gpll.O_OUTCLK
+outclk[1] <= general[1].gpll.O_OUTCLK
 fboutclk <= general[0].gpll.O_FBOUTCLK
 locked <= general[0].gpll.LOCKED
 phase_done <= <GND>
@@ -256,6 +261,7 @@ loaden[1] <= <GND>
 extclk_out[0] <= <GND>
 extclk_out[1] <= <GND>
 cascade_out[0] <= <GND>
+cascade_out[1] <= <GND>
 zdbfbclk <> <GND>
 
 

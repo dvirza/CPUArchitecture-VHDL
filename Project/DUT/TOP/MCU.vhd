@@ -28,9 +28,9 @@ ARCHITECTURE dataflow OF mcu_top IS
 
 BEGIN
 
-    PLL_inst1 : PLL port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, locked => open);
+    --PLL_inst1 : PLL port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, locked => open);
 
-    -- PLL_inst : PLL3 port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, outclk_1 => div_clk, locked => open);
+     PLL_inst : PLL10 port map (refclk => i_clock, rst => '0', outclk_0 => t_clk, outclk_1 => div_clk, locked => open);
     -- t_clk <= i_clock; --t_clk SHOULD CONNECT TO PLL MODEL SIM
 
     t_rst <= not (i_reset); -- PBs is pull down
@@ -45,7 +45,7 @@ BEGIN
 
 
     DIVIDER: div_env 
-    PORT MAP    (   i_divCLK => t_clk, i_divRST => t_rst, i_memRead => t_memread, i_memWrite => t_memwrite,
+    PORT MAP    (   i_divCLK => div_clk, i_divRST => t_rst, i_memRead => t_memread, i_memWrite => t_memwrite,
                     i_addr => t_addr_bus, o_divIFG => t_irq(6), io_data => t_data_bus);
 
 

@@ -277,7 +277,7 @@ COMPONENT PLL is
 		locked   : out std_logic         --  locked.export
 	);
 END COMPONENT;
-COMPONENT PLL3 is
+COMPONENT PLL10 is
 	port (
 		refclk   : in  std_logic := '0'; --  refclk.clk
 		rst      : in  std_logic := '0'; --   reset.reset
